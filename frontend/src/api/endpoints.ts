@@ -653,7 +653,6 @@ export async function unassignVanityRole(roleId: string, userId: string): Promis
     await apiDelete(`/admin/vanity-roles/${roleId}/users/${userId}`);
 }
 
-
 export async function quickSearch(q: string, perType: number = 3): Promise<QuickSearchResponse> {
     const qs = buildQueryString({ q, perType });
     return apiFetch<QuickSearchResponse>(`/search/quick${qs}`);

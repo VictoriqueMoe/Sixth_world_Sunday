@@ -49,11 +49,7 @@ export function ResetPasswordPage() {
                         <h2 className={styles.title}>New Passkey</h2>
                         <p className={styles.sub}>set a new passkey for your handle</p>
                         <div className={styles.error}>This reset link is corrupted or incomplete.</div>
-                        <button
-                            className={styles.btnGhost}
-                            type="button"
-                            onClick={() => navigate("/forgot-password")}
-                        >
+                        <button className={styles.btnGhost} type="button" onClick={() => navigate("/forgot-password")}>
                             Request a new link
                         </button>
                     </div>

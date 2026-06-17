@@ -56,7 +56,5 @@ export function ThemeProvider({ children }: PropsWithChildren) {
         [activeUserId, user, updateAppearanceMutation],
     );
 
-    return (
-        <ThemeContext.Provider value={{ wideLayout, setWideLayout }}>{children}</ThemeContext.Provider>
-    );
+    return <ThemeContext.Provider value={{ wideLayout, setWideLayout }}>{children}</ThemeContext.Provider>;
 }

@@ -152,7 +152,6 @@ export function AdminVanityRoles() {
         return <div className={styles.loading}>Loading vanity roles...</div>;
     }
 
-
     const assignedIds = new Set((assignedUsers?.users ?? []).map(u => u.id));
 
     return (

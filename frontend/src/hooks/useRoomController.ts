@@ -813,7 +813,6 @@ export function useRoomController() {
         }
     }
 
-
     async function handleDelete() {
         if (!roomId || !window.confirm("Delete this room? Everyone will be removed and the messages will be lost.")) {
             return;

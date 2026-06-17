@@ -131,9 +131,7 @@ export function SearchPage() {
             {queryParam && queryParam.trim().length >= 2 && (
                 <>
                     <div className={styles.summary}>
-                        {loading
-                            ? "Scanning..."
-                            : `${total} ${total === 1 ? "hit" : "hits"} for "${queryParam}"`}
+                        {loading ? "Scanning..." : `${total} ${total === 1 ? "hit" : "hits"} for "${queryParam}"`}
                         {fetching && !loading && <span className={styles.refetch}> updating...</span>}
                     </div>
 

@@ -101,7 +101,9 @@
     text-align: left;
     padding: 0.4rem 0.6rem;
     cursor: pointer;
-    transition: background 0.12s var(--ease-out), color 0.12s var(--ease-out);
+    transition:
+        background 0.12s var(--ease-out),
+        color 0.12s var(--ease-out);
 }
 
 .channel:hover {

@@ -245,7 +245,9 @@
     font-size: 15px;
     padding: 13px 14px;
     outline: none;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition:
+        border-color 0.15s,
+        box-shadow 0.15s;
 }
 
 .form .input::placeholder {
@@ -254,7 +256,9 @@
 
 .form .input:focus {
     border-color: var(--magenta);
-    box-shadow: 0 0 0 1px var(--magenta), 0 0 18px -4px var(--magenta);
+    box-shadow:
+        0 0 0 1px var(--magenta),
+        0 0 18px -4px var(--magenta);
 }
 
 .turnstile {
@@ -279,7 +283,9 @@
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    transition: box-shadow 0.2s, transform 0.05s;
+    transition:
+        box-shadow 0.2s,
+        transform 0.05s;
 }
 
 .btnJack:hover:not(:disabled) {
@@ -319,7 +325,10 @@
     text-transform: uppercase;
     padding: 12px;
     cursor: pointer;
-    transition: color 0.12s, border-color 0.12s, background 0.12s;
+    transition:
+        color 0.12s,
+        border-color 0.12s,
+        background 0.12s;
 }
 
 .btnGhost:hover:not(:disabled) {
@@ -351,7 +360,9 @@
     font-size: 12px;
     letter-spacing: 0.5px;
     cursor: pointer;
-    transition: color 0.12s, text-shadow 0.12s;
+    transition:
+        color 0.12s,
+        text-shadow 0.12s;
 }
 
 .footBtn:hover:not(:disabled) {

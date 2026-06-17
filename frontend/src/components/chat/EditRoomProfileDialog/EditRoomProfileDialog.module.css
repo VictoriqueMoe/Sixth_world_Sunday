@@ -71,7 +71,9 @@
 .input:focus {
     outline: none;
     border-color: var(--magenta);
-    box-shadow: 0 0 0 1px var(--magenta), 0 0 18px -4px var(--magenta);
+    box-shadow:
+        0 0 0 1px var(--magenta),
+        0 0 18px -4px var(--magenta);
 }
 
 .counter {

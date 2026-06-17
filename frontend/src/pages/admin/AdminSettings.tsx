@@ -289,7 +289,6 @@ export function AdminSettings() {
                 </div>
             </div>
 
-
             <div className={styles.card}>
                 <h2 className={styles.sectionTitle}>General</h2>
                 <div className={styles.fieldGroup}>

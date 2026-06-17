@@ -316,7 +316,6 @@ export interface ChatMessageListResponse {
     total: number;
 }
 
-
 export type SearchEntityType = "chat_message" | "user";
 
 export interface SearchResultAuthor {

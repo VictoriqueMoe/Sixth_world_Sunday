@@ -44,4 +44,3 @@ export function useRules(page: string) {
     });
     return { rules: q.data?.rules ?? "", loading: q.isLoading };
 }
-

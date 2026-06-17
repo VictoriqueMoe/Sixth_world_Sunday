@@ -134,7 +134,6 @@ export function MobileRoomView({ controller }: { controller: RoomController }) {
                 onClose={() => setModerationDialogOpen(false)}
             />
 
-
             {nicknameDialogTarget && (
                 <div className={styles.dialogOverlay} onClick={() => setNicknameDialogTarget(null)}>
                     <div className={styles.dialog} onClick={e => e.stopPropagation()}>

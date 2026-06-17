@@ -50,7 +50,11 @@ body {
         radial-gradient(ellipse 80% 60% at 90% 110%, rgba(var(--cyan-rgb), 0.08), transparent 60%),
         linear-gradient(rgba(var(--cyan-rgb), 0.035) 1px, transparent 1px),
         linear-gradient(90deg, rgba(var(--cyan-rgb), 0.035) 1px, transparent 1px);
-    background-size: 100% 100%, 100% 100%, 46px 46px, 46px 46px;
+    background-size:
+        100% 100%,
+        100% 100%,
+        46px 46px,
+        46px 46px;
     background-attachment: fixed;
     min-height: 100vh;
     line-height: 1.6;

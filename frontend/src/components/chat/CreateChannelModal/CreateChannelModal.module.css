@@ -56,7 +56,9 @@
 .typeActive {
     border-color: var(--magenta);
     color: var(--text);
-    box-shadow: 0 0 0 1px var(--magenta), 0 0 18px -6px var(--magenta);
+    box-shadow:
+        0 0 0 1px var(--magenta),
+        0 0 18px -6px var(--magenta);
 }
 
 .typeGlyph {

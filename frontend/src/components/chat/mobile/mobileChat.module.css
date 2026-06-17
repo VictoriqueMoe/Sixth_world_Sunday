@@ -339,7 +339,9 @@
     background: var(--panel);
     border: 1px solid var(--line-bright);
     border-radius: 2px;
-    box-shadow: 0 0 0 1px rgba(var(--cyan-rgb), 0.06), 0 40px 120px -30px rgba(var(--magenta-rgb), 0.35);
+    box-shadow:
+        0 0 0 1px rgba(var(--cyan-rgb), 0.06),
+        0 40px 120px -30px rgba(var(--magenta-rgb), 0.35);
     padding: 1.2rem;
     width: 100%;
     max-width: 360px;
@@ -379,7 +381,9 @@
 .dialog select:focus {
     outline: none;
     border-color: var(--magenta);
-    box-shadow: 0 0 0 1px var(--magenta), 0 0 18px -4px var(--magenta);
+    box-shadow:
+        0 0 0 1px var(--magenta),
+        0 0 18px -4px var(--magenta);
 }
 
 .dialogRow {

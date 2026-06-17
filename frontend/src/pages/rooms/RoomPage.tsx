@@ -503,7 +503,6 @@ export function RoomPage() {
                 onClose={() => setModerationDialogOpen(false)}
             />
 
-
             {nicknameDialogTarget && (
                 <div className={styles.nicknameDialogOverlay} onClick={() => setNicknameDialogTarget(null)}>
                     <div className={styles.nicknameDialog} onClick={e => e.stopPropagation()}>

@@ -22,4 +22,3 @@ export function useUnreadCount() {
     });
     return { count: query.data?.count ?? 0, refresh: query.refetch };
 }
-
