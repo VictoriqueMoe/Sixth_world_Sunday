@@ -69,7 +69,6 @@ func TestGetProfile_SelfViewIncludesPrivate(t *testing.T) {
 		DOBPublic:          false,
 		Email:              "a@x.com",
 		EmailNotifications: true,
-		HomePage:           "home",
 	}
 	stats := &model.UserStats{}
 	userRepo.EXPECT().GetProfileByUsername(mock.Anything, "alice").Return(user, stats, nil)
@@ -85,7 +84,6 @@ func TestGetProfile_SelfViewIncludesPrivate(t *testing.T) {
 
 	require.NotNil(t, got.Private)
 	assert.True(t, got.Private.EmailNotifications)
-	assert.Equal(t, "home", got.Private.HomePage)
 }
 
 func TestGetProfile_NonSelfOmitsPrivate(t *testing.T) {
@@ -95,7 +93,6 @@ func TestGetProfile_NonSelfOmitsPrivate(t *testing.T) {
 		ID:                 uuid.New(),
 		Username:           "alice",
 		EmailNotifications: true,
-		HomePage:           "home",
 		Theme:              "neon-sprawl",
 	}
 	stats := &model.UserStats{}

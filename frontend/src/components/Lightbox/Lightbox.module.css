@@ -26,28 +26,7 @@
     position: fixed;
     top: 1rem;
     right: 1rem;
-    background: var(--panel);
-    color: var(--dim);
-    border: 1px solid var(--line-bright);
-    width: 36px;
-    height: 36px;
-    border-radius: 2px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     z-index: 2001;
-    transition:
-        color 0.15s,
-        border-color 0.15s,
-        box-shadow 0.15s;
-}
-
-.close:hover {
-    border-color: var(--magenta);
-    color: var(--magenta);
-    box-shadow: 0 0 18px -6px var(--magenta);
 }
 
 @media (max-width: 600px) {

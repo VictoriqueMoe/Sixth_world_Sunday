@@ -67,6 +67,93 @@ func (r *roomsService) CreateGroupRoom(ctx context.Context, creatorID uuid.UUID,
 	return resp, nil
 }
 
+func (r *roomsService) UpdateRoom(ctx context.Context, roomID, userID uuid.UUID, req dto.UpdateRoomRequest) (*dto.ChatRoomResponse, error) {
+	row, err := r.chatRepo.GetRoomByID(ctx, roomID, userID)
+	if err != nil {
+		return nil, fmt.Errorf("get room: %w", err)
+	}
+	if row == nil {
+		return nil, ErrRoomNotFound
+	}
+	if row.IsSystem {
+		return nil, ErrSystemRoom
+	}
+
+	name := strings.TrimSpace(req.Name)
+	if name == "" {
+		return nil, ErrMissingFields
+	}
+
+	description := strings.TrimSpace(req.Description)
+	if err := r.filterTexts(ctx, name, description); err != nil {
+		return nil, err
+	}
+	if len(name) > 80 {
+		name = name[:80]
+	}
+	if len(description) > 500 {
+		description = description[:500]
+	}
+
+	if err := r.chatRepo.UpdateRoom(ctx, roomID, name, description); err != nil {
+		return nil, fmt.Errorf("update room: %w", err)
+	}
+
+	resp, err := r.buildRoomResponse(ctx, roomID, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	r.hub.Broadcast(ws.Message{Type: "channel_updated", Data: resp})
+
+	return resp, nil
+}
+
+func (r *roomsService) ReorderChannels(ctx context.Context, categoryID uuid.UUID, roomIDs []uuid.UUID) error {
+	if len(roomIDs) == 0 {
+		return nil
+	}
+
+	if err := r.chatRepo.ReorderChannels(ctx, categoryID, roomIDs); err != nil {
+		return fmt.Errorf("reorder channels: %w", err)
+	}
+
+	ids := make([]string, len(roomIDs))
+	for i := 0; i < len(roomIDs); i++ {
+		ids[i] = roomIDs[i].String()
+	}
+
+	r.hub.Broadcast(ws.Message{
+		Type: "channels_reordered",
+		Data: map[string]interface{}{
+			"category_id": categoryID.String(),
+			"room_ids":    ids,
+		},
+	})
+
+	return nil
+}
+
+func (r *roomsService) ListCategories(ctx context.Context) ([]dto.ChatCategoryResponse, error) {
+	rows, err := r.chatRepo.ListCategories(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("list categories: %w", err)
+	}
+
+	cats := make([]dto.ChatCategoryResponse, 0, len(rows))
+	for i := 0; i < len(rows); i++ {
+		cats = append(cats, dto.ChatCategoryResponse{
+			ID:        rows[i].ID,
+			Name:      rows[i].Name,
+			Position:  rows[i].Position,
+			IsBuiltin: rows[i].IsBuiltin,
+			Kind:      rows[i].Kind,
+		})
+	}
+
+	return cats, nil
+}
+
 func (r *roomsService) ListUserGroupRooms(ctx context.Context, userID uuid.UUID, search string, isRPOnly bool, tag, roleFilter string, includeArchived bool, limit, offset int) (*dto.ChatRoomListResponse, error) {
 	if limit <= 0 {
 		limit = 20
@@ -162,6 +249,8 @@ func (r *roomsService) DeleteChat(ctx context.Context, roomID, userID uuid.UUID)
 		return ErrSystemRoom
 	}
 
+	mediaURLs, _ := r.chatRepo.ListRoomMediaURLs(ctx, roomID)
+
 	if err := r.chatRepo.DeleteMessages(ctx, roomID); err != nil {
 		return fmt.Errorf("delete messages: %w", err)
 	}
@@ -175,6 +264,14 @@ func (r *roomsService) DeleteChat(ctx context.Context, roomID, userID uuid.UUID)
 			"room_id": roomID,
 		},
 	})
+
+	if len(mediaURLs) > 0 {
+		go func(urls []string) {
+			for i := 0; i < len(urls); i++ {
+				_ = r.uploadSvc.Delete(urls[i])
+			}
+		}(mediaURLs)
+	}
 
 	return nil
 }

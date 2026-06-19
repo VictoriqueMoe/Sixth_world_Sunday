@@ -1,4 +1,5 @@
 import type { PropsWithChildren } from "react";
+import { Button } from "../Button/Button";
 import styles from "./Modal.module.css";
 
 interface ModalProps {
@@ -17,9 +18,9 @@ export function Modal({ isOpen, onClose, title, children }: PropsWithChildren<Mo
             <div className={styles.modal} onClick={e => e.stopPropagation()}>
                 <div className={styles.header}>
                     <h3>{title}</h3>
-                    <button className={styles.close} onClick={onClose}>
+                    <Button variant="danger" size="icon" onClick={onClose} aria-label="Close">
                         {"\u2715"}
-                    </button>
+                    </Button>
                 </div>
                 <div className={styles.body}>{children}</div>
             </div>

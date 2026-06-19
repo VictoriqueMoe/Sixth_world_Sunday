@@ -10,6 +10,23 @@ type (
 		Tags        []string `json:"tags"`
 	}
 
+	UpdateRoomRequest struct {
+		Name        string `json:"name"`
+		Description string `json:"description"`
+	}
+
+	ReorderChannelsRequest struct {
+		RoomIDs []uuid.UUID `json:"room_ids"`
+	}
+
+	ChatCategoryResponse struct {
+		ID        uuid.UUID `json:"id"`
+		Name      string    `json:"name"`
+		Position  int       `json:"position"`
+		IsBuiltin bool      `json:"is_builtin"`
+		Kind      string    `json:"kind,omitempty"`
+	}
+
 	InviteMembersRequest struct {
 		UserIDs []uuid.UUID `json:"user_ids"`
 	}
@@ -37,6 +54,8 @@ type (
 		Description       string         `json:"description"`
 		Type              string         `json:"type"`
 		ChannelKind       string         `json:"channel_kind"`
+		CategoryID        string         `json:"category_id,omitempty"`
+		Position          int            `json:"position"`
 		IsPublic          bool           `json:"is_public"`
 		IsRP              bool           `json:"is_rp"`
 		IsSystem          bool           `json:"is_system"`

@@ -3,6 +3,7 @@ import { useIsSpeaking, useParticipants } from "@livekit/components-react";
 import { RemoteParticipant } from "livekit-client";
 import type { Participant } from "livekit-client";
 
+import { Button } from "../../Button/Button";
 import styles from "./Voice.module.css";
 
 interface VoiceParticipantListProps {
@@ -59,14 +60,14 @@ export function VoiceParticipantList({ canModerate = false, onForceMute }: Voice
 
     return (
         <div className={styles.participants}>
-            <button
-                type="button"
-                className={`${styles.control} ${deafened ? styles.controlActive : ""}`}
+            <Button
+                variant="control"
+                active={deafened}
                 onClick={toggleDeafen}
                 title={deafened ? "Unmute everyone for yourself" : "Mute everyone for yourself"}
             >
                 {deafened ? "Unmute all" : "Mute all"}
-            </button>
+            </Button>
             {participants.map(p => (
                 <VoiceParticipant
                     key={p.identity}
@@ -118,14 +119,16 @@ function VoiceParticipant({
                 </button>
             )}
             {!isLocal && canModerate && onToggleForceMute && (
-                <button
-                    type="button"
-                    className={`${styles.modMuteBtn} ${forceMuted ? styles.modMuteBtnActive : ""}`}
+                <Button
+                    variant="control"
+                    tone="danger"
+                    size="small"
+                    active={forceMuted}
                     onClick={onToggleForceMute}
                     title={forceMuted ? "Unmute for everyone" : "Mute for everyone"}
                 >
                     {forceMuted ? "Unmute" : "Mute"}
-                </button>
+                </Button>
             )}
         </span>
     );

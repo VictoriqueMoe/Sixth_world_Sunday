@@ -40,19 +40,6 @@
     color: var(--magenta);
 }
 
-.closeBtn {
-    background: none;
-    border: none;
-    color: var(--dim);
-    cursor: pointer;
-    font-size: 1rem;
-    padding: 0.25rem 0.5rem;
-}
-
-.closeBtn:hover {
-    color: var(--magenta);
-}
-
 .body {
     flex: 1;
     overflow-y: auto;
@@ -162,42 +149,4 @@
     display: flex;
     gap: 0.4rem;
     justify-content: flex-end;
-}
-
-.jumpBtn,
-.unpinBtn {
-    background: var(--panel-2);
-    border: 1px solid var(--line-bright);
-    color: var(--dim);
-    padding: 0.3rem 0.6rem;
-    border-radius: 2px;
-    cursor: pointer;
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition:
-        border-color 0.15s,
-        color 0.15s,
-        background 0.15s;
-}
-
-.jumpBtn:hover {
-    border-color: var(--cyan);
-    color: var(--cyan);
-}
-
-.unpinBtn {
-    color: var(--magenta);
-    border-color: rgba(var(--magenta-rgb), 0.45);
-}
-
-.unpinBtn:hover:not(:disabled) {
-    background: rgba(var(--magenta-rgb), 0.12);
-    border-color: var(--magenta);
-}
-
-.unpinBtn:disabled {
-    opacity: 0.6;
-    cursor: default;
 }

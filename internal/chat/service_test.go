@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"errors"
 	"testing"
+	"time"
 
 	"Sixth_world_Suday/internal/authz"
 	"Sixth_world_Suday/internal/block"
@@ -1606,6 +1607,7 @@ func TestDeleteChat_DeleteMessagesError(t *testing.T) {
 	roomID := uuid.New()
 	userID := uuid.New()
 	m.chatRepo.EXPECT().GetRoomByID(mock.Anything, roomID, userID).Return(&repository.ChatRoomRow{ID: roomID, Type: "group"}, nil)
+	m.chatRepo.EXPECT().ListRoomMediaURLs(mock.Anything, roomID).Return(nil, nil)
 	m.chatRepo.EXPECT().DeleteMessages(mock.Anything, roomID).Return(errors.New("boom"))
 
 	// when
@@ -1621,6 +1623,7 @@ func TestDeleteChat_DeleteRoomError(t *testing.T) {
 	roomID := uuid.New()
 	userID := uuid.New()
 	m.chatRepo.EXPECT().GetRoomByID(mock.Anything, roomID, userID).Return(&repository.ChatRoomRow{ID: roomID, Type: "group"}, nil)
+	m.chatRepo.EXPECT().ListRoomMediaURLs(mock.Anything, roomID).Return(nil, nil)
 	m.chatRepo.EXPECT().DeleteMessages(mock.Anything, roomID).Return(nil)
 	m.chatRepo.EXPECT().DeleteRoom(mock.Anything, roomID).Return(errors.New("boom"))
 
@@ -1636,15 +1639,26 @@ func TestDeleteChat_OK(t *testing.T) {
 	svc, m := newTestService(t)
 	roomID := uuid.New()
 	userID := uuid.New()
+	deleted := make(chan string, 2)
 	m.chatRepo.EXPECT().GetRoomByID(mock.Anything, roomID, userID).Return(&repository.ChatRoomRow{ID: roomID, Type: "group"}, nil)
+	m.chatRepo.EXPECT().ListRoomMediaURLs(mock.Anything, roomID).Return([]string{"/uploads/chat/a.png", "/uploads/chat/a_thumb.png"}, nil)
 	m.chatRepo.EXPECT().DeleteMessages(mock.Anything, roomID).Return(nil)
 	m.chatRepo.EXPECT().DeleteRoom(mock.Anything, roomID).Return(nil)
+	m.uploadSvc.EXPECT().Delete("/uploads/chat/a.png").Run(func(urlPath string) { deleted <- urlPath }).Return(nil)
+	m.uploadSvc.EXPECT().Delete("/uploads/chat/a_thumb.png").Run(func(urlPath string) { deleted <- urlPath }).Return(nil)
 
 	// when
 	err := svc.DeleteChat(context.Background(), roomID, userID)
 
 	// then
 	require.NoError(t, err)
+	for i := 0; i < 2; i++ {
+		select {
+		case <-deleted:
+		case <-time.After(2 * time.Second):
+			t.Fatal("timed out waiting for async media cleanup")
+		}
+	}
 }
 
 func TestMarkRead_GetRoomError(t *testing.T) {

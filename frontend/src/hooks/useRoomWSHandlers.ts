@@ -164,6 +164,25 @@ export function useRoomWSHandlers({
                 setTimeout(() => navigate("/channels"), 1500);
                 return;
             }
+            if (msg.type === "channel_updated") {
+                const data = msg.data as ChatRoom;
+                if (data.id !== roomIdRef.current) {
+                    return;
+                }
+                setRoom(prev => {
+                    if (!prev) {
+                        return prev;
+                    }
+                    return {
+                        ...prev,
+                        name: data.name,
+                        description: data.description,
+                        category_id: data.category_id,
+                        position: data.position,
+                    };
+                });
+                return;
+            }
             if (msg.type === "chat_member_updated") {
                 const data = msg.data as ChatMemberUpdatedPayload;
                 if (data.room_id !== roomIdRef.current) {

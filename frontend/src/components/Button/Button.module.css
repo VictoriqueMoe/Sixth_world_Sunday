@@ -36,6 +36,17 @@
     letter-spacing: 1.5px;
 }
 
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    font-size: 14px;
+    letter-spacing: 0;
+}
+
 /* Variants */
 
 .primary {
@@ -86,4 +97,49 @@
 .ghost:hover:not(:disabled) {
     border-color: var(--cyan);
     color: var(--text);
+}
+
+/* Mono "terminal" pill — voice/stage controls */
+
+.control {
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 0.5rem 0.9rem;
+    background: var(--panel-2);
+    border: 1px solid var(--line-bright);
+    color: var(--dim);
+}
+
+.control:hover:not(:disabled) {
+    border-color: var(--cyan);
+    color: var(--cyan);
+}
+
+.control.active {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: inset 0 0 12px -6px var(--cyan);
+}
+
+.control.toneDanger {
+    border-color: rgba(var(--magenta-rgb), 0.55);
+    color: var(--magenta);
+}
+
+.control.toneDanger:hover:not(:disabled) {
+    border-color: var(--magenta);
+    color: var(--magenta);
+}
+
+.control.toneDanger.active {
+    background: var(--magenta);
+    border-color: var(--magenta);
+    color: #fff;
+}
+
+.control.small {
+    padding: 0.3rem 0.65rem;
+    font-size: 10px;
 }

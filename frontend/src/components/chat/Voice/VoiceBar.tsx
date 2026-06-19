@@ -2,6 +2,7 @@ import { RoomAudioRenderer, RoomContext, useLocalParticipant } from "@livekit/co
 import type { Room } from "livekit-client";
 
 import { VoiceParticipantList } from "./VoiceParticipants";
+import { Button } from "../../Button/Button";
 import styles from "./Voice.module.css";
 
 interface VoiceBarProps {
@@ -42,23 +43,22 @@ function VoiceBarInner({
 
     return (
         <div className={styles.bar}>
-            <span className={styles.icon}>{"\u{1F50A}"}</span>
+            <div className={styles.presence}>
+                <span className={styles.icon}>{"\u{1F50A}"}</span>
+                <VoiceParticipantList canModerate={canModerate} onForceMute={onForceMute} />
+            </div>
 
-            <VoiceParticipantList canModerate={canModerate} onForceMute={onForceMute} />
-
-            <button type="button" className={styles.control} onClick={toggleMute}>
-                {isMicrophoneEnabled ? "Mute" : "Unmute"}
-            </button>
-            <button
-                type="button"
-                className={`${styles.control} ${sharingScreen ? styles.controlActive : ""}`}
-                onClick={toggleScreenShare}
-            >
-                {sharingScreen ? "Stop share" : "Share"}
-            </button>
-            <button type="button" className={`${styles.control} ${styles.leave}`} onClick={onLeave}>
-                Leave
-            </button>
+            <div className={styles.controls}>
+                <Button variant="control" tone={isMicrophoneEnabled ? "default" : "danger"} onClick={toggleMute}>
+                    {isMicrophoneEnabled ? "Mute" : "Unmute"}
+                </Button>
+                <Button variant="control" active={sharingScreen} onClick={toggleScreenShare}>
+                    {sharingScreen ? "Stop share" : "Share"}
+                </Button>
+                <Button variant="control" tone="danger" onClick={onLeave}>
+                    Leave
+                </Button>
+            </div>
         </div>
     );
 }

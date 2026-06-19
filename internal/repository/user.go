@@ -56,7 +56,7 @@ type (
 )
 
 const (
-	userColumns = `u.id, u.username, u.password_hash, u.display_name, u.created_at, u.bio, u.avatar_url, u.banner_url, u.favourite_character, u.gender, u.pronoun_subject, u.pronoun_possessive, u.banned_at, u.banned_by, u.ban_reason, u.locked_at, u.locked_by, u.lock_reason, u.social_twitter, u.social_discord, u.social_waifulist, u.social_tumblr, u.social_github, u.website, u.banner_position, u.dms_enabled, u.email, u.email_public, u.email_verified, u.verify_grace_until, u.dob, u.dob_public, u.email_notifications, u.play_message_sound, u.play_notification_sound, u.home_page, u.default_profile_tab, u.theme, u.font, u.wide_layout, u.ip, COALESCE(r.role, '')`
+	userColumns = `u.id, u.username, u.password_hash, u.display_name, u.created_at, u.bio, u.avatar_url, u.banner_url, u.favourite_character, u.gender, u.pronoun_subject, u.pronoun_possessive, u.banned_at, u.banned_by, u.ban_reason, u.locked_at, u.locked_by, u.lock_reason, u.social_twitter, u.social_discord, u.social_waifulist, u.social_tumblr, u.social_github, u.website, u.banner_position, u.dms_enabled, u.email, u.email_public, u.email_verified, u.verify_grace_until, u.dob, u.dob_public, u.email_notifications, u.play_message_sound, u.play_notification_sound, u.default_profile_tab, u.theme, u.font, u.wide_layout, u.ip, COALESCE(r.role, '')`
 )
 
 func scanUser(row interface{ Scan(dest ...any) error }) (*model.User, error) {
@@ -67,7 +67,7 @@ func scanUser(row interface{ Scan(dest ...any) error }) (*model.User, error) {
 		&u.BannedAt, &u.BannedBy, &u.BanReason,
 		&u.LockedAt, &u.LockedBy, &u.LockReason,
 		&u.SocialTwitter, &u.SocialDiscord, &u.SocialWaifulist, &u.SocialTumblr, &u.SocialGithub, &u.Website,
-		&u.BannerPosition, &u.DmsEnabled, &u.Email, &u.EmailPublic, &u.EmailVerified, &u.VerifyGraceUntil, &u.DOB, &u.DOBPublic, &u.EmailNotifications, &u.PlayMessageSound, &u.PlayNotificationSound, &u.HomePage, &u.DefaultProfileTab, &u.Theme, &u.Font, &u.WideLayout, &u.IP, &u.Role)
+		&u.BannerPosition, &u.DmsEnabled, &u.Email, &u.EmailPublic, &u.EmailVerified, &u.VerifyGraceUntil, &u.DOB, &u.DOBPublic, &u.EmailNotifications, &u.PlayMessageSound, &u.PlayNotificationSound, &u.DefaultProfileTab, &u.Theme, &u.Font, &u.WideLayout, &u.IP, &u.Role)
 	return &u, err
 }
 
@@ -80,8 +80,8 @@ func (r *userRepository) Create(ctx context.Context, username, email, password, 
 	id := uuid.New()
 
 	_, err = r.db.ExecContext(ctx,
-		`INSERT INTO users (id, username, email, password_hash, display_name, home_page) VALUES ($1, $2, $3, $4, $5, $6)`,
-		id, username, email, string(hash), displayName, "landing",
+		`INSERT INTO users (id, username, email, password_hash, display_name) VALUES ($1, $2, $3, $4, $5)`,
+		id, username, email, string(hash), displayName,
 	)
 	if err != nil {
 		return nil, fmt.Errorf("create user: %w", err)
@@ -268,12 +268,12 @@ func (r *userRepository) UpdateProfile(ctx context.Context, userID uuid.UUID, re
 		`UPDATE users SET display_name = $1, bio = $2, avatar_url = $3, banner_url = $4, banner_position = $5, favourite_character = $6, gender = $7,
 		 pronoun_subject = $8, pronoun_possessive = $9,
 		 social_twitter = $10, social_discord = $11, social_waifulist = $12, social_tumblr = $13, social_github = $14,
-		 website = $15, dms_enabled = $16, email = $17, email_public = $18, dob = $19, dob_public = $20, email_notifications = $21, play_message_sound = $22, play_notification_sound = $23, home_page = $24, default_profile_tab = $25
-		 WHERE id = $26`,
+		 website = $15, dms_enabled = $16, email = $17, email_public = $18, dob = $19, dob_public = $20, email_notifications = $21, play_message_sound = $22, play_notification_sound = $23, default_profile_tab = $24
+		 WHERE id = $25`,
 		req.DisplayName, req.Bio, req.AvatarURL, req.BannerURL, req.BannerPosition, req.FavouriteCharacter, req.Gender,
 		req.PronounSubject, req.PronounPossessive,
 		req.SocialTwitter, req.SocialDiscord, req.SocialWaifulist, req.SocialTumblr, req.SocialGithub, req.Website,
-		req.DmsEnabled, req.Email, req.EmailPublic, req.DOB, req.DOBPublic, req.EmailNotifications, req.PlayMessageSound, req.PlayNotificationSound, req.HomePage, req.DefaultProfileTab,
+		req.DmsEnabled, req.Email, req.EmailPublic, req.DOB, req.DOBPublic, req.EmailNotifications, req.PlayMessageSound, req.PlayNotificationSound, req.DefaultProfileTab,
 		userID,
 	)
 	if err != nil {

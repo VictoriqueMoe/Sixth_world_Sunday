@@ -13,6 +13,7 @@ import type { Participant, Room } from "livekit-client";
 
 import type { ChatRoomMember } from "../../../types/api";
 import { effectiveMemberUser } from "../../../utils/chatMembers";
+import { Button } from "../../Button/Button";
 import styles from "./VoiceStage.module.css";
 
 type ScreenShareMode = "gaming" | "screenshare";
@@ -183,12 +184,34 @@ function VoiceStageInner({ members, canModerate, onLeave, onForceMute }: VoiceSt
                         const eu = member ? effectiveMemberUser(member) : undefined;
                         const label = isLocalShare ? "You" : eu?.display_name || track.participant.name || "Unknown";
                         return (
-                            <div key={track.participant.sid + track.publication.trackSid} className={styles.screenTile}>
+                            <div
+                                key={track.participant.sid + track.publication.trackSid}
+                                className={styles.screenTile}
+                                onDoubleClick={e => {
+                                    e.currentTarget.requestFullscreen().catch(() => {});
+                                }}
+                            >
                                 <VideoTrack trackRef={track} className={styles.screenVideo} />
                                 <span className={styles.screenLabel}>
                                     {"\u{1F5A5} "}
                                     {label}
                                 </span>
+                                <Button
+                                    variant="secondary"
+                                    size="icon"
+                                    className={styles.fullscreenBtn}
+                                    onClick={e => {
+                                        e.stopPropagation();
+                                        const tile = e.currentTarget.parentElement;
+                                        if (tile) {
+                                            tile.requestFullscreen().catch(() => {});
+                                        }
+                                    }}
+                                    title="Fullscreen (or double-click)"
+                                    aria-label="Fullscreen"
+                                >
+                                    {"⛶"}
+                                </Button>
                             </div>
                         );
                     })}
@@ -208,28 +231,20 @@ function VoiceStageInner({ members, canModerate, onLeave, onForceMute }: VoiceSt
             </div>
 
             <div className={styles.controlBar}>
-                <button
-                    type="button"
-                    className={`${styles.control} ${!isMicrophoneEnabled ? styles.controlMuted : ""}`}
-                    onClick={toggleMute}
-                >
+                <Button variant="control" tone={isMicrophoneEnabled ? "default" : "danger"} onClick={toggleMute}>
                     {isMicrophoneEnabled ? "\u{1F399} Mute" : "\u{1F507} Unmute"}
-                </button>
-                <button
-                    type="button"
-                    className={`${styles.control} ${deafened ? styles.controlMuted : ""}`}
-                    onClick={toggleDeafen}
-                >
+                </Button>
+                <Button variant="control" tone={deafened ? "danger" : "default"} onClick={toggleDeafen}>
                     {deafened ? "\u{1F507} Undeafen" : "\u{1F3A7} Deafen"}
-                </button>
+                </Button>
                 <div className={styles.shareWrap} ref={shareWrapRef}>
-                    <button
-                        type="button"
-                        className={`${styles.control} ${sharingScreen ? styles.controlActive : ""}`}
+                    <Button
+                        variant="control"
+                        active={sharingScreen}
                         onClick={() => (sharingScreen ? stopShare() : setShareMenuOpen(o => !o))}
                     >
                         {sharingScreen ? "\u{1F5A5} Stop share" : "\u{1F5A5} Share screen"}
-                    </button>
+                    </Button>
                     {shareMenuOpen && !sharingScreen && (
                         <div className={styles.shareMenu}>
                             <div className={styles.shareMenuHead}>What are you sharing?</div>
@@ -248,9 +263,9 @@ function VoiceStageInner({ members, canModerate, onLeave, onForceMute }: VoiceSt
                         </div>
                     )}
                 </div>
-                <button type="button" className={`${styles.control} ${styles.leave}`} onClick={onLeave}>
+                <Button variant="control" tone="danger" onClick={onLeave}>
                     {"⏏ Disconnect"}
-                </button>
+                </Button>
             </div>
         </div>
     );
@@ -282,14 +297,15 @@ function ParticipantTile({ participant, member, canModerate, onForceMute }: Part
             </div>
             <span className={styles.tileName}>{name}</span>
             {!participant.isLocal && canModerate && (
-                <button
-                    type="button"
-                    className={styles.tileModMute}
+                <Button
+                    variant="control"
+                    tone="danger"
+                    size="small"
                     onClick={() => onForceMute(participant.identity, micOn)}
                     title={micOn ? "Mute for everyone" : "Unmute for everyone"}
                 >
                     {micOn ? "Mute" : "Unmute"}
-                </button>
+                </Button>
             )}
         </div>
     );

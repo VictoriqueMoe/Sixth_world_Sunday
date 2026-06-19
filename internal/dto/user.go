@@ -22,26 +22,26 @@ type (
 
 	UserProfileResponse struct {
 		UserResponse
-		Bio                    string       `json:"bio"`
-		BannerURL              string       `json:"banner_url"`
-		BannerPosition         float64      `json:"banner_position"`
-		FavouriteCharacter     string       `json:"favourite_character"`
-		Gender                 string       `json:"gender"`
-		PronounSubject         string       `json:"pronoun_subject"`
-		PronounPossessive      string       `json:"pronoun_possessive"`
-		Online                 bool         `json:"online"`
-		SocialTwitter          string       `json:"social_twitter"`
-		SocialDiscord          string       `json:"social_discord"`
-		SocialWaifulist        string       `json:"social_waifulist"`
-		SocialTumblr           string       `json:"social_tumblr"`
-		SocialGithub           string       `json:"social_github"`
-		Website                string       `json:"website"`
-		DmsEnabled             bool         `json:"dms_enabled"`
-		DOB                    string       `json:"dob,omitempty"`
-		DOBPublic              bool         `json:"dob_public"`
-		Email                  string       `json:"email,omitempty"`
-		EmailPublic            bool         `json:"email_public"`
-		CreatedAt              string       `json:"created_at"`
+		Bio                string  `json:"bio"`
+		BannerURL          string  `json:"banner_url"`
+		BannerPosition     float64 `json:"banner_position"`
+		FavouriteCharacter string  `json:"favourite_character"`
+		Gender             string  `json:"gender"`
+		PronounSubject     string  `json:"pronoun_subject"`
+		PronounPossessive  string  `json:"pronoun_possessive"`
+		Online             bool    `json:"online"`
+		SocialTwitter      string  `json:"social_twitter"`
+		SocialDiscord      string  `json:"social_discord"`
+		SocialWaifulist    string  `json:"social_waifulist"`
+		SocialTumblr       string  `json:"social_tumblr"`
+		SocialGithub       string  `json:"social_github"`
+		Website            string  `json:"website"`
+		DmsEnabled         bool    `json:"dms_enabled"`
+		DOB                string  `json:"dob,omitempty"`
+		DOBPublic          bool    `json:"dob_public"`
+		Email              string  `json:"email,omitempty"`
+		EmailPublic        bool    `json:"email_public"`
+		CreatedAt          string  `json:"created_at"`
 		// Only present when viewing own profile
 		Private *UserPrivateFields `json:"private,omitempty"`
 	}
@@ -52,7 +52,6 @@ type (
 		EmailNotifications    bool   `json:"email_notifications"`
 		PlayMessageSound      bool   `json:"play_message_sound"`
 		PlayNotificationSound bool   `json:"play_notification_sound"`
-		HomePage              string `json:"home_page"`
 		DefaultProfileTab     string `json:"default_profile_tab"`
 		Theme                 string `json:"theme"`
 		Font                  string `json:"font"`
@@ -60,31 +59,30 @@ type (
 	}
 
 	UpdateProfileRequest struct {
-		DisplayName            string  `json:"display_name"`
-		Bio                    string  `json:"bio"`
-		AvatarURL              string  `json:"avatar_url"`
-		BannerURL              string  `json:"banner_url"`
-		BannerPosition         float64 `json:"banner_position"`
-		FavouriteCharacter     string  `json:"favourite_character"`
-		Gender                 string  `json:"gender"`
-		PronounSubject         string  `json:"pronoun_subject"`
-		PronounPossessive      string  `json:"pronoun_possessive"`
-		SocialTwitter          string  `json:"social_twitter"`
-		SocialDiscord          string  `json:"social_discord"`
-		SocialWaifulist        string  `json:"social_waifulist"`
-		SocialTumblr           string  `json:"social_tumblr"`
-		SocialGithub           string  `json:"social_github"`
-		Website                string  `json:"website"`
-		DmsEnabled             bool    `json:"dms_enabled"`
-		DOB                    string  `json:"dob"`
-		DOBPublic              bool    `json:"dob_public"`
-		Email                  string  `json:"email"`
-		EmailPublic            bool    `json:"email_public"`
-		EmailNotifications     bool    `json:"email_notifications"`
-		PlayMessageSound       bool    `json:"play_message_sound"`
-		PlayNotificationSound  bool    `json:"play_notification_sound"`
-		HomePage               string  `json:"home_page"`
-		DefaultProfileTab      string  `json:"default_profile_tab"`
+		DisplayName           string  `json:"display_name"`
+		Bio                   string  `json:"bio"`
+		AvatarURL             string  `json:"avatar_url"`
+		BannerURL             string  `json:"banner_url"`
+		BannerPosition        float64 `json:"banner_position"`
+		FavouriteCharacter    string  `json:"favourite_character"`
+		Gender                string  `json:"gender"`
+		PronounSubject        string  `json:"pronoun_subject"`
+		PronounPossessive     string  `json:"pronoun_possessive"`
+		SocialTwitter         string  `json:"social_twitter"`
+		SocialDiscord         string  `json:"social_discord"`
+		SocialWaifulist       string  `json:"social_waifulist"`
+		SocialTumblr          string  `json:"social_tumblr"`
+		SocialGithub          string  `json:"social_github"`
+		Website               string  `json:"website"`
+		DmsEnabled            bool    `json:"dms_enabled"`
+		DOB                   string  `json:"dob"`
+		DOBPublic             bool    `json:"dob_public"`
+		Email                 string  `json:"email"`
+		EmailPublic           bool    `json:"email_public"`
+		EmailNotifications    bool    `json:"email_notifications"`
+		PlayMessageSound      bool    `json:"play_message_sound"`
+		PlayNotificationSound bool    `json:"play_notification_sound"`
+		DefaultProfileTab     string  `json:"default_profile_tab"`
 	}
 
 	ChangePasswordRequest struct {

@@ -3167,6 +3167,68 @@ func (_c *MockChatRepository_ListAllChannels_Call) RunAndReturn(run func(ctx con
 	return _c
 }
 
+// ListCategories provides a mock function for the type MockChatRepository
+func (_mock *MockChatRepository) ListCategories(ctx context.Context) ([]ChatCategoryRow, error) {
+	ret := _mock.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ListCategories")
+	}
+
+	var r0 []ChatCategoryRow
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]ChatCategoryRow, error)); ok {
+		return returnFunc(ctx)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context) []ChatCategoryRow); ok {
+		r0 = returnFunc(ctx)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]ChatCategoryRow)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context) error); ok {
+		r1 = returnFunc(ctx)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockChatRepository_ListCategories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListCategories'
+type MockChatRepository_ListCategories_Call struct {
+	*mock.Call
+}
+
+// ListCategories is a helper method to define mock.On call
+//   - ctx context.Context
+func (_e *MockChatRepository_Expecter) ListCategories(ctx any) *MockChatRepository_ListCategories_Call {
+	return &MockChatRepository_ListCategories_Call{Call: _e.mock.On("ListCategories", ctx)}
+}
+
+func (_c *MockChatRepository_ListCategories_Call) Run(run func(ctx context.Context)) *MockChatRepository_ListCategories_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockChatRepository_ListCategories_Call) Return(chatCategoryRows []ChatCategoryRow, err error) *MockChatRepository_ListCategories_Call {
+	_c.Call.Return(chatCategoryRows, err)
+	return _c
+}
+
+func (_c *MockChatRepository_ListCategories_Call) RunAndReturn(run func(ctx context.Context) ([]ChatCategoryRow, error)) *MockChatRepository_ListCategories_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ListPinnedMessages provides a mock function for the type MockChatRepository
 func (_mock *MockChatRepository) ListPinnedMessages(ctx context.Context, roomID uuid.UUID) ([]ChatMessageRow, error) {
 	ret := _mock.Called(ctx, roomID)
@@ -3682,6 +3744,69 @@ func (_c *MockChatRepository_RemoveReaction_Call) Return(b bool, err error) *Moc
 }
 
 func (_c *MockChatRepository_RemoveReaction_Call) RunAndReturn(run func(ctx context.Context, messageID uuid.UUID, userID uuid.UUID, emoji string) (bool, error)) *MockChatRepository_RemoveReaction_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ReorderChannels provides a mock function for the type MockChatRepository
+func (_mock *MockChatRepository) ReorderChannels(ctx context.Context, categoryID uuid.UUID, roomIDs []uuid.UUID) error {
+	ret := _mock.Called(ctx, categoryID, roomIDs)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ReorderChannels")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, uuid.UUID, []uuid.UUID) error); ok {
+		r0 = returnFunc(ctx, categoryID, roomIDs)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockChatRepository_ReorderChannels_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ReorderChannels'
+type MockChatRepository_ReorderChannels_Call struct {
+	*mock.Call
+}
+
+// ReorderChannels is a helper method to define mock.On call
+//   - ctx context.Context
+//   - categoryID uuid.UUID
+//   - roomIDs []uuid.UUID
+func (_e *MockChatRepository_Expecter) ReorderChannels(ctx any, categoryID any, roomIDs any) *MockChatRepository_ReorderChannels_Call {
+	return &MockChatRepository_ReorderChannels_Call{Call: _e.mock.On("ReorderChannels", ctx, categoryID, roomIDs)}
+}
+
+func (_c *MockChatRepository_ReorderChannels_Call) Run(run func(ctx context.Context, categoryID uuid.UUID, roomIDs []uuid.UUID)) *MockChatRepository_ReorderChannels_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 uuid.UUID
+		if args[1] != nil {
+			arg1 = args[1].(uuid.UUID)
+		}
+		var arg2 []uuid.UUID
+		if args[2] != nil {
+			arg2 = args[2].([]uuid.UUID)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *MockChatRepository_ReorderChannels_Call) Return(err error) *MockChatRepository_ReorderChannels_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockChatRepository_ReorderChannels_Call) RunAndReturn(run func(ctx context.Context, categoryID uuid.UUID, roomIDs []uuid.UUID) error) *MockChatRepository_ReorderChannels_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -4509,6 +4634,75 @@ func (_c *MockChatRepository_UpdateMessageMediaURL_Call) Return(err error) *Mock
 }
 
 func (_c *MockChatRepository_UpdateMessageMediaURL_Call) RunAndReturn(run func(ctx context.Context, id int64, mediaURL string) error) *MockChatRepository_UpdateMessageMediaURL_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpdateRoom provides a mock function for the type MockChatRepository
+func (_mock *MockChatRepository) UpdateRoom(ctx context.Context, roomID uuid.UUID, name string, description string) error {
+	ret := _mock.Called(ctx, roomID, name, description)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateRoom")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, uuid.UUID, string, string) error); ok {
+		r0 = returnFunc(ctx, roomID, name, description)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockChatRepository_UpdateRoom_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateRoom'
+type MockChatRepository_UpdateRoom_Call struct {
+	*mock.Call
+}
+
+// UpdateRoom is a helper method to define mock.On call
+//   - ctx context.Context
+//   - roomID uuid.UUID
+//   - name string
+//   - description string
+func (_e *MockChatRepository_Expecter) UpdateRoom(ctx any, roomID any, name any, description any) *MockChatRepository_UpdateRoom_Call {
+	return &MockChatRepository_UpdateRoom_Call{Call: _e.mock.On("UpdateRoom", ctx, roomID, name, description)}
+}
+
+func (_c *MockChatRepository_UpdateRoom_Call) Run(run func(ctx context.Context, roomID uuid.UUID, name string, description string)) *MockChatRepository_UpdateRoom_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 uuid.UUID
+		if args[1] != nil {
+			arg1 = args[1].(uuid.UUID)
+		}
+		var arg2 string
+		if args[2] != nil {
+			arg2 = args[2].(string)
+		}
+		var arg3 string
+		if args[3] != nil {
+			arg3 = args[3].(string)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+		)
+	})
+	return _c
+}
+
+func (_c *MockChatRepository_UpdateRoom_Call) Return(err error) *MockChatRepository_UpdateRoom_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockChatRepository_UpdateRoom_Call) RunAndReturn(run func(ctx context.Context, roomID uuid.UUID, name string, description string) error) *MockChatRepository_UpdateRoom_Call {
 	_c.Call.Return(run)
 	return _c
 }

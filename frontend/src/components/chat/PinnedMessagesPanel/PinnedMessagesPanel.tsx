@@ -5,6 +5,7 @@ import { useChatRoomPinnedMessages } from "../../../api/queries/chat";
 import { useUnpinChatMessage } from "../../../api/mutations/chat";
 import { queryKeys } from "../../../api/queryKeys";
 import { parseServerDate } from "../../../utils/time";
+import { Button } from "../../Button/Button";
 import styles from "./PinnedMessagesPanel.module.css";
 
 interface PinnedMessagesPanelProps {
@@ -106,9 +107,9 @@ export function PinnedMessagesPanel({
             >
                 <header className={styles.header}>
                     <span className={styles.title}>Pinned messages</span>
-                    <button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Close">
+                    <Button variant="danger" size="icon" onClick={onClose} aria-label="Close">
                         {"\u2715"}
-                    </button>
+                    </Button>
                 </header>
                 <div className={styles.body}>
                     {loading && <div className={styles.empty}>Loading...</div>}
@@ -160,25 +161,26 @@ export function PinnedMessagesPanel({
                                         </div>
                                     )}
                                     <div className={styles.pinActions}>
-                                        <button
-                                            type="button"
-                                            className={styles.jumpBtn}
+                                        <Button
+                                            variant="control"
+                                            size="small"
                                             onClick={() => {
                                                 onJump(m.id, m.created_at);
                                                 onClose();
                                             }}
                                         >
                                             Jump to message
-                                        </button>
+                                        </Button>
                                         {canUnpin && (
-                                            <button
-                                                type="button"
-                                                className={styles.unpinBtn}
+                                            <Button
+                                                variant="control"
+                                                size="small"
+                                                tone="danger"
                                                 onClick={() => handleUnpin(m.id)}
                                                 disabled={busyId === m.id}
                                             >
                                                 {busyId === m.id ? "Unpinning..." : "Unpin"}
-                                            </button>
+                                            </Button>
                                         )}
                                     </div>
                                 </div>

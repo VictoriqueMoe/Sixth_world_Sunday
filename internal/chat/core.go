@@ -238,6 +238,8 @@ func (c *core) rowToResponse(row repository.ChatRoomRow) dto.ChatRoomResponse {
 		Description:   row.Description,
 		Type:          row.Type,
 		ChannelKind:   row.ChannelKind,
+		CategoryID:    nullUUIDStr(row.CategoryID),
+		Position:      row.Position,
 		IsPublic:      row.IsPublic,
 		IsRP:          row.IsRP,
 		IsSystem:      row.IsSystem,
@@ -259,6 +261,13 @@ func (c *core) rowToResponse(row repository.ChatRoomRow) dto.ChatRoomResponse {
 func nullStr(ns sql.NullString) string {
 	if ns.Valid {
 		return ns.String
+	}
+	return ""
+}
+
+func nullUUIDStr(n uuid.NullUUID) string {
+	if n.Valid {
+		return n.UUID.String()
 	}
 	return ""
 }

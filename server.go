@@ -22,6 +22,7 @@ import (
 	"Sixth_world_Suday/internal/media"
 	"Sixth_world_Suday/internal/middleware"
 	"Sixth_world_Suday/internal/notification"
+	"Sixth_world_Suday/internal/og"
 	"Sixth_world_Suday/internal/profile"
 	"Sixth_world_Suday/internal/report"
 	"Sixth_world_Suday/internal/repository"
@@ -45,24 +46,24 @@ var (
 
 type (
 	services struct {
-		settings        settings.Service
-		auth            auth.Service
-		profile         profile.Service
-		notification    notification.Service
-		admin           admin.Service
-		authz           authz.Service
-		chat            chat.Service
-		report          report.Service
-		block           blocksvc.Service
-		email           email.Service
-		session         *session.Manager
-		upload          upload.Service
-		hub             *ws.Hub
-		mediaProc       *media.Processor
-		contentFilter   *contentfilter.Manager
-		vanityRole      vanityrole.Service
-		search          searchsvc.Service
-		user            user.Service
+		settings      settings.Service
+		auth          auth.Service
+		profile       profile.Service
+		notification  notification.Service
+		admin         admin.Service
+		authz         authz.Service
+		chat          chat.Service
+		report        report.Service
+		block         blocksvc.Service
+		email         email.Service
+		session       *session.Manager
+		upload        upload.Service
+		hub           *ws.Hub
+		mediaProc     *media.Processor
+		contentFilter *contentfilter.Manager
+		vanityRole    vanityrole.Service
+		search        searchsvc.Service
+		user          user.Service
 	}
 )
 
@@ -100,9 +101,15 @@ func initApp(svc *services, repos *repository.Repositories, settingsSvc settings
 	ctrlService := controllers.NewService(
 		svc.auth, svc.profile, svc.notification, svc.admin,
 		svc.authz, settingsSvc, svc.chat, svc.report,
-		svc.block, svc.user, svc.upload, svc.mediaProc, svc.vanityRole, svc.session, svc.hub, svc.search, string(htmlBytes),
+		svc.block, svc.user, svc.upload, svc.mediaProc, svc.vanityRole, svc.session, svc.hub, svc.search,
 	)
 	routes.PublicRoutes(ctrlService, app)
+
+	ogResolver := og.NewResolver(
+		settingsSvc,
+		string(htmlBytes),
+		settingsSvc.Get(context.Background(), config.SettingBaseURL),
+	)
 
 	app.Get("/api/v1/ws", ws.Handler(svc.hub, svc.session, svc.chat, func() string {
 		return settingsSvc.Get(context.Background(), config.SettingBaseURL)
@@ -129,7 +136,7 @@ func initApp(svc *services, repos *repository.Repositories, settingsSvc settings
 		if strings.Contains(path, ".") {
 			return embeddedStaticHandler(ctx)
 		}
-		return ctx.Type("html").SendString(string(htmlBytes))
+		return ctx.Type("html").SendString(ogResolver.Resolve(ctx.Context(), path))
 	})
 
 	logRoutes(app)

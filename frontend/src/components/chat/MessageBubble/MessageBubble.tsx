@@ -7,6 +7,7 @@ import { EmojiPicker } from "../EmojiPicker/EmojiPicker";
 import { YouTubeEmbed } from "../YouTubeEmbed/YouTubeEmbed";
 import { formatFullDateTime, formatMessageTime } from "../../../utils/time";
 import { extractYouTubeIDs } from "../../../utils/youtube";
+import { Button } from "../../Button/Button";
 import styles from "./MessageBubble.module.css";
 
 interface MessageBubbleProps {
@@ -450,17 +451,17 @@ function EditRow({ initialBody, onCommit, onCancel }: EditRowProps) {
                 rows={Math.min(8, Math.max(2, draft.split("\n").length))}
             />
             <div className={styles.editActions}>
-                <button type="button" className={styles.editBtn} onClick={onCancel} disabled={saving}>
+                <Button variant="control" size="small" onClick={onCancel} disabled={saving}>
                     Cancel
-                </button>
-                <button
-                    type="button"
-                    className={`${styles.editBtn} ${styles.editBtnPrimary}`}
+                </Button>
+                <Button
+                    variant="primary"
+                    size="small"
                     onClick={() => commit()}
                     disabled={saving || draft.trim() === ""}
                 >
                     {saving ? "Saving..." : "Save"}
-                </button>
+                </Button>
             </div>
             <div className={styles.editHint}>Enter to save · Esc to cancel</div>
         </div>

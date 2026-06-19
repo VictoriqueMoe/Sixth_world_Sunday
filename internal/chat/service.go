@@ -25,6 +25,9 @@ type (
 		SyncSystemRoomMembership(ctx context.Context, userID uuid.UUID, newRole role.Role) error
 
 		CreateGroupRoom(ctx context.Context, creatorID uuid.UUID, req dto.CreateGroupRoomRequest) (*dto.ChatRoomResponse, error)
+		UpdateRoom(ctx context.Context, roomID, userID uuid.UUID, req dto.UpdateRoomRequest) (*dto.ChatRoomResponse, error)
+		ReorderChannels(ctx context.Context, categoryID uuid.UUID, roomIDs []uuid.UUID) error
+		ListCategories(ctx context.Context) ([]dto.ChatCategoryResponse, error)
 		ListRooms(ctx context.Context, userID uuid.UUID) (*dto.ChatRoomListResponse, error)
 		ListUserGroupRooms(ctx context.Context, userID uuid.UUID, search string, isRPOnly bool, tag, role string, includeArchived bool, limit, offset int) (*dto.ChatRoomListResponse, error)
 		ArchiveStale(ctx context.Context) (int, error)

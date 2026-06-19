@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSiteInfo } from "../../hooks/useSiteInfo";
 import { validateFileSize } from "../../utils/fileValidation";
 import { Button } from "../Button/Button";
@@ -23,6 +23,7 @@ export function MediaPreviews({ files, onRemove, onReorder, size = "normal" }: M
         for (let i = 0; i < files.length; i++) {
             urls.push(URL.createObjectURL(files[i]));
         }
+
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setPreviews(urls);
 

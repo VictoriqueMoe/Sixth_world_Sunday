@@ -10,9 +10,10 @@ interface CreateChannelModalProps {
     isOpen: boolean;
     onClose: () => void;
     onCreated: (channel: ChatRoom) => void;
+    initialKind?: "text" | "voice";
 }
 
-export function CreateChannelModal({ isOpen, onClose, onCreated }: CreateChannelModalProps) {
+export function CreateChannelModal({ isOpen, onClose, onCreated, initialKind = "text" }: CreateChannelModalProps) {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [kind, setKind] = useState<"text" | "voice">("text");
@@ -26,7 +27,7 @@ export function CreateChannelModal({ isOpen, onClose, onCreated }: CreateChannel
         if (isOpen) {
             setName("");
             setDescription("");
-            setKind("text");
+            setKind(initialKind);
             setError("");
             setSubmitting(false);
         }

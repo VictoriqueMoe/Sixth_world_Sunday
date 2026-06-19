@@ -1,16 +1,92 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { useChannels } from "../../../api/queries/chat";
+import { useChannels, useChatCategories } from "../../../api/queries/chat";
+import { useDeleteChannel, useReorderChannels } from "../../../api/mutations/chat";
 import { useAuth } from "../../../hooks/useAuth";
 import { useNotifications } from "../../../hooks/useNotifications";
 import { can } from "../../../utils/permissions";
-import type { ChatRoom, WSMessage } from "../../../types/api";
+import type { ChatCategory, ChatRoom, WSMessage } from "../../../types/api";
 import { useVoice } from "../../../context/voiceContextValue";
 import { CreateChannelModal } from "../../chat/CreateChannelModal/CreateChannelModal";
+import { EditChannelModal } from "../../chat/EditChannelModal/EditChannelModal";
+import { ContextMenu } from "../../ContextMenu/ContextMenu";
+import { useContextMenu } from "../../ContextMenu/useContextMenu";
+import { Modal } from "../../Modal/Modal";
+import { Button } from "../../Button/Button";
 import styles from "./ChannelRail.module.css";
 
 const VoiceDock = lazy(() => import("../../chat/Voice/VoiceDock").then(m => ({ default: m.VoiceDock })));
+
+interface ChannelGroup {
+    id: string;
+    name: string;
+    kind?: string;
+    reorderable: boolean;
+    channels: ChatRoom[];
+}
+
+function buildChannelGroups(rooms: ChatRoom[], categories: ChatCategory[]): ChannelGroup[] {
+    const byPosition = (a: ChatRoom, b: ChatRoom) => a.position - b.position;
+
+    if (categories.length === 0) {
+        const text: ChatRoom[] = [];
+        const voice: ChatRoom[] = [];
+        for (const c of rooms) {
+            if (c.channel_kind === "voice") {
+                voice.push(c);
+            } else {
+                text.push(c);
+            }
+        }
+        text.sort(byPosition);
+        voice.sort(byPosition);
+        return [
+            { id: "kind:text", name: "text channels", kind: "text", reorderable: false, channels: text },
+            { id: "kind:voice", name: "voice channels", kind: "voice", reorderable: false, channels: voice },
+        ];
+    }
+
+    const knownCategoryIds = new Set(categories.map(c => c.id));
+    const builtinByKind = new Map<string, ChatCategory>();
+    for (const c of categories) {
+        if (c.is_builtin && c.kind) {
+            builtinByKind.set(c.kind, c);
+        }
+    }
+
+    const channelsByCategory = new Map<string, ChatRoom[]>();
+    const uncategorized: ChatRoom[] = [];
+    for (const room of rooms) {
+        let categoryId: string | undefined;
+        if (room.category_id && knownCategoryIds.has(room.category_id)) {
+            categoryId = room.category_id;
+        } else {
+            categoryId = builtinByKind.get(room.channel_kind)?.id;
+        }
+        if (!categoryId) {
+            uncategorized.push(room);
+            continue;
+        }
+        const arr = channelsByCategory.get(categoryId) ?? [];
+        arr.push(room);
+        channelsByCategory.set(categoryId, arr);
+    }
+
+    const ordered = [...categories].sort((a, b) => a.position - b.position);
+    const groups: ChannelGroup[] = [];
+    for (const category of ordered) {
+        const channels = (channelsByCategory.get(category.id) ?? []).sort(byPosition);
+        groups.push({ id: category.id, name: category.name, kind: category.kind, reorderable: true, channels });
+    }
+
+    if (uncategorized.length > 0) {
+        uncategorized.sort(byPosition);
+        groups.push({ id: "uncategorized", name: "uncategorized", reorderable: false, channels: uncategorized });
+    }
+
+    return groups;
+}
 
 export function ChannelRail() {
     const { user } = useAuth();
@@ -19,34 +95,122 @@ export function ChannelRail() {
     const qc = useQueryClient();
     const { addWSListener } = useNotifications();
     const { rooms } = useChannels();
+    const { categories } = useChatCategories();
     const voice = useVoice();
+
     const [createOpen, setCreateOpen] = useState(false);
+    const [createKind, setCreateKind] = useState<"text" | "voice">("text");
+    const [editChannel, setEditChannel] = useState<ChatRoom | null>(null);
+    const [pendingDelete, setPendingDelete] = useState<ChatRoom | null>(null);
+    const [dragOverId, setDragOverId] = useState<string | null>(null);
+
+    const dragRef = useRef<{ id: string; categoryId: string } | null>(null);
+
+    const { state: menuState, open: openMenu, close: closeMenu } = useContextMenu();
+    const reorderMutation = useReorderChannels();
+    const deleteMutation = useDeleteChannel();
 
     useEffect(() => {
         return addWSListener((msg: WSMessage) => {
-            if (msg.type === "channel_created" || msg.type === "channel_deleted") {
+            if (
+                msg.type === "channel_created" ||
+                msg.type === "channel_deleted" ||
+                msg.type === "channel_updated" ||
+                msg.type === "channels_reordered"
+            ) {
                 qc.invalidateQueries({ queryKey: ["channels"] });
+                return;
+            }
+            if (msg.type === "chat_read") {
+                const data = msg.data as { room_id: string };
+                qc.setQueryData<{ rooms: ChatRoom[] }>(["channels"], prev => {
+                    if (!prev) {
+                        return prev;
+                    }
+                    return {
+                        ...prev,
+                        rooms: prev.rooms.map(r => (r.id === data.room_id ? { ...r, unread: false } : r)),
+                    };
+                });
             }
         });
     }, [addWSListener, qc]);
 
     const canManage = can(user?.role, "manage_channels");
 
-    const textChannels = [];
-    const voiceChannels = [];
-    for (const c of rooms) {
-        if (c.channel_kind === "voice") {
-            voiceChannels.push(c);
-        } else {
-            textChannels.push(c);
-        }
+    const groups = buildChannelGroups(rooms, categories);
+
+    function openCreate(kind: "text" | "voice") {
+        setCreateKind(kind);
+        setCreateOpen(true);
     }
 
-    function renderRow(c: ChatRoom) {
+    function openChannelMenu(e: React.MouseEvent, channel: ChatRoom) {
+        openMenu(e, [
+            { id: "edit", label: "Edit Channel", icon: "✎", onClick: () => setEditChannel(channel) },
+            {
+                id: "delete",
+                label: "Delete Channel",
+                icon: "✕",
+                variant: "danger",
+                onClick: () => setPendingDelete(channel),
+            },
+        ]);
+    }
+
+    function reorderWithin(group: ChannelGroup, orderedIds: string[]) {
+        reorderMutation.mutate({ categoryId: group.id, roomIds: orderedIds });
+    }
+
+    function handleDropOnChannel(group: ChannelGroup, targetId: string) {
+        const drag = dragRef.current;
+        dragRef.current = null;
+        setDragOverId(null);
+
+        if (!drag || drag.categoryId !== group.id || drag.id === targetId) {
+            return;
+        }
+
+        const remaining = group.channels.map(c => c.id).filter(id => id !== drag.id);
+        const targetIndex = remaining.indexOf(targetId);
+        if (targetIndex === -1) {
+            return;
+        }
+
+        remaining.splice(targetIndex, 0, drag.id);
+        reorderWithin(group, remaining);
+    }
+
+    function handleDropAtEnd(group: ChannelGroup) {
+        const drag = dragRef.current;
+        dragRef.current = null;
+        setDragOverId(null);
+
+        if (!drag || drag.categoryId !== group.id) {
+            return;
+        }
+
+        const remaining = group.channels.map(c => c.id).filter(id => id !== drag.id);
+        remaining.push(drag.id);
+        reorderWithin(group, remaining);
+    }
+
+    function confirmDelete() {
+        if (!pendingDelete) {
+            return;
+        }
+
+        const id = pendingDelete.id;
+        setPendingDelete(null);
+        deleteMutation.mutate(id);
+    }
+
+    function renderRow(c: ChatRoom, group: ChannelGroup) {
         const active = c.id === activeId;
         const hasUnread = c.unread && !c.viewer_muted;
         const glyph = c.channel_kind === "voice" ? "◊" : "#";
         const voiceCount = voice.presence[c.id]?.length ?? c.voice_count ?? 0;
+        const draggable = canManage && group.reorderable;
         const classes = [styles.channel];
         if (active) {
             classes.push(styles.active);
@@ -54,12 +218,58 @@ export function ChannelRail() {
         if (hasUnread) {
             classes.push(styles.unreadChannel);
         }
+        if (dragOverId === c.id) {
+            classes.push(styles.dragOver);
+        }
         return (
             <button
                 key={c.id}
                 type="button"
                 className={classes.join(" ")}
                 onClick={() => navigate(`/channels/${c.id}`)}
+                onContextMenu={canManage ? e => openChannelMenu(e, c) : undefined}
+                draggable={draggable}
+                onDragStart={
+                    draggable
+                        ? () => {
+                              dragRef.current = { id: c.id, categoryId: group.id };
+                          }
+                        : undefined
+                }
+                onDragOver={
+                    draggable
+                        ? e => {
+                              if (dragRef.current && dragRef.current.categoryId === group.id) {
+                                  e.preventDefault();
+                                  setDragOverId(c.id);
+                              }
+                          }
+                        : undefined
+                }
+                onDragLeave={
+                    draggable
+                        ? () => {
+                              setDragOverId(prev => (prev === c.id ? null : prev));
+                          }
+                        : undefined
+                }
+                onDrop={
+                    draggable
+                        ? e => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleDropOnChannel(group, c.id);
+                          }
+                        : undefined
+                }
+                onDragEnd={
+                    draggable
+                        ? () => {
+                              dragRef.current = null;
+                              setDragOverId(null);
+                          }
+                        : undefined
+                }
             >
                 <span className={styles.glyph}>{glyph}</span>
                 <span className={styles.channelName}>{c.name}</span>
@@ -80,32 +290,49 @@ export function ChannelRail() {
             </div>
 
             <div className={styles.groups}>
-                <div className={styles.group}>
-                    <div className={styles.groupHeader}>
-                        <span className={styles.groupLabel}>text channels</span>
-                        {canManage && (
-                            <button
-                                type="button"
-                                className={styles.addBtn}
-                                onClick={() => setCreateOpen(true)}
-                                aria-label="Create channel"
-                                title="Create channel"
-                            >
-                                {"+"}
-                            </button>
-                        )}
+                {groups.map(group => (
+                    <div className={styles.group} key={group.id}>
+                        <div className={styles.groupHeader}>
+                            <span className={styles.groupLabel}>{group.name}</span>
+                            {canManage && group.kind && (
+                                <button
+                                    type="button"
+                                    className={styles.addBtn}
+                                    onClick={() => openCreate(group.kind === "voice" ? "voice" : "text")}
+                                    aria-label="Create channel"
+                                    title="Create channel"
+                                >
+                                    {"+"}
+                                </button>
+                            )}
+                        </div>
+                        <div
+                            className={styles.groupList}
+                            onDragOver={
+                                canManage && group.reorderable
+                                    ? e => {
+                                          if (dragRef.current && dragRef.current.categoryId === group.id) {
+                                              e.preventDefault();
+                                          }
+                                      }
+                                    : undefined
+                            }
+                            onDrop={
+                                canManage && group.reorderable
+                                    ? e => {
+                                          e.preventDefault();
+                                          handleDropAtEnd(group);
+                                      }
+                                    : undefined
+                            }
+                        >
+                            {group.channels.length === 0 && (
+                                <div className={styles.emptyGroup}>{`no ${group.name}`}</div>
+                            )}
+                            {group.channels.map(c => renderRow(c, group))}
+                        </div>
                     </div>
-                    {textChannels.length === 0 && <div className={styles.emptyGroup}>no text channels</div>}
-                    {textChannels.map(renderRow)}
-                </div>
-
-                <div className={styles.group}>
-                    <div className={styles.groupHeader}>
-                        <span className={styles.groupLabel}>voice channels</span>
-                    </div>
-                    {voiceChannels.length === 0 && <div className={styles.emptyGroup}>no voice channels</div>}
-                    {voiceChannels.map(renderRow)}
-                </div>
+                ))}
             </div>
 
             {voice.status === "connected" && voice.activeRoomId !== activeId && (
@@ -143,12 +370,34 @@ export function ChannelRail() {
 
             <CreateChannelModal
                 isOpen={createOpen}
+                initialKind={createKind}
                 onClose={() => setCreateOpen(false)}
                 onCreated={c => {
                     setCreateOpen(false);
                     navigate(`/channels/${c.id}`);
                 }}
             />
+
+            <EditChannelModal channel={editChannel} onClose={() => setEditChannel(null)} />
+
+            <Modal isOpen={pendingDelete !== null} onClose={() => setPendingDelete(null)} title="Delete Channel">
+                <div className={styles.confirmBody}>
+                    <p className={styles.confirmText}>
+                        Delete <strong>{pendingDelete?.name}</strong>? This removes the channel and all of its messages.
+                        This can&apos;t be undone.
+                    </p>
+                    <div className={styles.confirmActions}>
+                        <Button variant="ghost" size="small" onClick={() => setPendingDelete(null)}>
+                            Cancel
+                        </Button>
+                        <Button variant="danger" size="small" onClick={confirmDelete}>
+                            Delete channel
+                        </Button>
+                    </div>
+                </div>
+            </Modal>
+
+            <ContextMenu state={menuState} onClose={closeMenu} />
         </aside>
     );
 }

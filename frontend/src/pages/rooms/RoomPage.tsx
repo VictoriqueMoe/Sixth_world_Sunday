@@ -121,6 +121,30 @@ export function RoomPage() {
     const canModerateRoom = isHost || isSiteMod;
     const isVoiceChannel = room.channel_kind === "voice";
 
+    const chatStack = (
+        <>
+            <RoomMessageList
+                controller={controller}
+                classes={{
+                    messages: styles.messages,
+                    loadMoreBar: styles.loadMoreBar,
+                    empty: styles.messagesEmpty,
+                }}
+            />
+            <TypingIndicator names={typingNames} />
+            <ChatComposer
+                roomId={room.id}
+                onSent={handleSentMessage}
+                mentionPool={members.map(m => m.user)}
+                replyingTo={replyingTo}
+                onCancelReply={() => setReplyingTo(null)}
+                onTyping={() => sendWSMessage({ type: "typing", data: { room_id: room.id } })}
+                onEditLast={handleEditLast}
+                timeoutUntil={viewerTimeoutUntil}
+            />
+        </>
+    );
+
     return (
         <div className={styles.roomWrapper}>
             <div
@@ -412,8 +436,8 @@ export function RoomPage() {
                         </div>
                     )}
 
-                    {isVoiceChannel &&
-                        (voice.status === "connected" && voice.room ? (
+                    {isVoiceChannel && voice.status === "connected" && voice.room ? (
+                        <div className={styles.voiceLayout}>
                             <Suspense
                                 fallback={
                                     <div className={styles.voiceConnect}>
@@ -431,41 +455,29 @@ export function RoomPage() {
                                     }}
                                 />
                             </Suspense>
-                        ) : (
-                            <div className={styles.voiceConnect}>
-                                <span className={styles.voiceConnectText}>
-                                    {voice.status === "connecting"
-                                        ? "Connecting to voice…"
-                                        : voiceEnabled
-                                          ? "Not connected to this voice channel."
-                                          : "Voice chat is disabled."}
-                                </span>
-                                {voice.status !== "connecting" && voiceEnabled && (
-                                    <Button variant="primary" size="small" onClick={voice.join}>
-                                        Connect
-                                    </Button>
-                                )}
-                            </div>
-                        ))}
-                    <RoomMessageList
-                        controller={controller}
-                        classes={{
-                            messages: styles.messages,
-                            loadMoreBar: styles.loadMoreBar,
-                            empty: styles.messagesEmpty,
-                        }}
-                    />
-                    <TypingIndicator names={typingNames} />
-                    <ChatComposer
-                        roomId={room.id}
-                        onSent={handleSentMessage}
-                        mentionPool={members.map(m => m.user)}
-                        replyingTo={replyingTo}
-                        onCancelReply={() => setReplyingTo(null)}
-                        onTyping={() => sendWSMessage({ type: "typing", data: { room_id: room.id } })}
-                        onEditLast={handleEditLast}
-                        timeoutUntil={viewerTimeoutUntil}
-                    />
+                            <div className={styles.voiceChat}>{chatStack}</div>
+                        </div>
+                    ) : (
+                        <>
+                            {isVoiceChannel && (
+                                <div className={styles.voiceConnect}>
+                                    <span className={styles.voiceConnectText}>
+                                        {voice.status === "connecting"
+                                            ? "Connecting to voice…"
+                                            : voiceEnabled
+                                              ? "Not connected to this voice channel."
+                                              : "Voice chat is disabled."}
+                                    </span>
+                                    {voice.status !== "connecting" && voiceEnabled && (
+                                        <Button variant="primary" size="small" onClick={voice.join}>
+                                            Connect
+                                        </Button>
+                                    )}
+                                </div>
+                            )}
+                            {chatStack}
+                        </>
+                    )}
                 </div>
             </div>
 

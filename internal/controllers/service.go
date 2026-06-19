@@ -37,7 +37,6 @@ type (
 		AuthSession         *session.Manager
 		Hub                 *ws.Hub
 		SearchService       searchsvc.Service
-		HTMLContent         string
 	}
 )
 
@@ -58,7 +57,6 @@ func NewService(
 	authSession *session.Manager,
 	hub *ws.Hub,
 	searchService searchsvc.Service,
-	htmlContent string,
 ) Service {
 	return Service{
 		AuthService:         authService,
@@ -77,7 +75,6 @@ func NewService(
 		AuthSession:         authSession,
 		Hub:                 hub,
 		SearchService:       searchService,
-		HTMLContent:         htmlContent,
 	}
 }
 

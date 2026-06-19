@@ -20,6 +20,9 @@ import (
 func (s *Service) getAllChatRoutes() []FSetupRoute {
 	return []FSetupRoute{
 		s.setupCreateGroupRoomRoute,
+		s.setupUpdateRoomRoute,
+		s.setupReorderChannelsRoute,
+		s.setupListCategoriesRoute,
 		s.setupListRoomsRoute,
 		s.setupListMyGroupRoomsRoute,
 		s.setupGetRoomMembersRoute,
@@ -218,6 +221,78 @@ func (s *Service) deleteChat(ctx fiber.Ctx) error {
 	}
 
 	return utils.OK(ctx)
+}
+
+func (s *Service) setupUpdateRoomRoute(r fiber.Router) {
+	r.Put("/chat/rooms/:roomID", middleware.RequirePermission(s.AuthSession, s.AuthzService, authz.PermManageChannels), s.updateRoom)
+}
+
+func (s *Service) updateRoom(ctx fiber.Ctx) error {
+	userID := utils.UserID(ctx)
+
+	roomID, ok := utils.ParseIDParam(ctx, "roomID")
+	if !ok {
+		return nil
+	}
+
+	req, ok := utils.BindJSON[dto.UpdateRoomRequest](ctx)
+	if !ok {
+		return nil
+	}
+
+	room, err := s.ChatService.UpdateRoom(ctx.Context(), roomID, userID, req)
+	if err != nil {
+		if utils.MapFilterError(ctx, err) {
+			return nil
+		}
+		if errors.Is(err, chat.ErrRoomNotFound) {
+			return utils.NotFound(ctx, "channel not found")
+		}
+		if errors.Is(err, chat.ErrSystemRoom) {
+			return utils.Forbidden(ctx, "system channels cannot be edited")
+		}
+		if errors.Is(err, chat.ErrMissingFields) {
+			return utils.BadRequest(ctx, "channel name is required")
+		}
+		return utils.InternalError(ctx, "failed to update channel")
+	}
+
+	return ctx.JSON(room)
+}
+
+func (s *Service) setupReorderChannelsRoute(r fiber.Router) {
+	r.Put("/chat/categories/:categoryID/order", middleware.RequirePermission(s.AuthSession, s.AuthzService, authz.PermManageChannels), s.reorderChannels)
+}
+
+func (s *Service) reorderChannels(ctx fiber.Ctx) error {
+	categoryID, ok := utils.ParseIDParam(ctx, "categoryID")
+	if !ok {
+		return nil
+	}
+
+	req, ok := utils.BindJSON[dto.ReorderChannelsRequest](ctx)
+	if !ok {
+		return nil
+	}
+
+	if err := s.ChatService.ReorderChannels(ctx.Context(), categoryID, req.RoomIDs); err != nil {
+		return utils.InternalError(ctx, "failed to reorder channels")
+	}
+
+	return utils.OK(ctx)
+}
+
+func (s *Service) setupListCategoriesRoute(r fiber.Router) {
+	r.Get("/chat/categories", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.listCategories)
+}
+
+func (s *Service) listCategories(ctx fiber.Ctx) error {
+	cats, err := s.ChatService.ListCategories(ctx.Context())
+	if err != nil {
+		return utils.InternalError(ctx, "failed to list categories")
+	}
+
+	return ctx.JSON(fiber.Map{"categories": cats})
 }
 
 func (s *Service) setupMarkRoomReadRoute(r fiber.Router) {

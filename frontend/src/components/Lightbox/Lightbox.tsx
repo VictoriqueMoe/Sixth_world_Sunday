@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Button } from "../Button/Button";
 import styles from "./Lightbox.module.css";
 
 interface LightboxProps {
@@ -25,9 +26,9 @@ export function Lightbox({ src, alt = "", onClose }: LightboxProps) {
 
     return (
         <div className={styles.overlay} onClick={onClose} role="dialog" aria-modal="true">
-            <button className={styles.close} onClick={onClose} aria-label="Close">
+            <Button variant="danger" size="icon" className={styles.close} onClick={onClose} aria-label="Close">
                 {"\u2715"}
-            </button>
+            </Button>
             <img className={styles.image} src={src} alt={alt} onClick={e => e.stopPropagation()} />
         </div>
     );

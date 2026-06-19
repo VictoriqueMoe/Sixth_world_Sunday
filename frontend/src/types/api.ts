@@ -52,7 +52,6 @@ export interface UserPrivateFields {
     email_notifications?: boolean;
     play_message_sound?: boolean;
     play_notification_sound?: boolean;
-    home_page?: string;
     wide_layout?: boolean;
 }
 
@@ -80,7 +79,6 @@ export interface UpdateProfilePayload {
     email_notifications: boolean;
     play_message_sound: boolean;
     play_notification_sound: boolean;
-    home_page: string;
 }
 
 export interface ChangePasswordPayload {
@@ -210,12 +208,22 @@ export interface SiteSettings {
     [key: string]: string;
 }
 
+export interface ChatCategory {
+    id: string;
+    name: string;
+    position: number;
+    is_builtin: boolean;
+    kind?: string;
+}
+
 export interface ChatRoom {
     id: string;
     name: string;
     description: string;
     type: "dm" | "group";
     channel_kind: "text" | "voice";
+    category_id?: string;
+    position: number;
     is_public: boolean;
     is_rp: boolean;
     is_system: boolean;

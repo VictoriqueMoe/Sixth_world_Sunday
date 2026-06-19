@@ -15,29 +15,28 @@ import (
 
 func sampleProfileRequest() dto.UpdateProfileRequest {
 	return dto.UpdateProfileRequest{
-		DisplayName:            "New Name",
-		Bio:                    "A bio",
-		AvatarURL:              "/avatar.png",
-		BannerURL:              "/banner.png",
-		BannerPosition:         0.5,
-		FavouriteCharacter:     "Nightjar",
-		Gender:                 "female",
-		PronounSubject:         "she",
-		PronounPossessive:      "her",
-		SocialTwitter:          "tw",
-		SocialDiscord:          "dc",
-		SocialWaifulist:        "wl",
-		SocialTumblr:           "tb",
-		SocialGithub:           "gh",
-		Website:                "https://example.com",
-		DmsEnabled:             true,
-		DOB:                    "2000-04-15",
-		DOBPublic:              true,
-		Email:                  "user@example.com",
-		EmailPublic:            true,
-		EmailNotifications:     true,
-		HomePage:               "/home",
-		DefaultProfileTab:      "ocs",
+		DisplayName:        "New Name",
+		Bio:                "A bio",
+		AvatarURL:          "/avatar.png",
+		BannerURL:          "/banner.png",
+		BannerPosition:     0.5,
+		FavouriteCharacter: "Nightjar",
+		Gender:             "female",
+		PronounSubject:     "she",
+		PronounPossessive:  "her",
+		SocialTwitter:      "tw",
+		SocialDiscord:      "dc",
+		SocialWaifulist:    "wl",
+		SocialTumblr:       "tb",
+		SocialGithub:       "gh",
+		Website:            "https://example.com",
+		DmsEnabled:         true,
+		DOB:                "2000-04-15",
+		DOBPublic:          true,
+		Email:              "user@example.com",
+		EmailPublic:        true,
+		EmailNotifications: true,
+		DefaultProfileTab:  "ocs",
 	}
 }
 
@@ -346,7 +345,6 @@ func TestUserRepository_UpdateProfile(t *testing.T) {
 	assert.Equal(t, req.Email, got.Email)
 	assert.Equal(t, req.EmailPublic, got.EmailPublic)
 	assert.Equal(t, req.EmailNotifications, got.EmailNotifications)
-	assert.Equal(t, req.HomePage, got.HomePage)
 	assert.Equal(t, req.DefaultProfileTab, got.DefaultProfileTab)
 }
 

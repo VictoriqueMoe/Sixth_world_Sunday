@@ -53,25 +53,3 @@
     content: "\25b8 ";
     color: var(--magenta);
 }
-
-.close {
-    background: none;
-    border: 1px solid var(--line-bright);
-    border-radius: 2px;
-    color: var(--dim);
-    width: 28px;
-    height: 28px;
-    font-size: 1rem;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition:
-        color 0.12s,
-        border-color 0.12s;
-}
-
-.close:hover {
-    color: var(--magenta);
-    border-color: var(--magenta);
-}

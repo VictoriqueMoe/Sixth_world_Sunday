@@ -1,16 +1,16 @@
 .stage {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    flex: 0 0 auto;
-    padding: 14px 22px;
-    border-bottom: 1px solid var(--line);
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
     background: radial-gradient(120% 120% at 50% 0%, rgba(var(--magenta-rgb), 0.05), transparent 60%), var(--bg-2);
 }
 
-.stage[data-sharing="true"] {
-    flex: 2 1 0;
-    min-height: 0;
+@media (max-width: 1200px) {
+    .stage {
+        flex: 2 1 0;
+    }
 }
 
 .screenGrid {
@@ -19,7 +19,58 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     grid-auto-rows: 1fr;
-    gap: 10px;
+    gap: 6px;
+    padding: 10px;
+    background: #000;
+}
+
+.fullscreenBtn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 15;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.screenTile:hover .fullscreenBtn {
+    opacity: 1;
+}
+
+.stage[data-sharing="false"] .tileGrid {
+    flex: 1;
+    min-height: 0;
+    align-content: center;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.stage[data-sharing="true"] .tileGrid {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 8px;
+    border-top: 1px solid var(--line);
+}
+
+.stage[data-sharing="true"] .tile {
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    padding: 5px 10px 5px 6px;
+    gap: 8px;
+}
+
+.stage[data-sharing="true"] .tileAvatar {
+    width: 30px;
+    height: 30px;
+}
+
+.stage[data-sharing="true"] .tileInitial {
+    font-size: 0.85rem;
+}
+
+.stage[data-sharing="true"] .tileName {
+    font-size: 11px;
 }
 
 .screenTile {
@@ -58,6 +109,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
+    padding: 12px;
 }
 
 .tile {
@@ -139,24 +191,6 @@
     color: var(--text);
 }
 
-.tileModMute {
-    border: 1px solid rgba(var(--magenta-rgb), 0.5);
-    background: transparent;
-    color: var(--magenta);
-    font-family: var(--mono);
-    font-size: 9.5px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    line-height: 1;
-    padding: 0.2rem 0.45rem;
-    border-radius: 2px;
-    cursor: pointer;
-}
-
-.tileModMute:hover {
-    border-color: var(--magenta);
-}
-
 .controlBar {
     flex-shrink: 0;
     display: flex;
@@ -164,50 +198,9 @@
     gap: 8px;
     justify-content: center;
     align-items: center;
-    padding-top: 4px;
-}
-
-.control {
-    background: var(--panel-2);
-    border: 1px solid var(--line-bright);
-    color: var(--dim);
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 0.5rem 0.9rem;
-    border-radius: 2px;
-    cursor: pointer;
-    transition:
-        border-color 0.15s,
-        color 0.15s,
-        background 0.15s;
-}
-
-.control:hover {
-    border-color: var(--cyan);
-    color: var(--cyan);
-}
-
-.controlActive {
-    border-color: var(--cyan);
-    color: var(--cyan);
-    box-shadow: inset 0 0 12px -6px var(--cyan);
-}
-
-.controlMuted {
-    border-color: rgba(var(--magenta-rgb), 0.55);
-    color: var(--magenta);
-}
-
-.leave {
-    border-color: rgba(var(--magenta-rgb), 0.45);
-    color: var(--magenta);
-}
-
-.leave:hover {
-    border-color: var(--magenta);
-    color: var(--magenta);
+    padding: 10px;
+    border-top: 1px solid var(--line);
+    background: var(--panel);
 }
 
 .shareWrap {

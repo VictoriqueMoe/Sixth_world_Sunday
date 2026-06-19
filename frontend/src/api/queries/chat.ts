@@ -1,5 +1,6 @@
 ﻿import { useQuery } from "@tanstack/react-query";
 import {
+    getChatCategories,
     getChatRoomMembers,
     getChatRoomPinnedMessages,
     getRoomMessages,
@@ -28,6 +29,14 @@ export function useChannels() {
         queryFn: () => getUserRooms(),
     });
     return { rooms: query.data?.rooms ?? [], loading: query.isLoading, refresh: query.refetch };
+}
+
+export function useChatCategories() {
+    const query = useQuery({
+        queryKey: ["chat-categories"],
+        queryFn: () => getChatCategories(),
+    });
+    return { categories: query.data?.categories ?? [], loading: query.isLoading };
 }
 
 export function useChatRoomMembers(roomId: string, enabled = true) {

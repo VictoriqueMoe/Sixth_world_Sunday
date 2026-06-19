@@ -54,12 +54,22 @@ func parseTimestampInput(s string) (time.Time, error) {
 }
 
 type (
+	ChatCategoryRow struct {
+		ID        uuid.UUID
+		Name      string
+		Position  int
+		IsBuiltin bool
+		Kind      string
+	}
+
 	ChatRoomRow struct {
 		ID            uuid.UUID
 		Name          string
 		Description   string
 		Type          string
 		ChannelKind   string
+		CategoryID    uuid.NullUUID
+		Position      int
 		IsPublic      bool
 		IsRP          bool
 		IsSystem      bool
@@ -137,7 +147,10 @@ type (
 		SetMemberRole(ctx context.Context, roomID, userID uuid.UUID, role string) error
 		RemoveMember(ctx context.Context, roomID, userID uuid.UUID) error
 		CountRoomMembers(ctx context.Context, roomID uuid.UUID) (int, error)
+		UpdateRoom(ctx context.Context, roomID uuid.UUID, name, description string) error
 		DeleteRoom(ctx context.Context, roomID uuid.UUID) error
+		ReorderChannels(ctx context.Context, categoryID uuid.UUID, roomIDs []uuid.UUID) error
+		ListCategories(ctx context.Context) ([]ChatCategoryRow, error)
 		ListRoomMediaURLs(ctx context.Context, roomID uuid.UUID) ([]string, error)
 		GetRoomsByUser(ctx context.Context, userID uuid.UUID) ([]ChatRoomRow, error)
 		ListAllChannels(ctx context.Context, viewerID uuid.UUID, includeSystem bool) ([]ChatRoomRow, error)
@@ -200,14 +213,55 @@ type (
 )
 
 func (r *chatRepository) CreateRoom(ctx context.Context, id uuid.UUID, name, description, roomType string, isPublic, isRP bool, channelKind string, createdBy uuid.UUID) error {
-	_, err := r.db.ExecContext(ctx,
-		`INSERT INTO chat_rooms (id, name, description, type, is_public, is_rp, channel_kind, created_by) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-		id, name, description, roomType, isPublic, isRP, channelKind, createdBy,
+	categoryID, err := r.defaultCategoryID(ctx, channelKind)
+	if err != nil {
+		return err
+	}
+
+	position := 0
+	if categoryID.Valid {
+		position, err = r.nextPositionInCategory(ctx, categoryID.UUID)
+		if err != nil {
+			return err
+		}
+	}
+
+	_, err = r.db.ExecContext(ctx,
+		`INSERT INTO chat_rooms (id, name, description, type, is_public, is_rp, channel_kind, created_by, category_id, position) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+		id, name, description, roomType, isPublic, isRP, channelKind, createdBy, categoryID, position,
 	)
 	if err != nil {
 		return fmt.Errorf("create room: %w", err)
 	}
 	return nil
+}
+
+func (r *chatRepository) defaultCategoryID(ctx context.Context, kind string) (uuid.NullUUID, error) {
+	var id uuid.NullUUID
+	err := r.db.QueryRowContext(ctx,
+		`SELECT id FROM chat_categories WHERE kind = $1 AND is_builtin = TRUE ORDER BY position ASC LIMIT 1`, kind,
+	).Scan(&id.UUID)
+	if errors.Is(err, sql.ErrNoRows) {
+		return uuid.NullUUID{}, nil
+	}
+	if err != nil {
+		return uuid.NullUUID{}, fmt.Errorf("default category: %w", err)
+	}
+
+	id.Valid = true
+	return id, nil
+}
+
+func (r *chatRepository) nextPositionInCategory(ctx context.Context, categoryID uuid.UUID) (int, error) {
+	var position int
+	err := r.db.QueryRowContext(ctx,
+		`SELECT COALESCE(MAX(position), -1) + 1 FROM chat_rooms WHERE category_id = $1`, categoryID,
+	).Scan(&position)
+	if err != nil {
+		return 0, fmt.Errorf("next position: %w", err)
+	}
+
+	return position, nil
 }
 
 func (r *chatRepository) CreateSystemRoom(ctx context.Context, id uuid.UUID, name, description, systemKind string, createdBy uuid.UUID) error {
@@ -401,12 +455,65 @@ func (r *chatRepository) CountRoomMembers(ctx context.Context, roomID uuid.UUID)
 	return count, nil
 }
 
+func (r *chatRepository) UpdateRoom(ctx context.Context, roomID uuid.UUID, name, description string) error {
+	_, err := r.db.ExecContext(ctx,
+		`UPDATE chat_rooms SET name = $1, description = $2 WHERE id = $3 AND type = 'group'`,
+		name, description, roomID,
+	)
+	if err != nil {
+		return fmt.Errorf("update room: %w", err)
+	}
+	return nil
+}
+
 func (r *chatRepository) DeleteRoom(ctx context.Context, roomID uuid.UUID) error {
 	_, err := r.db.ExecContext(ctx, `DELETE FROM chat_rooms WHERE id = $1`, roomID)
 	if err != nil {
 		return fmt.Errorf("delete room: %w", err)
 	}
 	return nil
+}
+
+func (r *chatRepository) ReorderChannels(ctx context.Context, categoryID uuid.UUID, roomIDs []uuid.UUID) error {
+	tx, err := r.db.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("begin reorder tx: %w", err)
+	}
+	defer func() { _ = tx.Rollback() }()
+
+	for i := 0; i < len(roomIDs); i++ {
+		if _, err := tx.ExecContext(ctx,
+			`UPDATE chat_rooms SET position = $1 WHERE id = $2 AND category_id = $3 AND type = 'group'`,
+			i, roomIDs[i], categoryID,
+		); err != nil {
+			return fmt.Errorf("reorder channel: %w", err)
+		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("commit reorder: %w", err)
+	}
+	return nil
+}
+
+func (r *chatRepository) ListCategories(ctx context.Context) ([]ChatCategoryRow, error) {
+	rows, err := r.db.QueryContext(ctx,
+		`SELECT id, name, position, is_builtin, COALESCE(kind, '') FROM chat_categories ORDER BY position ASC, name ASC`,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("list categories: %w", err)
+	}
+	defer rows.Close()
+
+	var result []ChatCategoryRow
+	for rows.Next() {
+		var c ChatCategoryRow
+		if err := rows.Scan(&c.ID, &c.Name, &c.Position, &c.IsBuiltin, &c.Kind); err != nil {
+			return nil, fmt.Errorf("scan category: %w", err)
+		}
+		result = append(result, c)
+	}
+	return result, rows.Err()
 }
 
 func (r *chatRepository) ListRoomMediaURLs(ctx context.Context, roomID uuid.UUID) ([]string, error) {
@@ -631,12 +738,13 @@ func (r *chatRepository) GetRoomByID(ctx context.Context, roomID, viewerID uuid.
 	var lastMessageAt, archivedAt, lastReadAt sql.NullTime
 	err := r.db.QueryRowContext(ctx,
 		`SELECT cr.id, cr.name, cr.description, cr.type, cr.channel_kind, cr.is_public, cr.is_rp, cr.is_system, cr.system_kind, cr.created_by, cr.created_at, cr.last_message_at, cr.archived_at, m.last_read_at, m.role, m.muted, m.ghost,
-		 (SELECT COUNT(*) FROM chat_room_members WHERE room_id = cr.id AND left_at IS NULL)
+		 (SELECT COUNT(*) FROM chat_room_members WHERE room_id = cr.id AND left_at IS NULL),
+		 cr.category_id, cr.position
 		 FROM chat_rooms cr
 		 LEFT JOIN chat_room_members m ON cr.id = m.room_id AND m.user_id = $1 AND m.left_at IS NULL
 		 WHERE cr.id = $2`,
 		viewerID, roomID,
-	).Scan(&row.ID, &row.Name, &row.Description, &row.Type, &row.ChannelKind, &row.IsPublic, &row.IsRP, &row.IsSystem, &systemKind, &row.CreatedBy, &createdAt, &lastMessageAt, &archivedAt, &lastReadAt, &viewerRole, &viewerMuted, &viewerGhost, &row.MemberCount)
+	).Scan(&row.ID, &row.Name, &row.Description, &row.Type, &row.ChannelKind, &row.IsPublic, &row.IsRP, &row.IsSystem, &systemKind, &row.CreatedBy, &createdAt, &lastMessageAt, &archivedAt, &lastReadAt, &viewerRole, &viewerMuted, &viewerGhost, &row.MemberCount, &row.CategoryID, &row.Position)
 	if errors.Is(err, sql.ErrNoRows) {
 		return nil, nil
 	}
@@ -706,10 +814,12 @@ func (r *chatRepository) ListAllChannels(ctx context.Context, viewerID uuid.UUID
 		`SELECT cr.id, cr.name, cr.description, cr.type, cr.channel_kind, cr.is_public, cr.is_rp, cr.is_system, cr.system_kind, cr.created_by, cr.created_at, cr.last_message_at, cr.archived_at, m.last_read_at, COALESCE(m.role, ''), COALESCE(m.muted, FALSE), COALESCE(m.ghost, FALSE),
 		 (SELECT COUNT(*) FROM chat_room_members WHERE room_id = cr.id AND left_at IS NULL),
 		 (m.user_id IS NOT NULL),
-		 `+hotScoreExpr+`
+		 `+hotScoreExpr+`,
+		 cr.category_id, cr.position
 		 FROM chat_rooms cr
-		 LEFT JOIN chat_room_members m ON cr.id = m.room_id AND m.user_id = $1 AND m.left_at IS NULL`+where+`
-		 ORDER BY cr.channel_kind ASC, cr.created_at ASC`,
+		 LEFT JOIN chat_room_members m ON cr.id = m.room_id AND m.user_id = $1 AND m.left_at IS NULL
+		 LEFT JOIN chat_categories cat ON cr.category_id = cat.id`+where+`
+		 ORDER BY cat.position ASC NULLS LAST, cr.position ASC, cr.created_at ASC`,
 		viewerID,
 	)
 	if err != nil {
@@ -723,7 +833,7 @@ func (r *chatRepository) ListAllChannels(ctx context.Context, viewerID uuid.UUID
 		var systemKind sql.NullString
 		var createdAt time.Time
 		var lastMessageAt, archivedAt, lastReadAt sql.NullTime
-		if err := rows.Scan(&row.ID, &row.Name, &row.Description, &row.Type, &row.ChannelKind, &row.IsPublic, &row.IsRP, &row.IsSystem, &systemKind, &row.CreatedBy, &createdAt, &lastMessageAt, &archivedAt, &lastReadAt, &row.ViewerRole, &row.ViewerMuted, &row.ViewerGhost, &row.MemberCount, &row.IsMember, &row.HotScore); err != nil {
+		if err := rows.Scan(&row.ID, &row.Name, &row.Description, &row.Type, &row.ChannelKind, &row.IsPublic, &row.IsRP, &row.IsSystem, &systemKind, &row.CreatedBy, &createdAt, &lastMessageAt, &archivedAt, &lastReadAt, &row.ViewerRole, &row.ViewerMuted, &row.ViewerGhost, &row.MemberCount, &row.IsMember, &row.HotScore, &row.CategoryID, &row.Position); err != nil {
 			return nil, fmt.Errorf("scan channel: %w", err)
 		}
 

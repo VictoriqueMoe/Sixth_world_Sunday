@@ -15,6 +15,7 @@ import type {
     AuditLogListResponse,
     BannedWordRule,
     ChangePasswordPayload,
+    ChatCategory,
     ChatMessage,
     ChatMessageListResponse,
     ChatRoom,
@@ -304,6 +305,18 @@ export async function createChannel(payload: {
     channel_kind: "text" | "voice";
 }): Promise<ChatRoom> {
     return apiPost<ChatRoom, typeof payload>("/chat/rooms", payload);
+}
+
+export async function updateChannel(roomId: string, payload: { name: string; description: string }): Promise<ChatRoom> {
+    return apiPut<ChatRoom, typeof payload>(`/chat/rooms/${roomId}`, payload);
+}
+
+export async function reorderChannels(categoryId: string, roomIds: string[]): Promise<void> {
+    await apiPut<unknown, { room_ids: string[] }>(`/chat/categories/${categoryId}/order`, { room_ids: roomIds });
+}
+
+export async function getChatCategories(): Promise<{ categories: ChatCategory[] }> {
+    return apiFetch<{ categories: ChatCategory[] }>("/chat/categories");
 }
 
 export async function setChatRoomMuted(roomId: string, muted: boolean): Promise<{ muted: boolean }> {

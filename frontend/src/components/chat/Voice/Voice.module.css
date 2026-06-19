@@ -64,34 +64,6 @@
     box-shadow: 0 0 7px var(--green);
 }
 
-.control {
-    flex-shrink: 0;
-    background: var(--panel-2);
-    border: 1px solid var(--line-bright);
-    color: var(--dim);
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 0.3rem 0.6rem;
-    border-radius: 2px;
-    cursor: pointer;
-    transition:
-        border-color 0.15s,
-        color 0.15s;
-}
-
-.control:hover {
-    border-color: var(--cyan);
-    color: var(--cyan);
-}
-
-.controlActive {
-    border-color: var(--cyan);
-    color: var(--cyan);
-    box-shadow: inset 0 0 12px -6px var(--cyan);
-}
-
 .miniBtn {
     border: none;
     background: transparent;
@@ -107,44 +79,6 @@
 
 .miniBtn:hover {
     opacity: 1;
-}
-
-.modMuteBtn {
-    border: 1px solid rgba(var(--magenta-rgb), 0.5);
-    background: transparent;
-    color: var(--magenta);
-    font-family: var(--mono);
-    font-size: 9.5px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    line-height: 1;
-    padding: 0.15rem 0.4rem;
-    border-radius: 2px;
-    cursor: pointer;
-}
-
-.modMuteBtn:hover {
-    border-color: var(--magenta);
-}
-
-.modMuteBtnActive {
-    background: var(--magenta);
-    border-color: var(--magenta);
-    color: #fff;
-}
-
-.modMuteBtnActive:hover {
-    color: #fff;
-}
-
-.leave {
-    border-color: rgba(var(--magenta-rgb), 0.45);
-    color: var(--magenta);
-}
-
-.leave:hover {
-    border-color: var(--magenta);
-    color: var(--magenta);
 }
 
 .dock {
@@ -175,8 +109,27 @@
 }
 
 .dock .bar {
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
     border-bottom: none;
     background: transparent;
     padding: 0.4rem 12px 0.6rem;
+}
+
+.presence {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.controls {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.controls button {
+    flex: 1;
+    text-align: center;
 }

@@ -4,6 +4,7 @@ import type { SearchResult } from "../../../types/api";
 import { useRoomMessageSearch } from "../../../api/queries/search";
 import { Pagination } from "../../Pagination/Pagination";
 import { parseServerDate } from "../../../utils/time";
+import { Button } from "../../Button/Button";
 import styles from "./MessageSearchPanel.module.css";
 
 const PAGE_LIMIT = 30;
@@ -65,9 +66,9 @@ export function MessageSearchPanel({ roomId, isOpen, onClose, onJump }: MessageS
             >
                 <header className={styles.header}>
                     <span className={styles.title}>Search transmissions</span>
-                    <button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Close">
+                    <Button variant="danger" size="icon" onClick={onClose} aria-label="Close">
                         {"✕"}
-                    </button>
+                    </Button>
                 </header>
                 <div className={styles.searchBar}>
                     <input

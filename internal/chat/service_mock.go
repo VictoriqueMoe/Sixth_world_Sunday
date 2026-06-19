@@ -1689,6 +1689,68 @@ func (_c *MockService_KickMember_Call) RunAndReturn(run func(ctx context.Context
 	return _c
 }
 
+// ListCategories provides a mock function for the type MockService
+func (_mock *MockService) ListCategories(ctx context.Context) ([]dto.ChatCategoryResponse, error) {
+	ret := _mock.Called(ctx)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ListCategories")
+	}
+
+	var r0 []dto.ChatCategoryResponse
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context) ([]dto.ChatCategoryResponse, error)); ok {
+		return returnFunc(ctx)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context) []dto.ChatCategoryResponse); ok {
+		r0 = returnFunc(ctx)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]dto.ChatCategoryResponse)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context) error); ok {
+		r1 = returnFunc(ctx)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockService_ListCategories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ListCategories'
+type MockService_ListCategories_Call struct {
+	*mock.Call
+}
+
+// ListCategories is a helper method to define mock.On call
+//   - ctx context.Context
+func (_e *MockService_Expecter) ListCategories(ctx any) *MockService_ListCategories_Call {
+	return &MockService_ListCategories_Call{Call: _e.mock.On("ListCategories", ctx)}
+}
+
+func (_c *MockService_ListCategories_Call) Run(run func(ctx context.Context)) *MockService_ListCategories_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		run(
+			arg0,
+		)
+	})
+	return _c
+}
+
+func (_c *MockService_ListCategories_Call) Return(chatCategoryResponses []dto.ChatCategoryResponse, err error) *MockService_ListCategories_Call {
+	_c.Call.Return(chatCategoryResponses, err)
+	return _c
+}
+
+func (_c *MockService_ListCategories_Call) RunAndReturn(run func(ctx context.Context) ([]dto.ChatCategoryResponse, error)) *MockService_ListCategories_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ListGlobalBannedWords provides a mock function for the type MockService
 func (_mock *MockService) ListGlobalBannedWords(ctx context.Context, actorID uuid.UUID) ([]dto.BannedWordRuleResponse, error) {
 	ret := _mock.Called(ctx, actorID)
@@ -2486,6 +2548,69 @@ func (_c *MockService_RemoveReaction_Call) Return(err error) *MockService_Remove
 }
 
 func (_c *MockService_RemoveReaction_Call) RunAndReturn(run func(ctx context.Context, messageID uuid.UUID, userID uuid.UUID, emoji string) error) *MockService_RemoveReaction_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// ReorderChannels provides a mock function for the type MockService
+func (_mock *MockService) ReorderChannels(ctx context.Context, categoryID uuid.UUID, roomIDs []uuid.UUID) error {
+	ret := _mock.Called(ctx, categoryID, roomIDs)
+
+	if len(ret) == 0 {
+		panic("no return value specified for ReorderChannels")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, uuid.UUID, []uuid.UUID) error); ok {
+		r0 = returnFunc(ctx, categoryID, roomIDs)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockService_ReorderChannels_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'ReorderChannels'
+type MockService_ReorderChannels_Call struct {
+	*mock.Call
+}
+
+// ReorderChannels is a helper method to define mock.On call
+//   - ctx context.Context
+//   - categoryID uuid.UUID
+//   - roomIDs []uuid.UUID
+func (_e *MockService_Expecter) ReorderChannels(ctx any, categoryID any, roomIDs any) *MockService_ReorderChannels_Call {
+	return &MockService_ReorderChannels_Call{Call: _e.mock.On("ReorderChannels", ctx, categoryID, roomIDs)}
+}
+
+func (_c *MockService_ReorderChannels_Call) Run(run func(ctx context.Context, categoryID uuid.UUID, roomIDs []uuid.UUID)) *MockService_ReorderChannels_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 uuid.UUID
+		if args[1] != nil {
+			arg1 = args[1].(uuid.UUID)
+		}
+		var arg2 []uuid.UUID
+		if args[2] != nil {
+			arg2 = args[2].([]uuid.UUID)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *MockService_ReorderChannels_Call) Return(err error) *MockService_ReorderChannels_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockService_ReorderChannels_Call) RunAndReturn(run func(ctx context.Context, categoryID uuid.UUID, roomIDs []uuid.UUID) error) *MockService_ReorderChannels_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -3340,6 +3465,86 @@ func (_c *MockService_UpdateGlobalBannedWord_Call) Return(bannedWordRuleResponse
 }
 
 func (_c *MockService_UpdateGlobalBannedWord_Call) RunAndReturn(run func(ctx context.Context, actorID uuid.UUID, ruleID uuid.UUID, req dto.UpdateBannedWordRequest) (*dto.BannedWordRuleResponse, error)) *MockService_UpdateGlobalBannedWord_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpdateRoom provides a mock function for the type MockService
+func (_mock *MockService) UpdateRoom(ctx context.Context, roomID uuid.UUID, userID uuid.UUID, req dto.UpdateRoomRequest) (*dto.ChatRoomResponse, error) {
+	ret := _mock.Called(ctx, roomID, userID, req)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateRoom")
+	}
+
+	var r0 *dto.ChatRoomResponse
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, uuid.UUID, uuid.UUID, dto.UpdateRoomRequest) (*dto.ChatRoomResponse, error)); ok {
+		return returnFunc(ctx, roomID, userID, req)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, uuid.UUID, uuid.UUID, dto.UpdateRoomRequest) *dto.ChatRoomResponse); ok {
+		r0 = returnFunc(ctx, roomID, userID, req)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*dto.ChatRoomResponse)
+		}
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, uuid.UUID, uuid.UUID, dto.UpdateRoomRequest) error); ok {
+		r1 = returnFunc(ctx, roomID, userID, req)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// MockService_UpdateRoom_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateRoom'
+type MockService_UpdateRoom_Call struct {
+	*mock.Call
+}
+
+// UpdateRoom is a helper method to define mock.On call
+//   - ctx context.Context
+//   - roomID uuid.UUID
+//   - userID uuid.UUID
+//   - req dto.UpdateRoomRequest
+func (_e *MockService_Expecter) UpdateRoom(ctx any, roomID any, userID any, req any) *MockService_UpdateRoom_Call {
+	return &MockService_UpdateRoom_Call{Call: _e.mock.On("UpdateRoom", ctx, roomID, userID, req)}
+}
+
+func (_c *MockService_UpdateRoom_Call) Run(run func(ctx context.Context, roomID uuid.UUID, userID uuid.UUID, req dto.UpdateRoomRequest)) *MockService_UpdateRoom_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 uuid.UUID
+		if args[1] != nil {
+			arg1 = args[1].(uuid.UUID)
+		}
+		var arg2 uuid.UUID
+		if args[2] != nil {
+			arg2 = args[2].(uuid.UUID)
+		}
+		var arg3 dto.UpdateRoomRequest
+		if args[3] != nil {
+			arg3 = args[3].(dto.UpdateRoomRequest)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+			arg3,
+		)
+	})
+	return _c
+}
+
+func (_c *MockService_UpdateRoom_Call) Return(chatRoomResponse *dto.ChatRoomResponse, err error) *MockService_UpdateRoom_Call {
+	_c.Call.Return(chatRoomResponse, err)
+	return _c
+}
+
+func (_c *MockService_UpdateRoom_Call) RunAndReturn(run func(ctx context.Context, roomID uuid.UUID, userID uuid.UUID, req dto.UpdateRoomRequest) (*dto.ChatRoomResponse, error)) *MockService_UpdateRoom_Call {
 	_c.Call.Return(run)
 	return _c
 }

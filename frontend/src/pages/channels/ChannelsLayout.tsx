@@ -1,12 +1,16 @@
 import { Suspense, lazy, useEffect } from "react";
-import { useParams } from "react-router";
+import { Navigate, useParams } from "react-router";
 import { ChannelRail } from "../../components/layout/ChannelRail/ChannelRail";
+import { useChannels } from "../../api/queries/chat";
 import styles from "./ChannelsLayout.module.css";
 
 const RoomPage = lazy(() => import("../rooms/RoomPage").then(m => ({ default: m.RoomPage })));
 
 export function ChannelsLayout() {
     const { roomId } = useParams<{ roomId: string }>();
+    const { rooms, loading } = useChannels();
+
+    const firstChannel = rooms.find(c => c.channel_kind !== "voice") ?? rooms[0] ?? null;
 
     useEffect(() => {
         document.body.setAttribute("data-chat-page", "true");
@@ -15,27 +19,45 @@ export function ChannelsLayout() {
         };
     }, []);
 
+    function renderMain() {
+        if (roomId) {
+            return (
+                <Suspense
+                    fallback={
+                        <div className={styles.empty}>
+                            <p className={styles.emptyText}>Loading channel…</p>
+                        </div>
+                    }
+                >
+                    <RoomPage />
+                </Suspense>
+            );
+        }
+
+        if (loading) {
+            return (
+                <div className={styles.empty}>
+                    <p className={styles.emptyText}>Loading channels…</p>
+                </div>
+            );
+        }
+
+        if (firstChannel) {
+            return <Navigate to={`/channels/${firstChannel.id}`} replace />;
+        }
+
+        return (
+            <div className={styles.empty}>
+                <span className={styles.emptyGlyph}>{"#"}</span>
+                <p className={styles.emptyText}>No channels yet.</p>
+            </div>
+        );
+    }
+
     return (
         <div className={styles.shell} data-has-channel={roomId ? "true" : "false"}>
             <ChannelRail />
-            <div className={styles.main}>
-                {roomId ? (
-                    <Suspense
-                        fallback={
-                            <div className={styles.empty}>
-                                <p className={styles.emptyText}>Loading channel…</p>
-                            </div>
-                        }
-                    >
-                        <RoomPage />
-                    </Suspense>
-                ) : (
-                    <div className={styles.empty}>
-                        <span className={styles.emptyGlyph}>{"#"}</span>
-                        <p className={styles.emptyText}>Pick a channel on the left to start transmitting.</p>
-                    </div>
-                )}
-            </div>
+            <div className={styles.main}>{renderMain()}</div>
         </div>
     );
 }

@@ -321,18 +321,6 @@ export function SettingsPage() {
                     </div>
 
                     <div className={`${styles.section} ${styles.gridFull}`}>
-                        <h3 className={styles.sectionTitle}>preferences</h3>
-                        <label className={styles.label}>
-                            Home Page
-                            <Select value={form.homePage} onChange={e => form.setHomePage(e.target.value)}>
-                                <option value="landing">Welcome</option>
-                                <option value="rules">Rules</option>
-                                <option value="chat">Channels</option>
-                            </Select>
-                        </label>
-                    </div>
-
-                    <div className={`${styles.section} ${styles.gridFull}`}>
                         <h3 className={styles.sectionTitle}>social links</h3>
                         <div className={styles.twoCol}>
                             <label className={styles.label}>

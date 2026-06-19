@@ -75,7 +75,6 @@ interface FormDraft {
     email_notifications?: boolean;
     play_message_sound?: boolean;
     play_notification_sound?: boolean;
-    home_page?: string;
 }
 
 export function useSettingsForm() {
@@ -126,7 +125,6 @@ export function useSettingsForm() {
     const playMessageSound = activeDraft.play_message_sound ?? profile?.private?.play_message_sound ?? true;
     const playNotificationSound =
         activeDraft.play_notification_sound ?? profile?.private?.play_notification_sound ?? true;
-    const homePage = activeDraft.home_page ?? profile?.private?.home_page ?? "landing";
 
     function patch(update: Partial<FormDraft>) {
         setDraft(prev => {
@@ -197,9 +195,6 @@ export function useSettingsForm() {
     }
     function setPlayNotificationSound(value: boolean) {
         patch({ play_notification_sound: value });
-    }
-    function setHomePage(value: string) {
-        patch({ home_page: value });
     }
 
     function handleGenderChange(newGender: string) {
@@ -303,7 +298,6 @@ export function useSettingsForm() {
             email_notifications: emailNotifications,
             play_message_sound: playMessageSound,
             play_notification_sound: playNotificationSound,
-            home_page: homePage,
         };
 
         try {
@@ -377,8 +371,6 @@ export function useSettingsForm() {
         setPlayMessageSound,
         playNotificationSound,
         setPlayNotificationSound,
-        homePage,
-        setHomePage,
 
         handleSubmit,
         genderOptions: GENDER_OPTIONS,

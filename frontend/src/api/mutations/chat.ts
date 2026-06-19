@@ -15,6 +15,7 @@ import {
     markChatRoomRead,
     pinChatMessage,
     removeChatMessageReaction,
+    reorderChannels,
     sendChatMessage,
     setChatRoomMemberNickname,
     setChatRoomMemberTimeout,
@@ -22,6 +23,7 @@ import {
     unbanChatRoomMember,
     unlockChatRoomMemberNickname,
     unpinChatMessage,
+    updateChannel,
     updateChatRoomBannedWord,
     updateChatRoomNickname,
     uploadChatRoomAvatar,
@@ -39,6 +41,50 @@ export function useCreateChannel() {
             channel_kind: "text" | "voice";
         }): Promise<ChatRoom> => createChannel(payload),
         onSuccess: () => {
+            qc.invalidateQueries({ queryKey: CHANNELS_KEY });
+        },
+    });
+}
+
+export function useUpdateChannel() {
+    const qc = useQueryClient();
+    return useMutation({
+        mutationFn: ({
+            roomId,
+            name,
+            description,
+        }: {
+            roomId: string;
+            name: string;
+            description: string;
+        }): Promise<ChatRoom> => updateChannel(roomId, { name, description }),
+        onSuccess: () => {
+            qc.invalidateQueries({ queryKey: CHANNELS_KEY });
+        },
+    });
+}
+
+export function useReorderChannels() {
+    const qc = useQueryClient();
+    return useMutation({
+        mutationFn: ({ categoryId, roomIds }: { categoryId: string; roomIds: string[] }) =>
+            reorderChannels(categoryId, roomIds),
+        onMutate: async ({ roomIds }) => {
+            await qc.cancelQueries({ queryKey: CHANNELS_KEY });
+            const prev = qc.getQueryData<{ rooms: ChatRoom[] }>(CHANNELS_KEY);
+            if (prev) {
+                const orderMap = new Map(roomIds.map((id, i) => [id, i]));
+                const rooms = prev.rooms.map(r => (orderMap.has(r.id) ? { ...r, position: orderMap.get(r.id)! } : r));
+                qc.setQueryData<{ rooms: ChatRoom[] }>(CHANNELS_KEY, { ...prev, rooms });
+            }
+            return { prev };
+        },
+        onError: (_err, _vars, context) => {
+            if (context?.prev) {
+                qc.setQueryData(CHANNELS_KEY, context.prev);
+            }
+        },
+        onSettled: () => {
             qc.invalidateQueries({ queryKey: CHANNELS_KEY });
         },
     });
@@ -144,8 +190,17 @@ export function useSendChatMessage(roomId: string) {
 }
 
 export function useMarkChatRoomRead() {
+    const qc = useQueryClient();
     return useMutation({
         mutationFn: (roomId: string) => markChatRoomRead(roomId),
+        onSuccess: (_data, roomId) => {
+            qc.setQueryData<{ rooms: ChatRoom[] }>(CHANNELS_KEY, prev => {
+                if (!prev) {
+                    return prev;
+                }
+                return { ...prev, rooms: prev.rooms.map(r => (r.id === roomId ? { ...r, unread: false } : r)) };
+            });
+        },
     });
 }
 

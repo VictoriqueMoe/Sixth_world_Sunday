@@ -11,48 +11,47 @@ import (
 
 type (
 	User struct {
-		ID                     uuid.UUID
-		Username               string
-		PasswordHash           string
-		DisplayName            string
-		CreatedAt              string
-		Bio                    string
-		AvatarURL              string
-		BannerURL              string
-		FavouriteCharacter     string
-		Gender                 string
-		PronounSubject         string
-		PronounPossessive      string
-		BannedAt               *string
-		BannedBy               *uuid.UUID
-		BanReason              string
-		LockedAt               *string
-		LockedBy               *uuid.UUID
-		LockReason             string
-		SocialTwitter          string
-		SocialDiscord          string
-		SocialWaifulist        string
-		SocialTumblr           string
-		SocialGithub           string
-		Website                string
-		BannerPosition         float64
-		DmsEnabled             bool
-		Email                  string
-		EmailPublic            bool
-		EmailVerified          bool
-		VerifyGraceUntil       string
-		DOB                    string
-		DOBPublic              bool
-		EmailNotifications     bool
-		PlayMessageSound       bool
-		PlayNotificationSound  bool
-		HomePage               string
-		DefaultProfileTab      string
-		Theme                  string
-		Font                   string
-		WideLayout             bool
-		IP                     *string
-		Role                   string
+		ID                    uuid.UUID
+		Username              string
+		PasswordHash          string
+		DisplayName           string
+		CreatedAt             string
+		Bio                   string
+		AvatarURL             string
+		BannerURL             string
+		FavouriteCharacter    string
+		Gender                string
+		PronounSubject        string
+		PronounPossessive     string
+		BannedAt              *string
+		BannedBy              *uuid.UUID
+		BanReason             string
+		LockedAt              *string
+		LockedBy              *uuid.UUID
+		LockReason            string
+		SocialTwitter         string
+		SocialDiscord         string
+		SocialWaifulist       string
+		SocialTumblr          string
+		SocialGithub          string
+		Website               string
+		BannerPosition        float64
+		DmsEnabled            bool
+		Email                 string
+		EmailPublic           bool
+		EmailVerified         bool
+		VerifyGraceUntil      string
+		DOB                   string
+		DOBPublic             bool
+		EmailNotifications    bool
+		PlayMessageSound      bool
+		PlayNotificationSound bool
+		DefaultProfileTab     string
+		Theme                 string
+		Font                  string
+		WideLayout            bool
+		IP                    *string
+		Role                  string
 	}
 
 	UserStats struct{}
@@ -87,24 +86,24 @@ func (u *User) ToResponse() *dto.UserResponse {
 
 func (u *User) ToProfileResponse(stats *UserStats, isSelf bool) *dto.UserProfileResponse {
 	resp := &dto.UserProfileResponse{
-		UserResponse:           *u.ToResponse(),
-		Bio:                    u.Bio,
-		BannerURL:              u.BannerURL,
-		BannerPosition:         u.BannerPosition,
-		FavouriteCharacter:     u.FavouriteCharacter,
-		Gender:                 u.Gender,
-		PronounSubject:         u.PronounSubject,
-		PronounPossessive:      u.PronounPossessive,
-		SocialTwitter:          u.SocialTwitter,
-		SocialDiscord:          u.SocialDiscord,
-		SocialWaifulist:        u.SocialWaifulist,
-		SocialTumblr:           u.SocialTumblr,
-		SocialGithub:           u.SocialGithub,
-		Website:                u.Website,
-		DmsEnabled:             u.DmsEnabled,
-		DOBPublic:              u.DOBPublic,
-		EmailPublic:            u.EmailPublic,
-		CreatedAt:              u.CreatedAt,
+		UserResponse:       *u.ToResponse(),
+		Bio:                u.Bio,
+		BannerURL:          u.BannerURL,
+		BannerPosition:     u.BannerPosition,
+		FavouriteCharacter: u.FavouriteCharacter,
+		Gender:             u.Gender,
+		PronounSubject:     u.PronounSubject,
+		PronounPossessive:  u.PronounPossessive,
+		SocialTwitter:      u.SocialTwitter,
+		SocialDiscord:      u.SocialDiscord,
+		SocialWaifulist:    u.SocialWaifulist,
+		SocialTumblr:       u.SocialTumblr,
+		SocialGithub:       u.SocialGithub,
+		Website:            u.Website,
+		DmsEnabled:         u.DmsEnabled,
+		DOBPublic:          u.DOBPublic,
+		EmailPublic:        u.EmailPublic,
+		CreatedAt:          u.CreatedAt,
 	}
 
 	if u.EmailPublic || isSelf {
@@ -120,7 +119,6 @@ func (u *User) ToProfileResponse(stats *UserStats, isSelf bool) *dto.UserProfile
 			EmailNotifications:    u.EmailNotifications,
 			PlayMessageSound:      u.PlayMessageSound,
 			PlayNotificationSound: u.PlayNotificationSound,
-			HomePage:              u.HomePage,
 			DefaultProfileTab:     u.DefaultProfileTab,
 			Theme:                 u.Theme,
 			Font:                  u.Font,

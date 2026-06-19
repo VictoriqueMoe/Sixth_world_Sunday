@@ -33,18 +33,21 @@ func (h *OGImageHandler) serve(ctx fiber.Ctx) error {
 	}
 
 	webpRel := rel[:len(rel)-len(".jpg")] + ".webp"
-	clean := path.Clean("/" + webpRel)
-	fullPath := filepath.Join(h.uploadDir, filepath.FromSlash(clean))
+	webpPath := filepath.Join(h.uploadDir, filepath.FromSlash(path.Clean("/"+webpRel)))
 
-	if _, err := os.Stat(fullPath); err != nil {
-		return ctx.SendStatus(fiber.StatusNotFound)
+	if _, err := os.Stat(webpPath); err == nil {
+		data, err := media.WebPToJPEG(ctx.Context(), webpPath)
+		if err != nil {
+			logger.Log.Warn().Err(err).Str("path", webpPath).Msg("og image conversion failed, serving original webp")
+			return ctx.SendFile(webpPath)
+		}
+		return ctx.Type("jpg").Send(data)
 	}
 
-	data, err := media.WebPToJPEG(ctx.Context(), fullPath)
-	if err != nil {
-		logger.Log.Warn().Err(err).Str("path", fullPath).Msg("og image conversion failed, serving original webp")
-		return ctx.SendFile(fullPath)
+	jpgPath := filepath.Join(h.uploadDir, filepath.FromSlash(path.Clean("/"+rel)))
+	if _, err := os.Stat(jpgPath); err == nil {
+		return ctx.Type("jpg").SendFile(jpgPath)
 	}
 
-	return ctx.Type("jpg").Send(data)
+	return ctx.SendStatus(fiber.StatusNotFound)
 }
