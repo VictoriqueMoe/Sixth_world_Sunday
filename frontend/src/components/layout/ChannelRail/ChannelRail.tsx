@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useChannels, useChatCategories } from "../../../api/queries/chat";
-import { useDeleteChannel, useReorderChannels } from "../../../api/mutations/chat";
+import { useDeleteChannel, useReorderChannels, useTruncateChannel } from "../../../api/mutations/chat";
 import { useAuth } from "../../../hooks/useAuth";
 import { useNotifications } from "../../../hooks/useNotifications";
 import { can } from "../../../utils/permissions";
@@ -102,6 +102,7 @@ export function ChannelRail() {
     const [createKind, setCreateKind] = useState<"text" | "voice">("text");
     const [editChannel, setEditChannel] = useState<ChatRoom | null>(null);
     const [pendingDelete, setPendingDelete] = useState<ChatRoom | null>(null);
+    const [pendingTruncate, setPendingTruncate] = useState<ChatRoom | null>(null);
     const [dragOverId, setDragOverId] = useState<string | null>(null);
 
     const dragRef = useRef<{ id: string; categoryId: string } | null>(null);
@@ -109,6 +110,7 @@ export function ChannelRail() {
     const { state: menuState, open: openMenu, close: closeMenu } = useContextMenu();
     const reorderMutation = useReorderChannels();
     const deleteMutation = useDeleteChannel();
+    const truncateMutation = useTruncateChannel();
 
     useEffect(() => {
         return addWSListener((msg: WSMessage) => {
@@ -116,7 +118,9 @@ export function ChannelRail() {
                 msg.type === "channel_created" ||
                 msg.type === "channel_deleted" ||
                 msg.type === "channel_updated" ||
-                msg.type === "channels_reordered"
+                msg.type === "channels_reordered" ||
+                msg.type === "chat_room_invited" ||
+                msg.type === "chat_kicked"
             ) {
                 qc.invalidateQueries({ queryKey: ["channels"] });
                 return;
@@ -148,6 +152,13 @@ export function ChannelRail() {
     function openChannelMenu(e: React.MouseEvent, channel: ChatRoom) {
         openMenu(e, [
             { id: "edit", label: "Edit Channel", icon: "✎", onClick: () => setEditChannel(channel) },
+            {
+                id: "truncate",
+                label: "Truncate Channel",
+                icon: "🧹",
+                variant: "danger",
+                onClick: () => setPendingTruncate(channel),
+            },
             {
                 id: "delete",
                 label: "Delete Channel",
@@ -203,6 +214,16 @@ export function ChannelRail() {
         const id = pendingDelete.id;
         setPendingDelete(null);
         deleteMutation.mutate(id);
+    }
+
+    function confirmTruncate() {
+        if (!pendingTruncate) {
+            return;
+        }
+
+        const id = pendingTruncate.id;
+        setPendingTruncate(null);
+        truncateMutation.mutate(id);
     }
 
     function renderRow(c: ChatRoom, group: ChannelGroup) {
@@ -392,6 +413,23 @@ export function ChannelRail() {
                         </Button>
                         <Button variant="danger" size="small" onClick={confirmDelete}>
                             Delete channel
+                        </Button>
+                    </div>
+                </div>
+            </Modal>
+
+            <Modal isOpen={pendingTruncate !== null} onClose={() => setPendingTruncate(null)} title="Truncate Channel">
+                <div className={styles.confirmBody}>
+                    <p className={styles.confirmText}>
+                        Truncate <strong>{pendingTruncate?.name}</strong>? This permanently deletes all messages and
+                        media in the channel, but keeps the channel itself. This can&apos;t be undone.
+                    </p>
+                    <div className={styles.confirmActions}>
+                        <Button variant="ghost" size="small" onClick={() => setPendingTruncate(null)}>
+                            Cancel
+                        </Button>
+                        <Button variant="danger" size="small" onClick={confirmTruncate}>
+                            Truncate channel
                         </Button>
                     </div>
                 </div>

@@ -20,6 +20,7 @@ import {
     setChatRoomMemberNickname,
     setChatRoomMemberTimeout,
     setChatRoomMuted,
+    truncateChannel,
     unbanChatRoomMember,
     unlockChatRoomMemberNickname,
     unpinChatMessage,
@@ -97,6 +98,12 @@ export function useDeleteChannel() {
         onSuccess: () => {
             qc.invalidateQueries({ queryKey: CHANNELS_KEY });
         },
+    });
+}
+
+export function useTruncateChannel() {
+    return useMutation({
+        mutationFn: (roomId: string) => truncateChannel(roomId),
     });
 }
 

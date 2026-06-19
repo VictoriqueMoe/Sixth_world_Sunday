@@ -205,7 +205,7 @@ export function MessageBubble({
 
     return (
         <div id={`chat-msg-${message.id}`} className={classes.join(" ")}>
-            <ProfileLink user={effectiveSender} size="small" showName={false} />
+            <ProfileLink user={effectiveSender} size="large" showName={false} />
             <div className={styles.messageContent}>
                 {message.pinned && (
                     <div className={styles.pinnedIndicator} title="Pinned">

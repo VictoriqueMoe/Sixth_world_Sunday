@@ -122,6 +122,7 @@ export function NotificationProvider({ children }: PropsWithChildren) {
                         patchUserInCache(qc, data.user_id, patch);
                         if (userRef.current && data.user_id === userRef.current.id) {
                             setUser({ ...userRef.current, ...patch });
+                            qc.invalidateQueries({ queryKey: ["channels"] });
                         }
                     }
                 }

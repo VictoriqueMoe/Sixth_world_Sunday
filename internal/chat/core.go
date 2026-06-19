@@ -600,7 +600,7 @@ func formatTimeoutUntilForUser(raw string) string {
 	return trimmed
 }
 
-func (c *core) memberRowToMemberResponse(m repository.ChatRoomMemberRow, vanityRoles []dto.VanityRoleResponse, presence string) dto.ChatRoomMemberResponse {
+func (c *core) memberRowToMemberResponse(m repository.ChatRoomMemberRow, vanityRoles []dto.VanityRoleResponse, presence string, online bool) dto.ChatRoomMemberResponse {
 	return dto.ChatRoomMemberResponse{
 		User: dto.UserResponse{
 			ID:          m.UserID,
@@ -618,6 +618,7 @@ func (c *core) memberRowToMemberResponse(m repository.ChatRoomMemberRow, vanityR
 		TimeoutUntil:    m.TimeoutUntil,
 		TimeoutByStaff:  m.TimeoutByStaff,
 		Presence:        presence,
+		Online:          online,
 	}
 }
 
@@ -689,7 +690,7 @@ func (c *core) broadcastAndBuildMember(ctx context.Context, roomID, targetID uui
 		if m.UserID != targetID {
 			continue
 		}
-		resp = new(c.memberRowToMemberResponse(m, c.toVanityRoleResponses(vanityMap[m.UserID]), ""))
+		resp = new(c.memberRowToMemberResponse(m, c.toVanityRoleResponses(vanityMap[m.UserID]), "", c.hub.IsOnline(m.UserID)))
 		break
 	}
 

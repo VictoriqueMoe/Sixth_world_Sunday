@@ -237,7 +237,10 @@ func (r *roomsService) ArchiveStale(ctx context.Context) (int, error) {
 	return len(ids), nil
 }
 
-func (r *roomsService) DeleteChat(ctx context.Context, roomID, userID uuid.UUID) error {
+// purgeRoomMessages validates the room (must exist, be a group, and not a system
+// room), deletes all of its messages, and asynchronously removes the backing media
+// files. Shared by DeleteChat (which then drops the room) and TruncateChat (which keeps it).
+func (r *roomsService) purgeRoomMessages(ctx context.Context, roomID, userID uuid.UUID) error {
 	row, err := r.chatRepo.GetRoomByID(ctx, roomID, userID)
 	if err != nil {
 		return fmt.Errorf("get room: %w", err)
@@ -254,6 +257,23 @@ func (r *roomsService) DeleteChat(ctx context.Context, roomID, userID uuid.UUID)
 	if err := r.chatRepo.DeleteMessages(ctx, roomID); err != nil {
 		return fmt.Errorf("delete messages: %w", err)
 	}
+
+	if len(mediaURLs) > 0 {
+		go func(urls []string) {
+			for i := 0; i < len(urls); i++ {
+				_ = r.uploadSvc.Delete(urls[i])
+			}
+		}(mediaURLs)
+	}
+
+	return nil
+}
+
+func (r *roomsService) DeleteChat(ctx context.Context, roomID, userID uuid.UUID) error {
+	if err := r.purgeRoomMessages(ctx, roomID, userID); err != nil {
+		return err
+	}
+
 	if err := r.chatRepo.DeleteRoom(ctx, roomID); err != nil {
 		return fmt.Errorf("delete room: %w", err)
 	}
@@ -265,13 +285,20 @@ func (r *roomsService) DeleteChat(ctx context.Context, roomID, userID uuid.UUID)
 		},
 	})
 
-	if len(mediaURLs) > 0 {
-		go func(urls []string) {
-			for i := 0; i < len(urls); i++ {
-				_ = r.uploadSvc.Delete(urls[i])
-			}
-		}(mediaURLs)
+	return nil
+}
+
+func (r *roomsService) TruncateChat(ctx context.Context, roomID, userID uuid.UUID) error {
+	if err := r.purgeRoomMessages(ctx, roomID, userID); err != nil {
+		return err
 	}
+
+	r.hub.Broadcast(ws.Message{
+		Type: "chat_truncated",
+		Data: map[string]interface{}{
+			"room_id": roomID,
+		},
+	})
 
 	return nil
 }

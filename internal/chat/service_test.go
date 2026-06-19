@@ -1661,6 +1661,78 @@ func TestDeleteChat_OK(t *testing.T) {
 	}
 }
 
+func TestTruncateChat_NotFound(t *testing.T) {
+	// given
+	svc, m := newTestService(t)
+	roomID := uuid.New()
+	userID := uuid.New()
+	m.chatRepo.EXPECT().GetRoomByID(mock.Anything, roomID, userID).Return(nil, nil)
+
+	// when
+	err := svc.TruncateChat(context.Background(), roomID, userID)
+
+	// then
+	require.ErrorIs(t, err, ErrRoomNotFound)
+}
+
+func TestTruncateChat_SystemRoom(t *testing.T) {
+	// given
+	svc, m := newTestService(t)
+	roomID := uuid.New()
+	userID := uuid.New()
+	m.chatRepo.EXPECT().GetRoomByID(mock.Anything, roomID, userID).Return(&repository.ChatRoomRow{IsMember: true, IsSystem: true}, nil)
+
+	// when
+	err := svc.TruncateChat(context.Background(), roomID, userID)
+
+	// then
+	require.ErrorIs(t, err, ErrSystemRoom)
+}
+
+func TestTruncateChat_DeleteMessagesError(t *testing.T) {
+	// given
+	svc, m := newTestService(t)
+	roomID := uuid.New()
+	userID := uuid.New()
+	m.chatRepo.EXPECT().GetRoomByID(mock.Anything, roomID, userID).Return(&repository.ChatRoomRow{ID: roomID, Type: "group"}, nil)
+	m.chatRepo.EXPECT().ListRoomMediaURLs(mock.Anything, roomID).Return(nil, nil)
+	m.chatRepo.EXPECT().DeleteMessages(mock.Anything, roomID).Return(errors.New("boom"))
+
+	// when
+	err := svc.TruncateChat(context.Background(), roomID, userID)
+
+	// then
+	require.Error(t, err)
+}
+
+func TestTruncateChat_DeletesMessagesAndMediaButKeepsRoom(t *testing.T) {
+	// given
+	svc, m := newTestService(t)
+	roomID := uuid.New()
+	userID := uuid.New()
+	deleted := make(chan string, 2)
+	m.chatRepo.EXPECT().GetRoomByID(mock.Anything, roomID, userID).Return(&repository.ChatRoomRow{ID: roomID, Type: "group"}, nil)
+	m.chatRepo.EXPECT().ListRoomMediaURLs(mock.Anything, roomID).Return([]string{"/uploads/chat/a.png", "/uploads/chat/a_thumb.png"}, nil)
+	m.chatRepo.EXPECT().DeleteMessages(mock.Anything, roomID).Return(nil)
+	m.uploadSvc.EXPECT().Delete("/uploads/chat/a.png").Run(func(urlPath string) { deleted <- urlPath }).Return(nil)
+	m.uploadSvc.EXPECT().Delete("/uploads/chat/a_thumb.png").Run(func(urlPath string) { deleted <- urlPath }).Return(nil)
+	// No DeleteRoom expectation: the mock panics on an unexpected call, so this asserts
+	// TruncateChat keeps the channel itself.
+
+	// when
+	err := svc.TruncateChat(context.Background(), roomID, userID)
+
+	// then
+	require.NoError(t, err)
+	for i := 0; i < 2; i++ {
+		select {
+		case <-deleted:
+		case <-time.After(2 * time.Second):
+			t.Fatal("timed out waiting for async media cleanup")
+		}
+	}
+}
+
 func TestMarkRead_GetRoomError(t *testing.T) {
 	// given
 	svc, m := newTestService(t)

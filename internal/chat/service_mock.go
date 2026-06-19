@@ -3177,6 +3177,69 @@ func (_c *MockService_SyncSystemRoomMembership_Call) RunAndReturn(run func(ctx c
 	return _c
 }
 
+// TruncateChat provides a mock function for the type MockService
+func (_mock *MockService) TruncateChat(ctx context.Context, roomID uuid.UUID, userID uuid.UUID) error {
+	ret := _mock.Called(ctx, roomID, userID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for TruncateChat")
+	}
+
+	var r0 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, uuid.UUID, uuid.UUID) error); ok {
+		r0 = returnFunc(ctx, roomID, userID)
+	} else {
+		r0 = ret.Error(0)
+	}
+	return r0
+}
+
+// MockService_TruncateChat_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'TruncateChat'
+type MockService_TruncateChat_Call struct {
+	*mock.Call
+}
+
+// TruncateChat is a helper method to define mock.On call
+//   - ctx context.Context
+//   - roomID uuid.UUID
+//   - userID uuid.UUID
+func (_e *MockService_Expecter) TruncateChat(ctx any, roomID any, userID any) *MockService_TruncateChat_Call {
+	return &MockService_TruncateChat_Call{Call: _e.mock.On("TruncateChat", ctx, roomID, userID)}
+}
+
+func (_c *MockService_TruncateChat_Call) Run(run func(ctx context.Context, roomID uuid.UUID, userID uuid.UUID)) *MockService_TruncateChat_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		var arg0 context.Context
+		if args[0] != nil {
+			arg0 = args[0].(context.Context)
+		}
+		var arg1 uuid.UUID
+		if args[1] != nil {
+			arg1 = args[1].(uuid.UUID)
+		}
+		var arg2 uuid.UUID
+		if args[2] != nil {
+			arg2 = args[2].(uuid.UUID)
+		}
+		run(
+			arg0,
+			arg1,
+			arg2,
+		)
+	})
+	return _c
+}
+
+func (_c *MockService_TruncateChat_Call) Return(err error) *MockService_TruncateChat_Call {
+	_c.Call.Return(err)
+	return _c
+}
+
+func (_c *MockService_TruncateChat_Call) RunAndReturn(run func(ctx context.Context, roomID uuid.UUID, userID uuid.UUID) error) *MockService_TruncateChat_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // UnbanMember provides a mock function for the type MockService
 func (_mock *MockService) UnbanMember(ctx context.Context, actorID uuid.UUID, roomID uuid.UUID, targetID uuid.UUID) error {
 	ret := _mock.Called(ctx, actorID, roomID, targetID)

@@ -187,20 +187,18 @@ export function RoomPage() {
                                         canModerateRoom,
                                     });
                                     const menuOpen = openMemberMenu === m.user.id;
-                                    const presence = presenceMapMerged[m.user.id];
-                                    const presenceClass =
-                                        presence === "active"
-                                            ? styles.presenceActive
-                                            : presence === "idle"
-                                              ? styles.presenceIdle
-                                              : styles.presenceAway;
-                                    const presenceTitle =
-                                        presence === "active"
-                                            ? "Active in this room"
-                                            : presence === "idle"
-                                              ? "Idle or tab in background"
-                                              : "Not currently viewing";
+                                    const activeHere = presenceMapMerged[m.user.id] === "active";
                                     const isOnline = memberOnlineWeight(m.user.id) === 0;
+                                    const presenceClass = activeHere
+                                        ? styles.presenceActive
+                                        : isOnline
+                                          ? styles.presenceIdle
+                                          : styles.presenceAway;
+                                    const presenceTitle = activeHere
+                                        ? "Active in this room"
+                                        : isOnline
+                                          ? "Online"
+                                          : "Offline";
                                     const prevMember = memberIndex > 0 ? group.members[memberIndex - 1] : null;
                                     const prevOnline = prevMember ? memberOnlineWeight(prevMember.user.id) === 0 : null;
                                     const showStatusHeader =

@@ -37,6 +37,7 @@ type (
 		SendMessage(ctx context.Context, senderID, roomID uuid.UUID, req dto.SendMessageRequest, files []FileUpload) (*dto.ChatMessageResponse, error)
 		GetRoomsByUser(ctx context.Context, userID uuid.UUID) ([]uuid.UUID, error)
 		DeleteChat(ctx context.Context, roomID, userID uuid.UUID) error
+		TruncateChat(ctx context.Context, roomID, userID uuid.UUID) error
 		SetRoomMuted(ctx context.Context, roomID, userID uuid.UUID, muted bool) error
 		IsRoomMuted(ctx context.Context, roomID, userID uuid.UUID) (bool, error)
 		KickMember(ctx context.Context, hostID, roomID, targetID uuid.UUID) error

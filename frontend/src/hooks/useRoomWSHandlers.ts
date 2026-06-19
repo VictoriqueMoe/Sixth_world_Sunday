@@ -31,6 +31,7 @@ interface UseRoomWSHandlersArgs {
     setMessages: Dispatch<SetStateAction<ChatMessage[]>>;
     scrollToBottom: (opts?: { force?: boolean }) => void;
     setPresenceMap: (updater: (prev: Record<string, "active" | "idle">) => Record<string, "active" | "idle">) => void;
+    setOnline: (userId: string, online: boolean) => void;
     noteTyping: (userId: string) => void;
     clearTypingUser: (userId: string) => void;
     navigate: NavigateFunction;
@@ -51,6 +52,7 @@ export function useRoomWSHandlers({
     setMessages,
     scrollToBottom,
     setPresenceMap,
+    setOnline,
     noteTyping,
     clearTypingUser,
     navigate,
@@ -164,6 +166,13 @@ export function useRoomWSHandlers({
                 setTimeout(() => navigate("/channels"), 1500);
                 return;
             }
+            if (msg.type === "chat_truncated") {
+                const data = msg.data as { room_id: string };
+                if (data.room_id === roomIdRef.current) {
+                    setMessages([]);
+                }
+                return;
+            }
             if (msg.type === "channel_updated") {
                 const data = msg.data as ChatRoom;
                 if (data.id !== roomIdRef.current) {
@@ -241,6 +250,16 @@ export function useRoomWSHandlers({
                 });
                 return;
             }
+            if (msg.type === "presence_online") {
+                const data = msg.data as { user_id: string };
+                setOnline(data.user_id, true);
+                return;
+            }
+            if (msg.type === "presence_offline") {
+                const data = msg.data as { user_id: string };
+                setOnline(data.user_id, false);
+                return;
+            }
             if (
                 applySharedChatWSBranch(msg, {
                     activeRoomId: roomIdRef.current ?? null,
@@ -291,6 +310,7 @@ export function useRoomWSHandlers({
         clearTypingUser,
         setMembers,
         setPresenceMap,
+        setOnline,
         setRoom,
         setToast,
         setPinnedRefreshKey,

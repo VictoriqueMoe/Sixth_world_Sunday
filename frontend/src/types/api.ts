@@ -254,6 +254,7 @@ export interface ChatRoomMember {
     timeout_until?: string;
     timeout_set_by_staff?: boolean;
     presence?: "active" | "idle" | "";
+    online?: boolean;
     ghost?: boolean;
 }
 
