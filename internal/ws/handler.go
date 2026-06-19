@@ -114,6 +114,12 @@ func Handler(hub *Hub, sessionMgr *session.Manager, roomLister RoomLister, allow
 			for _, roomID := range cleared {
 				broadcastPresence(hub, roomID, userID, "")
 			}
+			if !hub.IsOnline(userID) {
+				hub.Broadcast(Message{
+					Type: "presence_offline",
+					Data: map[string]interface{}{"user_id": userID.String()},
+				})
+			}
 		}()
 
 		if roomLister != nil {

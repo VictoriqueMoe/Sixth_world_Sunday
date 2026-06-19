@@ -29,23 +29,43 @@ export function useRoomPresence({ roomId, baseMembers, sendWSMessage, wsEpoch }:
         [roomId],
     );
 
+    const [onlineOverrides, setOnlineOverrides] = useState<Record<string, boolean>>({});
+    const setOnline = useCallback((id: string, online: boolean) => {
+        setOnlineOverrides(prev => {
+            if (prev[id] === online) {
+                return prev;
+            }
+            return { ...prev, [id]: online };
+        });
+    }, []);
+
     usePresenceReporter({ roomId, sendWSMessage, wsEpoch });
 
     const presenceSeed: Record<string, "active" | "idle"> = {};
+    const onlineSeed: Record<string, boolean> = {};
     for (const m of baseMembers) {
         if (m.presence === "active" || m.presence === "idle") {
             presenceSeed[m.user.id] = m.presence;
         }
+        if (m.online) {
+            onlineSeed[m.user.id] = true;
+        }
     }
     const presenceMapMerged = { ...presenceSeed, ...presenceMap };
 
-    const memberOnlineWeight = (id: string) => {
+    const isOnline = (id: string): boolean => {
+        const override = onlineOverrides[id];
+        if (override !== undefined) {
+            return override;
+        }
         const p = presenceMapMerged[id];
         if (p === "active" || p === "idle") {
-            return 0;
+            return true;
         }
-        return 1;
+        return !!onlineSeed[id];
     };
 
-    return { presenceMap, setPresenceMap, presenceMapMerged, memberOnlineWeight };
+    const memberOnlineWeight = (id: string) => (isOnline(id) ? 0 : 1);
+
+    return { presenceMap, setPresenceMap, presenceMapMerged, memberOnlineWeight, isOnline, setOnline };
 }

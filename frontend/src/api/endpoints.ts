@@ -319,6 +319,10 @@ export async function getChatCategories(): Promise<{ categories: ChatCategory[] 
     return apiFetch<{ categories: ChatCategory[] }>("/chat/categories");
 }
 
+export async function truncateChannel(roomId: string): Promise<void> {
+    await apiPost<unknown, undefined>(`/chat/rooms/${roomId}/truncate`, undefined);
+}
+
 export async function setChatRoomMuted(roomId: string, muted: boolean): Promise<{ muted: boolean }> {
     return apiPut<{ muted: boolean }, { muted: boolean }>(`/chat/rooms/${roomId}/mute`, { muted });
 }

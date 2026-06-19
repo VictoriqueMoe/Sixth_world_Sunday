@@ -34,6 +34,7 @@ func (s *Service) getAllChatRoutes() []FSetupRoute {
 		s.setupGetMessagesRoute,
 		s.setupSendMessageRoute,
 		s.setupDeleteChatRoute,
+		s.setupTruncateChatRoute,
 		s.setupMarkRoomReadRoute,
 		s.setupSetRoomNicknameRoute,
 		s.setupSetRoomAvatarRoute,
@@ -293,6 +294,31 @@ func (s *Service) listCategories(ctx fiber.Ctx) error {
 	}
 
 	return ctx.JSON(fiber.Map{"categories": cats})
+}
+
+func (s *Service) setupTruncateChatRoute(r fiber.Router) {
+	r.Post("/chat/rooms/:roomID/truncate", middleware.RequirePermission(s.AuthSession, s.AuthzService, authz.PermManageChannels), s.truncateChat)
+}
+
+func (s *Service) truncateChat(ctx fiber.Ctx) error {
+	userID := utils.UserID(ctx)
+
+	roomID, ok := utils.ParseIDParam(ctx, "roomID")
+	if !ok {
+		return nil
+	}
+
+	if err := s.ChatService.TruncateChat(ctx.Context(), roomID, userID); err != nil {
+		if errors.Is(err, chat.ErrRoomNotFound) {
+			return utils.NotFound(ctx, "channel not found")
+		}
+		if errors.Is(err, chat.ErrSystemRoom) {
+			return utils.Forbidden(ctx, "system channels cannot be truncated")
+		}
+		return utils.InternalError(ctx, "failed to truncate channel")
+	}
+
+	return utils.OK(ctx)
 }
 
 func (s *Service) setupMarkRoomReadRoute(r fiber.Router) {

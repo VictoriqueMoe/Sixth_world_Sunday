@@ -306,7 +306,7 @@ func (m *membersService) GetMembers(ctx context.Context, viewerID, roomID uuid.U
 		if mr.Ghost && !viewerIsStaff {
 			continue
 		}
-		resp := m.memberRowToMemberResponse(mr, m.toVanityRoleResponses(vanityMap[mr.UserID]), presence[mr.UserID])
+		resp := m.memberRowToMemberResponse(mr, m.toVanityRoleResponses(vanityMap[mr.UserID]), presence[mr.UserID], m.hub.IsOnline(mr.UserID))
 		resp.Ghost = mr.Ghost
 		members = append(members, resp)
 	}

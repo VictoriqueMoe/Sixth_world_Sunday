@@ -218,9 +218,17 @@ func (h *Hub) GetRoomPresence(roomID uuid.UUID) map[uuid.UUID]string {
 
 func (h *Hub) Register(client *Client) {
 	h.mu.Lock()
+	wasOffline := len(h.clients[client.UserID]) == 0
 	h.clients[client.UserID] = append(h.clients[client.UserID], client)
 	h.mu.Unlock()
 	client.Start()
+
+	if wasOffline {
+		h.Broadcast(Message{
+			Type: "presence_online",
+			Data: map[string]interface{}{"user_id": client.UserID.String()},
+		})
+	}
 }
 
 func (h *Hub) Unregister(client *Client) []uuid.UUID {
@@ -338,7 +346,6 @@ func (h *Hub) Broadcast(msg Message) {
 		h.reapDead(dead)
 	}
 }
-
 
 func (h *Hub) IsOnline(userID uuid.UUID) bool {
 	h.mu.RLock()

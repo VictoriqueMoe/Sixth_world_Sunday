@@ -46,7 +46,7 @@ export function useRoomController() {
 
     const { voice, voiceIdSet } = useRoomVoice({ roomId, room, voiceEnabled });
 
-    const { setPresenceMap, presenceMapMerged, memberOnlineWeight } = useRoomPresence({
+    const { setPresenceMap, setOnline, presenceMapMerged, memberOnlineWeight } = useRoomPresence({
         roomId,
         baseMembers,
         sendWSMessage,
@@ -94,6 +94,7 @@ export function useRoomController() {
         setMessages: messages.setMessages,
         scrollToBottom: messages.scrollToBottom,
         setPresenceMap,
+        setOnline,
         noteTyping,
         clearTypingUser,
         navigate,

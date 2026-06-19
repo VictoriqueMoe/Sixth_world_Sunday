@@ -27,6 +27,7 @@ export function MobileRoomView({ controller }: { controller: RoomController }) {
         members,
         memberGroups,
         presenceMapMerged,
+        memberOnlineWeight,
         currentMember,
         mobileView,
         setMobileView,
@@ -256,13 +257,12 @@ export function MobileRoomView({ controller }: { controller: RoomController }) {
                                     canModerateRoom,
                                 });
                                 const menuOpen = openMemberMenu === m.user.id;
-                                const presence = presenceMapMerged[m.user.id];
-                                const presenceClass =
-                                    presence === "active"
-                                        ? styles.presenceActive
-                                        : presence === "idle"
-                                          ? styles.presenceIdle
-                                          : styles.presenceAway;
+                                const activeHere = presenceMapMerged[m.user.id] === "active";
+                                const presenceClass = activeHere
+                                    ? styles.presenceActive
+                                    : memberOnlineWeight(m.user.id) === 0
+                                      ? styles.presenceIdle
+                                      : styles.presenceAway;
                                 return (
                                     <div key={m.user.id} className={styles.memberRow}>
                                         <span className={`${styles.presenceDot} ${presenceClass}`} />

@@ -167,7 +167,7 @@ select {
 }
 
 .rich-spoiler {
-    background: rgba(0, 0, 0, 0.88);
+    background: rgba(255, 255, 255, 0.14);
     color: transparent;
     border-radius: 3px;
     padding: 0 0.25em;
@@ -183,7 +183,7 @@ select {
 }
 
 .rich-spoiler:hover {
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 0.06);
     color: inherit;
 }
 

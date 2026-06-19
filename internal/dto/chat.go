@@ -101,6 +101,7 @@ type (
 		TimeoutUntil    string       `json:"timeout_until,omitempty"`
 		TimeoutByStaff  bool         `json:"timeout_set_by_staff"`
 		Presence        string       `json:"presence,omitempty"`
+		Online          bool         `json:"online"`
 		Ghost           bool         `json:"ghost"`
 	}
 

@@ -21,14 +21,14 @@
 }
 
 .avatar {
-    border-radius: 3px;
+    border-radius: 50%;
     object-fit: cover;
     border: 1px solid var(--line-bright);
 }
 
 .avatarPlaceholder {
     display: inline-flex;
-    border-radius: 3px;
+    border-radius: 50%;
     background: var(--panel-2);
     border: 1px solid var(--line-bright);
     align-items: center;
