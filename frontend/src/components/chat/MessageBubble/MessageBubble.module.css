@@ -1,0 +1,551 @@
+.messageBubble {
+    display: flex;
+    gap: 13px;
+    min-width: 0;
+    align-self: stretch;
+    align-items: flex-start;
+    position: relative;
+    transition: background 0.15s ease;
+    margin: 0 -22px;
+    padding: 4px 22px;
+}
+
+.messageBubble:not(.systemMessage):not(.messageHighlighted):hover {
+    background: rgba(var(--cyan-rgb), 0.04);
+}
+
+.ownMessage {
+    align-self: stretch;
+    flex-direction: row;
+}
+
+.systemMessage {
+    align-self: center;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    margin: 0;
+    padding: 0.15rem 0;
+}
+
+.systemMessageText {
+    display: inline-block;
+    color: var(--dim);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: rgba(var(--cyan-rgb), 0.06);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 0.2rem 0.75rem;
+}
+
+.systemMessageText a {
+    color: var(--cyan);
+}
+
+.systemMessageTime {
+    color: var(--dimmer);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-top: 0.2rem;
+}
+
+.actions {
+    position: absolute;
+    top: -14px;
+    right: 8px;
+    display: flex;
+    gap: 0.25rem;
+    background: var(--panel);
+    border: 1px solid var(--line-bright);
+    border-radius: 2px;
+    padding: 2px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+    transition: opacity 0.15s;
+}
+
+.ownMessage .actions {
+    left: auto;
+    right: 8px;
+}
+
+.messageBubble:hover .actions,
+.messageBubble:focus-within .actions {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.reactAnchor {
+    position: relative;
+}
+
+.actionBtn {
+    background: var(--panel);
+    border: 1px solid var(--line-bright);
+    color: var(--dim);
+    height: 28px;
+    min-width: 28px;
+    padding: 0 0.4rem;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+        color 0.15s,
+        border-color 0.15s,
+        background 0.15s;
+}
+
+.actionBtn:hover {
+    color: var(--cyan);
+    border-color: var(--cyan);
+}
+
+.reactionRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.4rem;
+}
+
+.reactionAnchor {
+    position: relative;
+    display: inline-flex;
+}
+
+.reactionChip {
+    background: var(--panel-2);
+    border: 1px solid var(--line-bright);
+    color: var(--text);
+    padding: 0.15rem 0.55rem;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+    transition:
+        background 0.15s,
+        border-color 0.15s;
+}
+
+.reactionChip:hover {
+    border-color: var(--cyan);
+}
+
+.reactionChipMine {
+    background: rgba(var(--magenta-rgb), 0.14);
+    border-color: var(--magenta);
+}
+
+.reactionEmoji {
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+.reactionCount {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    font-variant-numeric: tabular-nums;
+}
+
+.reactorPopover {
+    position: fixed;
+    min-width: 160px;
+    max-width: min(240px, calc(100vw - 16px));
+    background: var(--bg);
+    border: 1px solid var(--magenta);
+    border-radius: 2px;
+    box-shadow: 0 0 28px -8px var(--magenta);
+    padding: 0.45rem 0.6rem;
+    z-index: 20;
+    animation: reactorPopIn 0.12s ease-out;
+}
+
+@keyframes reactorPopIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.reactorHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--cyan);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding-bottom: 0.35rem;
+    margin-bottom: 0.35rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.reactorHeaderEmoji {
+    font-size: 1rem;
+}
+
+.reactorList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 180px;
+    overflow-y: auto;
+    font-size: 0.8rem;
+    color: var(--text);
+}
+
+.reactorList li {
+    padding: 0.15rem 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.reactorEmpty {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+}
+
+.pinnedIndicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--amber);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+}
+
+.messagePinned .messageContent {
+    border-left: 2px solid var(--amber);
+    padding-left: 0.6rem;
+}
+
+.notifiesViewer .messageContent {
+    background: rgba(var(--cyan-rgb), 0.06);
+    border-left: 2px solid var(--cyan);
+    padding-left: 0.6rem;
+}
+
+.messageContent {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    flex: 1;
+}
+
+.ownMessage .messageContent {
+    background: transparent;
+    border: 0;
+}
+
+.messageSender {
+    font-family: var(--display);
+    font-size: 14.5px;
+    color: var(--text);
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.45rem;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.senderName {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.messageSenderOwn {
+    display: flex;
+}
+
+.ownMessage .messageSender {
+    text-align: left;
+}
+
+.messageText {
+    font-size: 14.5px;
+    color: #d4d4e4;
+    line-height: 1.5;
+    word-break: break-word;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.messageText a {
+    color: var(--cyan);
+    text-decoration: underline;
+}
+
+.messageText :global(.rich-inline-code) {
+    font-family: var(--mono);
+    background: #0c0c14;
+    border: 1px solid var(--line);
+    padding: 1px 6px;
+    color: var(--amber);
+    font-size: 13px;
+}
+
+.messageText code {
+    font-family: var(--mono);
+    background: #0c0c14;
+    border: 1px solid var(--line);
+    padding: 1px 6px;
+    color: var(--amber);
+    font-size: 13px;
+}
+
+.seenLabel {
+    color: var(--dim);
+    font-family: var(--mono);
+}
+
+.editedLabel {
+    color: var(--dimmer);
+    font-family: var(--mono);
+    font-size: 10px;
+    cursor: help;
+}
+
+.editRow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: 0.2rem;
+}
+
+.editTextarea {
+    width: 100%;
+    min-width: 240px;
+    max-width: 100%;
+    background: #07070d;
+    color: var(--text);
+    border: 1px solid var(--line-bright);
+    border-radius: 2px;
+    padding: 0.45rem 0.6rem;
+    font: inherit;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.editTextarea:focus {
+    outline: none;
+    border-color: var(--magenta);
+    box-shadow:
+        0 0 0 1px var(--magenta),
+        0 0 18px -4px var(--magenta);
+}
+
+.editActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.35rem;
+}
+
+.editHint {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dimmer);
+    text-align: right;
+    letter-spacing: 0.5px;
+}
+
+.messageMedia {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.4rem;
+}
+
+.messageMediaItem {
+    max-width: 520px;
+    max-height: 510px;
+    border-radius: 2px;
+    border: 1px solid var(--line-bright);
+    object-fit: cover;
+}
+
+img.messageMediaItem {
+    cursor: pointer;
+}
+
+video.messageMediaItem {
+    cursor: default;
+    background: #000;
+}
+
+.messageTime {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dimmer);
+    letter-spacing: 0.5px;
+    margin-top: 0.2rem;
+}
+
+.replyPreview {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.5rem;
+    margin-bottom: 0.4rem;
+    background: var(--panel-2);
+    border-left: 2px solid var(--magenta);
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    line-height: 1.3;
+}
+
+.replyPreview:hover {
+    background: var(--panel-3);
+}
+
+.replyArrow {
+    color: var(--magenta);
+    flex-shrink: 0;
+}
+
+.replySender {
+    color: var(--magenta);
+    font-weight: 600;
+    flex-shrink: 1;
+    min-width: 0;
+    max-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.replyText {
+    color: var(--dim);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.messageHighlighted {
+    background: rgba(var(--magenta-rgb), 0.14);
+    box-shadow: 0 0 0 1px var(--magenta);
+    animation: highlight-fade 3s ease-out forwards;
+}
+
+@keyframes highlight-fade {
+    0% {
+        background: rgba(var(--magenta-rgb), 0.28);
+        box-shadow: 0 0 18px -4px var(--magenta);
+    }
+    100% {
+        background: transparent;
+        box-shadow: 0 0 0 0 rgba(var(--magenta-rgb), 0);
+    }
+}
+
+@media (max-width: 768px) {
+    .messageBubble {
+        max-width: 100%;
+        width: 100%;
+        gap: 0.45rem;
+    }
+
+    .messageContent {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .messageSenderOwn {
+        display: flex;
+    }
+
+    .messageSender {
+        font-size: 13.5px;
+        margin-bottom: 0.1rem;
+        line-height: 1.25;
+    }
+
+    .messageText {
+        font-size: 13.5px;
+        line-height: 1.4;
+    }
+
+    .messageTime {
+        font-size: 10px;
+        margin-top: 0.1rem;
+    }
+
+    .replyPreview {
+        padding: 0.2rem 0.4rem;
+        margin-bottom: 0.25rem;
+        font-size: 0.7rem;
+    }
+
+    .pinnedIndicator {
+        font-size: 9px;
+        margin-bottom: 0.15rem;
+    }
+
+    .messageMediaItem {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+@container streamchat (max-width: 420px) {
+    .messageBubble {
+        max-width: 100%;
+        width: 100%;
+        gap: 0.45rem;
+    }
+
+    .messageContent {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .messageSenderOwn {
+        display: flex;
+    }
+
+    .messageSender {
+        font-size: 13.5px;
+        margin-bottom: 0.1rem;
+        line-height: 1.25;
+    }
+
+    .messageMediaItem {
+        max-width: 100%;
+        height: auto;
+    }
+}

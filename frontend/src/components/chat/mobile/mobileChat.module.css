@@ -1,0 +1,432 @@
+.shell {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--chat-vh, 100svh);
+    padding-top: env(safe-area-inset-top, 0px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    z-index: 120;
+    overflow: hidden;
+}
+
+.topBar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    height: 52px;
+    padding: 0 0.35rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg-2);
+}
+
+.iconBtn {
+    background: none;
+    border: none;
+    color: var(--magenta);
+    font-size: 1.25rem;
+    padding: 0.4rem 0.5rem;
+    cursor: pointer;
+    line-height: 1;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.iconBtn:active {
+    background: var(--panel-2);
+}
+
+.topInfo {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.topTitleRow {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 0;
+}
+
+.topTitle {
+    font-family: var(--display);
+    color: var(--text);
+    font-size: 1.02rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topMeta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    color: var(--dim);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topBadge {
+    flex-shrink: 0;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.05rem 0.3rem;
+    border-radius: 2px;
+    color: var(--magenta);
+    border: 1px solid var(--magenta);
+}
+
+.messages {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.loadMoreBar,
+.empty {
+    text-align: center;
+    color: var(--dim);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 0.6rem;
+}
+
+.composerWrap {
+    flex-shrink: 0;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--bg);
+}
+
+.draftEmpty {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--dim);
+    font-family: var(--mono);
+    letter-spacing: 0.5px;
+    padding: 1.5rem;
+}
+
+.listScreen {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+}
+
+.listHeader {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.85rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg-2);
+}
+
+.listTitle {
+    font-family: var(--display);
+    color: var(--text);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.roomList {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    flex-direction: column;
+}
+
+.roomItem {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.75rem 0.85rem;
+    background: none;
+    border: none;
+    border-left: 2px solid transparent;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    text-align: left;
+    color: var(--text);
+    font-family: var(--display);
+}
+
+.roomItem:active {
+    background: var(--panel-2);
+    border-left-color: var(--magenta);
+}
+
+.roomName {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.unreadDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--magenta);
+    flex-shrink: 0;
+    box-shadow: 0 0 8px var(--magenta);
+}
+
+.emptyRooms {
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--dim);
+    font-family: var(--mono);
+    letter-spacing: 0.5px;
+}
+
+.memberList {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.4rem 0;
+}
+
+.memberGroupHeader {
+    padding: 0.5rem 0.85rem 0.25rem;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--dimmer);
+}
+
+.memberGroupHeader::before {
+    content: "// ";
+}
+
+.memberRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.85rem;
+    position: relative;
+}
+
+.presenceDot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.presenceActive {
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+}
+
+.presenceIdle {
+    background: var(--amber);
+}
+
+.presenceAway {
+    background: var(--dimmer);
+}
+
+.hostBadge {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--magenta);
+    border: 1px solid var(--magenta);
+    padding: 1px 5px;
+    border-radius: 2px;
+}
+
+.memberSpacer {
+    flex: 1;
+}
+
+.modMenu {
+    position: absolute;
+    right: 0.6rem;
+    top: 100%;
+    z-index: 5;
+    background: var(--panel);
+    border: 1px solid var(--line-bright);
+    border-radius: 2px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+    overflow: hidden;
+}
+
+.modMenu button {
+    background: none;
+    border: none;
+    color: var(--text);
+    text-align: left;
+    padding: 0.7rem 0.9rem;
+    cursor: pointer;
+    font-family: var(--display);
+    font-size: 0.9rem;
+}
+
+.modMenu button:active {
+    background: var(--panel-2);
+}
+
+.danger {
+    color: var(--magenta);
+}
+
+.membersFooter {
+    flex-shrink: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.6rem 0.85rem calc(0.6rem + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--line);
+    background: var(--bg-2);
+}
+
+.dialogOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1500;
+    padding: 1rem;
+}
+
+.dialog {
+    background: var(--panel);
+    border: 1px solid var(--line-bright);
+    border-radius: 2px;
+    box-shadow:
+        0 0 0 1px rgba(var(--cyan-rgb), 0.06),
+        0 40px 120px -30px rgba(var(--magenta-rgb), 0.35);
+    padding: 1.2rem;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.dialog h3 {
+    margin: 0;
+    color: var(--text);
+    font-family: var(--display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.dialog h3::before {
+    content: "▸ ";
+    color: var(--magenta);
+}
+
+.dialog input,
+.dialog select {
+    width: 100%;
+    padding: 0.6rem;
+    background: #07070d;
+    border: 1px solid var(--line-bright);
+    border-radius: 2px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 1rem;
+}
+
+.dialog input:focus,
+.dialog select:focus {
+    outline: none;
+    border-color: var(--magenta);
+    box-shadow:
+        0 0 0 1px var(--magenta),
+        0 0 18px -4px var(--magenta);
+}
+
+.dialogRow {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dialogError {
+    color: var(--magenta);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+}
+
+.dialogHint {
+    padding: 1rem;
+    text-align: center;
+    color: var(--dim);
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.5px;
+}
+
+.dialogActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.toast {
+    position: fixed;
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 11000;
+    background: var(--panel);
+    border: 1px solid var(--magenta);
+    color: var(--text);
+    padding: 0.7rem 1.1rem;
+    border-radius: 2px;
+    box-shadow: 0 0 28px -8px var(--magenta);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    max-width: 90vw;
+    text-align: center;
+}

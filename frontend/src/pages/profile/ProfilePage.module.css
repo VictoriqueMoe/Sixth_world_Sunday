@@ -1,0 +1,359 @@
+.page {
+    max-width: 800px;
+    margin: 0 auto;
+    overflow-x: hidden;
+    animation: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.banner {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-bottom: none;
+    margin-bottom: -48px;
+}
+
+.banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, transparent 35%, rgba(7, 7, 12, 0.85) 100%);
+}
+
+.bannerImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.bannerGradient {
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 85% 15%, rgba(var(--magenta-rgb), 0.25), transparent 55%),
+        radial-gradient(circle at 10% 90%, rgba(var(--cyan-rgb), 0.18), transparent 55%), var(--panel-2);
+}
+
+.headerSection {
+    position: relative;
+    display: flex;
+    gap: 1.25rem;
+    padding: 0 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.avatarContainer {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    flex-shrink: 0;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    object-fit: cover;
+    border: 1px solid var(--line-bright);
+    background: var(--panel-2);
+    box-shadow: 0 0 0 3px var(--bg);
+}
+
+.avatarPlaceholder {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    background: var(--panel-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 2.25rem;
+    color: var(--magenta);
+    border: 1px solid var(--line-bright);
+    box-shadow: 0 0 0 3px var(--bg);
+}
+
+.onlineDot {
+    position: absolute;
+    bottom: -3px;
+    right: -3px;
+    width: 14px;
+    height: 14px;
+    background: var(--green);
+    border-radius: 50%;
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 8px var(--green);
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding-top: 52px;
+    min-width: 0;
+}
+
+.displayName {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+    color: var(--text);
+}
+
+.username {
+    font-family: var(--mono);
+    color: var(--dim);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.metaRow {
+    display: flex;
+    gap: 0;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 0.35rem;
+}
+
+.metaItem {
+    font-family: var(--mono);
+    color: var(--dim);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0 0.65rem;
+    border-left: 1px solid var(--line-bright);
+}
+
+.metaItem:first-child {
+    padding-left: 0;
+    border-left: none;
+}
+
+.bio {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    font-family: var(--display);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text);
+    overflow-wrap: anywhere;
+}
+
+.bio::before {
+    content: "// BIO";
+    position: absolute;
+    top: -0.6rem;
+    left: 0.85rem;
+    padding: 0 0.4rem;
+    background: var(--bg);
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--dimmer);
+}
+
+.socialRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.socialChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+.socialChipLabel {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--dim);
+}
+
+.socialChipValue {
+    font-family: var(--mono);
+    color: var(--cyan);
+    font-size: 0.78rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+    text-decoration: none;
+}
+
+a.socialChipValue:hover {
+    color: var(--magenta);
+    text-shadow: 0 0 10px var(--magenta);
+}
+
+.favourite {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--magenta);
+    border-radius: 2px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+
+.favouriteLabel {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--dim);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.favouriteValue {
+    font-family: var(--display);
+    font-weight: 500;
+    color: var(--text);
+    font-size: 0.95rem;
+}
+
+.followRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+}
+
+.blockedBanner {
+    background: rgba(var(--magenta-rgb), 0.1);
+    color: var(--magenta);
+    border: 1px solid rgba(var(--magenta-rgb), 0.4);
+    border-radius: 2px;
+    padding: 0.5rem 1rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.banBanner {
+    background: rgba(var(--magenta-rgb), 0.12);
+    color: var(--magenta);
+    border: 1px solid rgba(var(--magenta-rgb), 0.5);
+    border-radius: 2px;
+    padding: 0.85rem 1.1rem;
+    margin: 0 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    box-shadow: 0 0 28px -10px var(--magenta);
+}
+
+.banBannerTitle {
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.banBannerReason {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    color: var(--pink);
+}
+
+.bannedProfile {
+    filter: grayscale(0.85);
+}
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .banner {
+        height: 140px;
+        margin-bottom: -30px;
+    }
+
+    .headerSection {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .info {
+        align-items: center;
+        padding-top: 8px;
+    }
+
+    .displayName {
+        justify-content: center;
+    }
+
+    .socialRow {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner {
+        height: 110px;
+        margin-bottom: -25px;
+    }
+
+    .avatarContainer {
+        width: 72px;
+        height: 72px;
+    }
+
+    .displayName {
+        font-size: 1.2rem;
+    }
+
+    .metaItem {
+        border-left: none;
+        padding: 0 0.4rem;
+    }
+
+    .favourite {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+    }
+
+    .socialChipValue {
+        max-width: 140px;
+    }
+}

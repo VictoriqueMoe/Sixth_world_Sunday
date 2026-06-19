@@ -1,0 +1,71 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 1.5rem;
+}
+
+.title {
+    font-family: var(--display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text);
+    margin-bottom: 1rem;
+}
+
+.title::before {
+    content: "▸ ";
+    color: var(--magenta);
+}
+
+.tabs {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0.55rem 1.1rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--dim);
+    border-bottom: 2px solid transparent;
+    border-left: 2px solid transparent;
+    transition: all 0.12s var(--ease-out);
+    white-space: nowrap;
+}
+
+.tab::before {
+    content: "//";
+    color: var(--dimmer);
+}
+
+.tab:hover {
+    color: var(--text);
+    background: var(--panel-2);
+}
+
+.tabActive {
+    color: #fff;
+    background: linear-gradient(90deg, rgba(var(--magenta-rgb), 0.14), transparent);
+    border-bottom-color: var(--magenta);
+}
+
+.tabActive::before {
+    color: var(--magenta);
+}
+
+.content {
+    min-width: 0;
+}

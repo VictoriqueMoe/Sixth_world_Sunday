@@ -1,0 +1,135 @@
+.bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 18px;
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--line-bright);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.3px;
+}
+
+.icon {
+    flex-shrink: 0;
+    color: var(--green);
+}
+
+.participants {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.participant {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    border: 1px solid var(--line-bright);
+    background: var(--panel-2);
+    color: var(--dim);
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 8rem;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--dimmer);
+    transition:
+        background 0.15s,
+        box-shadow 0.15s;
+}
+
+.speaking {
+    background: rgba(56, 255, 163, 0.14);
+    border-color: var(--green);
+    color: var(--green);
+}
+
+.speaking .dot {
+    background: var(--green);
+    box-shadow: 0 0 7px var(--green);
+}
+
+.miniBtn {
+    border: none;
+    background: transparent;
+    color: var(--dim);
+    font: inherit;
+    font-size: 0.8rem;
+    line-height: 1;
+    padding: 0 0.1rem;
+    cursor: pointer;
+    opacity: 0.75;
+    transition: opacity 0.15s;
+}
+
+.miniBtn:hover {
+    opacity: 1;
+}
+
+.dock {
+    border-top: 1px solid var(--line-bright);
+    background: var(--panel);
+}
+
+.dockHead {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 12px 0;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--dim);
+}
+
+.dockGlyph {
+    color: var(--magenta);
+}
+
+.dockName {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dock .bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    border-bottom: none;
+    background: transparent;
+    padding: 0.4rem 12px 0.6rem;
+}
+
+.presence {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.controls {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.controls button {
+    flex: 1;
+    text-align: center;
+}

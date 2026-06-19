@@ -1,0 +1,27 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1rem 0;
+}
+
+.info {
+    color: var(--dim);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.compact {
+    margin-top: 0;
+    padding: 0;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.compact .info {
+    white-space: nowrap;
+}

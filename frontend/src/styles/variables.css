@@ -1,0 +1,60 @@
+:root {
+    --bg: #07070c;
+    --bg-2: #0b0b13;
+    --panel: #0f1019;
+    --panel-2: #14151f;
+    --panel-3: #191a26;
+    --line: #20212f;
+    --line-bright: #2e3045;
+
+    --text: #e9e9f2;
+    --dim: #80819a;
+    --dimmer: #4d4e62;
+
+    --magenta: #ff2d78;
+    --cyan: #00e5ff;
+    --amber: #ffb000;
+    --green: #38ffa3;
+    --violet: #9d6bff;
+    --teal: #2ad6c4;
+    --pink: #ff7ac6;
+
+    --magenta-rgb: 255, 45, 120;
+    --cyan-rgb: 0, 229, 255;
+    --line-rgb: 32, 33, 47;
+
+    --display: "Chakra Petch", "Segoe UI", system-ui, sans-serif;
+    --mono: "Share Tech Mono", "Consolas", ui-monospace, monospace;
+
+    --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    --page-max-width: 760px;
+
+    --bg-void: var(--bg);
+    --bg-purple: var(--bg-2);
+    --bg-card: var(--panel);
+    --bg-card-hover: var(--panel-2);
+    --gold: var(--magenta);
+    --gold-light: #ff6aa0;
+    --gold-dark: #c01f5c;
+    --purple: var(--cyan);
+    --purple-light: #5cefff;
+    --purple-muted: #15323a;
+    --text-muted: var(--dim);
+    --rose: var(--pink);
+    --font-display: var(--display);
+    --font-body: var(--display);
+    --font-mono: var(--mono);
+
+    --gold-rgb: 255, 45, 120;
+    --purple-rgb: 0, 229, 255;
+    --rose-rgb: 255, 122, 198;
+    --bg-card-rgb: 15, 16, 25;
+    --bg-purple-rgb: 11, 11, 19;
+    --hover-glow: 0.25;
+}
+
+html[data-width="wide"] {
+    --page-max-width: 100%;
+}

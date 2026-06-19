@@ -1,0 +1,36 @@
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--cyan);
+    border-radius: 2px;
+    padding: 1.1rem 1.25rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--dim);
+    line-height: 1.6;
+}
+
+.panel p {
+    margin-bottom: 0.5rem;
+}
+
+.panel p:last-child {
+    margin-bottom: 0;
+}
+
+.panel strong {
+    color: var(--cyan);
+}
+
+.title {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--dimmer);
+    margin-bottom: 0.75rem;
+}
+
+.title::before {
+    content: "// ";
+}

@@ -1,0 +1,272 @@
+.group {
+    display: inline;
+    word-break: normal;
+    overflow-wrap: normal;
+}
+
+@media (max-width: 768px) {
+    .group.groupCompactMobile:not(.groupExpanded) {
+        display: inline-flex;
+        align-items: center;
+        vertical-align: middle;
+        padding: 2px 6px 2px 4px;
+        margin-left: 0.35rem;
+        border-radius: 2px;
+        background: rgba(var(--magenta-rgb), 0.1);
+        border: 1px solid rgba(var(--magenta-rgb), 0.45);
+        gap: 3px;
+        white-space: nowrap;
+    }
+
+    .group.groupCompactMobile:not(.groupExpanded)::before {
+        content: "◆";
+        color: var(--magenta);
+        font-size: 0.7rem;
+        line-height: 1;
+        margin-right: 1px;
+    }
+
+    .group.groupCompactMobile:not(.groupExpanded) .pill {
+        margin-left: 0;
+    }
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 5px;
+    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    vertical-align: middle;
+    margin-left: 0.35rem;
+    white-space: nowrap;
+    word-break: normal;
+    overflow-wrap: normal;
+    flex-shrink: 0;
+}
+
+@property --super-admin-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+}
+
+.superAdmin {
+    position: relative;
+    overflow: hidden;
+    padding-right: 1.25rem;
+    background:
+        linear-gradient(180deg, #0a0420 0%, #1a0838 100%) padding-box,
+        conic-gradient(
+                from var(--super-admin-angle),
+                #6d28d9 0deg,
+                #a855f7 90deg,
+                #38bdf8 180deg,
+                #c084fc 270deg,
+                #6d28d9 360deg
+            )
+            border-box;
+    color: #f3e8ff;
+    border: 1.5px solid transparent;
+    text-shadow:
+        -1px 0 0 rgba(168, 85, 247, 0.9),
+        1px 0 0 rgba(56, 189, 248, 0.9),
+        0 0 8px rgba(196, 163, 255, 0.6);
+    box-shadow:
+        0 0 12px rgba(168, 85, 247, 0.55),
+        0 0 26px rgba(56, 189, 248, 0.22),
+        inset 0 0 12px rgba(88, 28, 135, 0.45);
+    animation:
+        super-admin-spin 4.5s linear infinite,
+        super-admin-pulse 2.6s ease-in-out infinite alternate,
+        super-admin-glitch 3.2s ease-in-out infinite;
+}
+
+.superAdmin::after {
+    content: "\2756";
+    position: absolute;
+    top: 50%;
+    right: 0.3em;
+    transform: translate(0, -50%) rotate(0deg);
+    transform-origin: center center;
+    font-size: 0.7em;
+    color: #f5e8ff;
+    text-shadow:
+        0 0 6px #c4a3ff,
+        0 0 10px rgba(56, 189, 248, 0.85);
+    animation: super-admin-orbit 4s linear infinite;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes super-admin-spin {
+    to {
+        --super-admin-angle: 360deg;
+    }
+}
+
+@keyframes super-admin-pulse {
+    0% {
+        box-shadow:
+            0 0 8px rgba(147, 51, 234, 0.4),
+            0 0 16px rgba(56, 189, 248, 0.15),
+            inset 0 0 8px rgba(88, 28, 135, 0.35);
+    }
+    100% {
+        box-shadow:
+            0 0 18px rgba(168, 85, 247, 0.75),
+            0 0 32px rgba(56, 189, 248, 0.35),
+            inset 0 0 12px rgba(88, 28, 135, 0.55);
+    }
+}
+
+@keyframes super-admin-glitch {
+    0%,
+    100% {
+        text-shadow:
+            -1px 0 0 rgba(168, 85, 247, 0.9),
+            1px 0 0 rgba(56, 189, 248, 0.9),
+            0 0 8px rgba(196, 163, 255, 0.6);
+    }
+    50% {
+        text-shadow:
+            -2px 0 0 rgba(168, 85, 247, 0.95),
+            2px 0 0 rgba(56, 189, 248, 0.95),
+            0 0 12px rgba(196, 163, 255, 0.85);
+    }
+}
+
+@keyframes super-admin-orbit {
+    from {
+        transform: translate(0, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(0, -50%) rotate(360deg);
+    }
+}
+
+.superAdmin {
+    outline: 1.5px solid transparent;
+    outline-offset: 0;
+    transition:
+        outline-color 0.25s ease,
+        outline-offset 0.25s ease,
+        filter 0.25s ease,
+        letter-spacing 0.25s ease;
+}
+
+.superAdmin:hover {
+    outline-color: rgba(168, 85, 247, 0.85);
+    outline-offset: 3px;
+    filter: brightness(1.25) saturate(1.3);
+    letter-spacing: 0.08em;
+    animation-duration: 2s, 1.4s, 1.6s;
+}
+
+.superAdmin:hover::after {
+    animation-duration: 1.5s;
+}
+
+@media (max-width: 768px) {
+    .pill.compactMobile.superAdmin:hover {
+        outline-color: transparent;
+        outline-offset: 0;
+        filter: none;
+        letter-spacing: normal;
+    }
+}
+
+.group.groupAlwaysCompact:not(.groupExpanded) {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    gap: 4px;
+    margin-left: 0.35rem;
+}
+
+.pill.alwaysCompact {
+    width: 0.5rem;
+    height: 0.5rem;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 0;
+    line-height: 0;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin-left: 0;
+    vertical-align: middle;
+    background-color: var(--dot-color, currentColor) !important;
+    border: 1px solid var(--dot-color, currentColor) !important;
+    text-shadow: none;
+    box-shadow: none;
+    animation: none;
+    cursor: pointer;
+}
+
+.pill.alwaysCompact.superAdmin {
+    --dot-color: var(--violet);
+}
+
+.pill.alwaysCompact.admin {
+    --dot-color: var(--magenta);
+}
+
+.pill.alwaysCompact.moderator {
+    --dot-color: var(--cyan);
+}
+
+.pill.alwaysCompact.superAdmin::after {
+    display: none;
+}
+
+.admin {
+    background: rgba(var(--magenta-rgb), 0.12);
+    color: var(--magenta);
+    border: 1px solid var(--magenta);
+}
+
+.moderator {
+    background: rgba(var(--cyan-rgb), 0.12);
+    color: var(--cyan);
+    border: 1px solid var(--cyan);
+}
+
+@media (max-width: 768px) {
+    .pill.compactMobile {
+        width: 0.55rem;
+        height: 0.55rem;
+        padding: 0;
+        border-radius: 50%;
+        font-size: 0;
+        line-height: 0;
+        overflow: hidden;
+        flex-shrink: 0;
+        margin-left: 0.25rem;
+        vertical-align: middle;
+        background-color: var(--dot-color, currentColor) !important;
+        border: 1px solid var(--dot-color, currentColor) !important;
+        text-shadow: none;
+        box-shadow: none;
+        animation: none;
+        cursor: pointer;
+    }
+
+    .pill.compactMobile.superAdmin {
+        --dot-color: var(--violet);
+    }
+
+    .pill.compactMobile.admin {
+        --dot-color: var(--magenta);
+    }
+
+    .pill.compactMobile.moderator {
+        --dot-color: var(--cyan);
+    }
+
+    .pill.compactMobile.superAdmin::after {
+        display: none;
+    }
+}

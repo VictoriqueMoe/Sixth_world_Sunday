@@ -1,0 +1,145 @@
+.button {
+    font-family: var(--display);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 2px;
+    white-space: nowrap;
+    transition:
+        border-color 0.15s var(--ease-out),
+        color 0.15s var(--ease-out),
+        background 0.15s var(--ease-out),
+        box-shadow 0.2s var(--ease-out),
+        transform 0.05s var(--ease-out);
+}
+
+.button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.button:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+/* Sizes */
+
+.medium {
+    padding: 0.6rem 1.1rem;
+    font-size: 0.9rem;
+}
+
+.small {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.78rem;
+    letter-spacing: 1.5px;
+}
+
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    font-size: 14px;
+    letter-spacing: 0;
+}
+
+/* Variants */
+
+.primary {
+    border: 1px solid var(--magenta);
+    background: linear-gradient(180deg, rgba(var(--magenta-rgb), 0.22), rgba(var(--magenta-rgb), 0.06));
+    color: #fff;
+}
+
+.primary:hover:not(:disabled) {
+    box-shadow: 0 0 28px -4px var(--magenta);
+}
+
+.secondary {
+    background: var(--panel-2);
+    border: 1px solid var(--line-bright);
+    color: var(--dim);
+}
+
+.secondary:hover:not(:disabled) {
+    border-color: var(--cyan);
+    color: var(--text);
+}
+
+.secondary.active {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: inset 0 0 12px -6px var(--cyan);
+}
+
+.danger {
+    background: var(--panel-2);
+    border: 1px solid var(--line-bright);
+    color: var(--dim);
+}
+
+.danger:hover:not(:disabled) {
+    border-color: var(--magenta);
+    color: var(--magenta);
+    box-shadow: 0 0 18px -6px var(--magenta);
+}
+
+.ghost {
+    background: transparent;
+    border: 1px solid var(--line-bright);
+    color: var(--dim);
+}
+
+.ghost:hover:not(:disabled) {
+    border-color: var(--cyan);
+    color: var(--text);
+}
+
+/* Mono "terminal" pill — voice/stage controls */
+
+.control {
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 0.5rem 0.9rem;
+    background: var(--panel-2);
+    border: 1px solid var(--line-bright);
+    color: var(--dim);
+}
+
+.control:hover:not(:disabled) {
+    border-color: var(--cyan);
+    color: var(--cyan);
+}
+
+.control.active {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: inset 0 0 12px -6px var(--cyan);
+}
+
+.control.toneDanger {
+    border-color: rgba(var(--magenta-rgb), 0.55);
+    color: var(--magenta);
+}
+
+.control.toneDanger:hover:not(:disabled) {
+    border-color: var(--magenta);
+    color: var(--magenta);
+}
+
+.control.toneDanger.active {
+    background: var(--magenta);
+    border-color: var(--magenta);
+    color: #fff;
+}
+
+.control.small {
+    padding: 0.3rem 0.65rem;
+    font-size: 10px;
+}

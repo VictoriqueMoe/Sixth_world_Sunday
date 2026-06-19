@@ -1,0 +1,25 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.error {
+    color: var(--magenta);
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.5px;
+}
+
+.success {
+    color: var(--green);
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}

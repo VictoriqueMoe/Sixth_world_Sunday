@@ -1,0 +1,87 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.error {
+    background: rgba(var(--magenta-rgb), 0.1);
+    border: 1px solid var(--magenta);
+    color: var(--magenta);
+    padding: 0.5rem 0.75rem;
+    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.label {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--dim);
+}
+
+.typePicker {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+}
+
+.typeOption {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    padding: 0.75rem;
+    background: #07070d;
+    border: 1px solid var(--line-bright);
+    border-radius: 2px;
+    cursor: pointer;
+    color: var(--dim);
+    transition: all 0.15s var(--ease-out);
+}
+
+.typeOption:hover {
+    border-color: var(--cyan);
+    color: var(--text);
+}
+
+.typeActive {
+    border-color: var(--magenta);
+    color: var(--text);
+    box-shadow:
+        0 0 0 1px var(--magenta),
+        0 0 18px -6px var(--magenta);
+}
+
+.typeGlyph {
+    font-family: var(--mono);
+    font-size: 1.2rem;
+    color: var(--magenta);
+}
+
+.typeLabel {
+    font-family: var(--display);
+    font-size: 0.95rem;
+}
+
+.typeDesc {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.5px;
+    color: var(--dimmer);
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}

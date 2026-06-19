@@ -1,0 +1,59 @@
+.page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+}
+
+.detail {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 1.75rem 2rem;
+}
+
+.detailTitle {
+    margin: 0 0 1.25rem;
+    font-family: var(--display);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--text);
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line-bright);
+}
+
+.detailTitle::before {
+    content: "\25B8 ";
+    color: var(--magenta);
+}
+
+.body {
+    color: var(--text);
+    line-height: 1.7;
+}
+
+.body h1,
+.body h2,
+.body h3 {
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 1.5rem;
+}
+
+.body a {
+    color: var(--cyan);
+}
+
+.body a:hover {
+    color: var(--magenta);
+    text-shadow: 0 0 10px var(--magenta);
+}
+
+.body code {
+    background: #0c0c14;
+    border: 1px solid var(--line);
+    color: var(--amber);
+    font-family: var(--mono);
+    padding: 0.1rem 0.4rem;
+}

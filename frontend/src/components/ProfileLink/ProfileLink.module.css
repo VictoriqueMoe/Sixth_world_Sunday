@@ -1,0 +1,84 @@
+.link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    cursor: pointer;
+    transition: opacity 0.15s var(--ease-out);
+    min-width: 0;
+    max-width: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
+.link:hover {
+    opacity: 0.8;
+}
+
+.avatarWrapper {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+}
+
+.avatar {
+    border-radius: 3px;
+    object-fit: cover;
+    border: 1px solid var(--line-bright);
+}
+
+.avatarPlaceholder {
+    display: inline-flex;
+    border-radius: 3px;
+    background: var(--panel-2);
+    border: 1px solid var(--line-bright);
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text);
+}
+
+.onlineDot {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 9px;
+    height: 9px;
+    background: var(--green);
+    border-radius: 50%;
+    border: 2px solid var(--panel);
+    box-shadow: 0 0 6px var(--green);
+}
+
+.name {
+    font-family: var(--display);
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.banned {
+    filter: grayscale(1);
+    opacity: 0.55;
+}
+
+.bannedName {
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+}
+
+.bannedPill {
+    display: inline-block;
+    margin-left: 0.35rem;
+    padding: 1px 5px;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: rgba(var(--magenta-rgb), 0.12);
+    color: var(--magenta);
+    border: 1px solid var(--magenta);
+    border-radius: 2px;
+    vertical-align: middle;
+}

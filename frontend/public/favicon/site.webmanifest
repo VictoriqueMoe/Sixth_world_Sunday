@@ -1,0 +1,10 @@
+{
+  "name": "Sixth World Sunday",
+  "short_name": "Sixth World",
+  "icons": [
+    { "src": "/favicon/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "theme_color": "#0a0a0f",
+  "background_color": "#07070c",
+  "display": "standalone"
+}

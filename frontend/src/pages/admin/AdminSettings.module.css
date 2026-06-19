@@ -1,0 +1,220 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.title {
+    font-family: var(--display);
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    font-size: 1.35rem;
+    margin: 0;
+}
+
+.title::before {
+    content: "▸ ";
+    color: var(--magenta);
+}
+
+.card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 1.25rem;
+    overflow: hidden;
+}
+
+.sectionTitle {
+    font-family: var(--mono);
+    color: var(--dimmer);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    margin: 0 0 1rem;
+}
+
+.sectionTitle::before {
+    content: "// ";
+}
+
+.fieldGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.fieldLabel {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.5;
+}
+
+.saveRow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.loading {
+    font-family: var(--mono);
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 2rem;
+}
+
+.success {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    color: var(--green);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.success::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+}
+
+.saveError {
+    font-family: var(--mono);
+    color: var(--magenta);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.embedActions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.hiddenInput {
+    display: none;
+}
+
+.embedPreviews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.embedPreviewColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1 1 300px;
+    min-width: 260px;
+    max-width: 440px;
+}
+
+.embedPreviewLabel {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.discordPreview {
+    display: flex;
+    background: #2b2d31;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.discordBar {
+    width: 4px;
+    flex-shrink: 0;
+    background: var(--magenta);
+}
+
+.discordBody {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.75rem 1rem;
+    min-width: 0;
+}
+
+.discordSite {
+    font-size: 0.7rem;
+    color: #b5bac1;
+}
+
+.discordTitle {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #00a8fc;
+}
+
+.discordDesc {
+    font-size: 0.8rem;
+    color: #dbdee1;
+}
+
+.discordImage {
+    width: 100%;
+    border-radius: 4px;
+    margin-top: 0.35rem;
+    object-fit: cover;
+    max-height: 220px;
+}
+
+.twitterPreview {
+    border: 1px solid #38444d;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #15202b;
+}
+
+.twitterImage {
+    width: 100%;
+    aspect-ratio: 1.91 / 1;
+    object-fit: cover;
+    display: block;
+}
+
+.twitterBody {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.6rem 0.8rem;
+}
+
+.twitterDomain {
+    font-size: 0.75rem;
+    color: #8b98a5;
+}
+
+.twitterTitle {
+    font-size: 0.85rem;
+    color: #f7f9f9;
+}
+
+.twitterDesc {
+    font-size: 0.8rem;
+    color: #8b98a5;
+}

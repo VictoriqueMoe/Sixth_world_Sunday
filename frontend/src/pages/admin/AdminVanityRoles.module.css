@@ -1,0 +1,269 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title {
+    font-family: var(--display);
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    font-size: 1.35rem;
+    margin: 0;
+}
+
+.title::before {
+    content: "▸ ";
+    color: var(--magenta);
+}
+
+.tableWrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    white-space: nowrap;
+}
+
+.table th {
+    text-align: left;
+    padding: 0.7rem 1rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    background: var(--panel-2);
+    border-bottom: 1px solid var(--line);
+}
+
+.table td {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text);
+    border-bottom: 1px solid var(--line);
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.preview {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.12rem 0.45rem;
+    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.colorCell {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--dim);
+}
+
+.colorDot {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    border: 1px solid var(--line-bright);
+}
+
+.systemBadge {
+    font-family: var(--mono);
+    background: var(--panel-2);
+    border: 1px solid var(--line-bright);
+    color: var(--dim);
+    padding: 0.12rem 0.45rem;
+    border-radius: 2px;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.customBadge {
+    font-family: var(--mono);
+    background: rgba(var(--cyan-rgb), 0.1);
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    padding: 0.12rem 0.45rem;
+    border-radius: 2px;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.actions {
+    display: flex;
+    gap: 0.35rem;
+    justify-content: flex-end;
+}
+
+.form {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.fieldLabel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.colorInput {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.colorPicker {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--line-bright);
+    border-radius: 2px;
+    cursor: pointer;
+    padding: 0;
+    background: none;
+}
+
+.previewRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--dim);
+}
+
+.formActions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+.manageBody {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.systemNotice {
+    color: var(--dim);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    padding: 1rem;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--cyan);
+    border-radius: 2px;
+}
+
+.searchResults {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.userRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.45rem 0.5rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.userName {
+    font-size: 0.85rem;
+    color: var(--text);
+}
+
+.assignedSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.assignedLabel {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--dimmer);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.assignedLabel::before {
+    content: "// ";
+}
+
+.assignedList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.empty {
+    font-family: var(--mono);
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 2rem;
+}
+
+.loading {
+    font-family: var(--mono);
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 2rem;
+}
+
+.error {
+    font-family: var(--mono);
+    color: var(--magenta);
+    font-size: 0.82rem;
+}

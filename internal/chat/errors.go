@@ -1,0 +1,58 @@
+package chat
+
+import (
+	"errors"
+	"fmt"
+)
+
+var (
+	ErrUserNotFound             = errors.New("user not found")
+	ErrNotMember                = errors.New("not a member of this room")
+	ErrRoomNotFound             = errors.New("room not found")
+	ErrMissingFields            = errors.New("missing required fields")
+	ErrUserBlocked              = errors.New("you cannot message this user")
+	ErrCannotLeaveAsHost        = errors.New("host cannot leave their own room")
+	ErrNotHost                  = errors.New("only the host can do this")
+	ErrCannotKickHost           = errors.New("cannot kick the host")
+	ErrRoomFull                 = errors.New("room is full")
+	ErrNotPublic                = errors.New("room is not public")
+	ErrAlreadyMember            = errors.New("already a member")
+	ErrNotGroupRoom             = errors.New("not a group room")
+	ErrRateLimited              = errors.New("daily limit reached")
+	ErrSystemRoom               = errors.New("system rooms are managed automatically")
+	ErrMessageNotPinned         = errors.New("message is not pinned")
+	ErrInvalidEmoji             = errors.New("invalid emoji")
+	ErrNicknameLocked           = errors.New("nickname has been locked by a moderator")
+	ErrTargetImmune             = errors.New("this member's nickname cannot be changed by moderators")
+	ErrModRoleRequired          = errors.New("only site moderators or admins can do this")
+	ErrInvalidTimeoutDuration   = errors.New("invalid timeout duration")
+	ErrTimeoutLockedByStaff     = errors.New("timeout set by site staff cannot be changed by host")
+	ErrTimedOut                 = errors.New("you are timed out from this room")
+	ErrMessageDeletePermission  = errors.New("you do not have permission to delete this message")
+	ErrCannotDeleteStaffMessage = errors.New("messages from moderators and admins cannot be deleted")
+	ErrGhostRequiresStaff       = errors.New("only site moderators or admins can join as a ghost")
+	ErrMessageEditPermission    = errors.New("you can only edit your own messages")
+	ErrCannotEditSystemMessage  = errors.New("system messages cannot be edited")
+	ErrCannotBanStaff           = errors.New("site staff or the host cannot be banned")
+	ErrBannedFromRoom           = errors.New("you are banned from this room")
+	ErrInvalidBannedWordMode    = errors.New("invalid match mode")
+	ErrInvalidBannedWordAction  = errors.New("invalid action")
+	ErrInvalidBannedWordRegex   = errors.New("invalid regex pattern")
+	ErrBannedWordRuleMismatch   = errors.New("banned word rule does not belong to this room")
+	ErrLockedNonStaffDM         = errors.New("locked accounts can only message site staff")
+
+	ErrVoiceDisabled      = errors.New("voice chat is not configured")
+	ErrVoiceMuteForbidden = errors.New("you cannot mute participants here")
+	ErrNotVoiceChannel    = errors.New("this channel does not support voice")
+
+	ErrInvalidChannelKind = errors.New("invalid channel kind")
+)
+
+type ErrBannedWordMatch struct {
+	Pattern string
+	Action  string
+}
+
+func (e *ErrBannedWordMatch) Error() string {
+	return fmt.Sprintf("message blocked by banned word rule %q (%s)", e.Pattern, e.Action)
+}

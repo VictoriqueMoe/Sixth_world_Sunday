@@ -1,0 +1,409 @@
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router";
+import { usePageTitle } from "../../hooks/usePageTitle";
+import { useAdminUser } from "../../api/queries/admin";
+import {
+    useAdminDeleteUser,
+    useBanUser,
+    useLockUser,
+    useRemoveUserRole,
+    useResetUserPassword,
+    useSetUserRole,
+    useUnbanUser,
+    useUnlockUser,
+} from "../../api/mutations/admin";
+import { Button } from "../../components/Button/Button";
+import { Input } from "../../components/Input/Input";
+import { Modal } from "../../components/Modal/Modal";
+import { ProfileLink } from "../../components/ProfileLink/ProfileLink";
+import { RolePill } from "../../components/RolePill/RolePill";
+import { Select } from "../../components/Select/Select";
+import { useAuth } from "../../hooks/useAuth";
+import { can } from "../../utils/permissions";
+import { formatDate } from "../../utils/time";
+import styles from "./AdminUserDetail.module.css";
+
+export function AdminUserDetail() {
+    const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate();
+    const { user: currentUser } = useAuth();
+    const { user, loading } = useAdminUser(id ?? "");
+    usePageTitle(user ? `Admin - ${user.display_name}` : "Admin - User");
+    const [error, setError] = useState("");
+    const [feedback, setFeedback] = useState("");
+
+    const setRoleMutation = useSetUserRole();
+    const removeRoleMutation = useRemoveUserRole();
+    const banUserMutation = useBanUser();
+    const unbanUserMutation = useUnbanUser();
+    const lockUserMutation = useLockUser();
+    const unlockUserMutation = useUnlockUser();
+    const deleteUserMutation = useAdminDeleteUser();
+    const resetPasswordMutation = useResetUserPassword();
+
+    const [selectedRole, setSelectedRole] = useState("admin");
+    const [banReason, setBanReason] = useState("");
+    const [lockReason, setLockReason] = useState("");
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [resetPasswordResult, setResetPasswordResult] = useState<string | null>(null);
+
+    async function handleSetRole() {
+        if (!id) {
+            return;
+        }
+        try {
+            await setRoleMutation.mutateAsync({ id, role: selectedRole });
+            setFeedback("Role assigned");
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Failed to set role");
+        }
+    }
+
+    async function handleRemoveRole() {
+        if (!id || !user?.role) {
+            return;
+        }
+        try {
+            await removeRoleMutation.mutateAsync({ id, role: user.role });
+            setFeedback("Role removed");
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Failed to remove role");
+        }
+    }
+
+    async function handleBan() {
+        if (!id || !banReason.trim()) {
+            return;
+        }
+        try {
+            await banUserMutation.mutateAsync({ id, reason: banReason.trim() });
+            setBanReason("");
+            setFeedback("User banned");
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Failed to ban user");
+        }
+    }
+
+    async function handleUnban() {
+        if (!id) {
+            return;
+        }
+        try {
+            await unbanUserMutation.mutateAsync(id);
+            setFeedback("User unbanned");
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Failed to unban user");
+        }
+    }
+
+    async function handleLock() {
+        if (!id || !lockReason.trim()) {
+            return;
+        }
+        try {
+            await lockUserMutation.mutateAsync({ id, reason: lockReason.trim() });
+            setLockReason("");
+            setFeedback("User locked");
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Failed to lock user");
+        }
+    }
+
+    async function handleUnlock() {
+        if (!id) {
+            return;
+        }
+        try {
+            await unlockUserMutation.mutateAsync(id);
+            setFeedback("User unlocked");
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Failed to unlock user");
+        }
+    }
+
+    async function handleDelete() {
+        if (!id) {
+            return;
+        }
+        if (!window.confirm("Are you sure you want to delete this user? This cannot be undone.")) {
+            return;
+        }
+        try {
+            await deleteUserMutation.mutateAsync(id);
+            navigate("/admin/users");
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Failed to delete user");
+            setDeleteModalOpen(false);
+        }
+    }
+
+    async function handleResetPassword() {
+        if (!id) {
+            return;
+        }
+        if (
+            !window.confirm(
+                "Reset this user's password? Their current password will stop working and all their sessions will be logged out.",
+            )
+        ) {
+            return;
+        }
+        try {
+            const result = await resetPasswordMutation.mutateAsync(id);
+            setResetPasswordResult(result.password);
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Failed to reset password");
+        }
+    }
+
+    if (loading) {
+        return <div className={styles.loading}>Pulling runner dossier...</div>;
+    }
+
+    if (error && !user) {
+        return <div className={styles.error}>{error}</div>;
+    }
+
+    if (!user) {
+        return null;
+    }
+
+    return (
+        <div className={styles.page}>
+            <span className={styles.backLink} onClick={() => navigate("/admin/users")}>
+                &larr; Back to Runners
+            </span>
+
+            <h1 className={styles.title}>Runner Dossier</h1>
+
+            {error && <div className={styles.error}>{error}</div>}
+            {feedback && <div className={styles.success}>{feedback}</div>}
+
+            <div className={styles.card}>
+                <div className={styles.userHeader}>
+                    <ProfileLink
+                        user={{
+                            id: user.id,
+                            username: user.username,
+                            display_name: user.display_name,
+                            avatar_url: user.avatar_url,
+                            role: user.role,
+                        }}
+                        size="large"
+                    />
+                </div>
+
+                <div className={styles.infoGrid}>
+                    <div className={styles.infoItem}>
+                        <span className={styles.infoLabel}>Email</span>
+                        {user.email ? (
+                            <span className={styles.infoValue}>{user.email}</span>
+                        ) : (
+                            <span className={styles.bannedBadge}>No comm channel</span>
+                        )}
+                    </div>
+                    {user.ip && (
+                        <div className={styles.infoItem}>
+                            <span className={styles.infoLabel}>IP Address</span>
+                            <span className={styles.infoValue}>{user.ip}</span>
+                        </div>
+                    )}
+                    <div className={styles.infoItem}>
+                        <span className={styles.infoLabel}>Status</span>
+                        <span className={user.banned ? styles.bannedBadge : styles.activeBadge}>
+                            {user.banned ? "Flatlined" : "Jacked In"}
+                        </span>
+                    </div>
+                    {user.banned && user.ban_reason && (
+                        <div className={styles.infoItem}>
+                            <span className={styles.infoLabel}>Ban Reason</span>
+                            <span className={styles.infoValue}>{user.ban_reason}</span>
+                        </div>
+                    )}
+                    {user.banned && user.banned_by && (
+                        <div className={styles.infoItem}>
+                            <span className={styles.infoLabel}>Banned By</span>
+                            <span className={styles.infoValue}>
+                                <ProfileLink user={user.banned_by} size="small" />
+                            </span>
+                        </div>
+                    )}
+                    {user.banned && user.banned_at && (
+                        <div className={styles.infoItem}>
+                            <span className={styles.infoLabel}>Banned At</span>
+                            <span className={styles.infoValue}>{formatDate(user.banned_at)}</span>
+                        </div>
+                    )}
+                    {user.locked && (
+                        <div className={styles.infoItem}>
+                            <span className={styles.infoLabel}>Lock</span>
+                            <span className={styles.bannedBadge}>ICE Locked</span>
+                        </div>
+                    )}
+                    {user.locked && user.lock_reason && (
+                        <div className={styles.infoItem}>
+                            <span className={styles.infoLabel}>Lock Reason</span>
+                            <span className={styles.infoValue}>{user.lock_reason}</span>
+                        </div>
+                    )}
+                    {user.locked && user.locked_at && (
+                        <div className={styles.infoItem}>
+                            <span className={styles.infoLabel}>Locked At</span>
+                            <span className={styles.infoValue}>{formatDate(user.locked_at)}</span>
+                        </div>
+                    )}
+                    <div className={styles.infoItem}>
+                        <span className={styles.infoLabel}>Joined</span>
+                        <span className={styles.infoValue}>{formatDate(user.created_at)}</span>
+                    </div>
+                </div>
+            </div>
+
+            {can(currentUser?.role, "manage_roles") && user.role !== "super_admin" && (
+                <div className={styles.card}>
+                    <h2 className={styles.sectionTitle}>role</h2>
+                    {user.role ? (
+                        <div className={styles.roleDisplay}>
+                            <span className={styles.currentRole}>
+                                Current: <RolePill role={user.role} userId={user.id} />
+                            </span>
+                            <Button variant="danger" size="small" onClick={handleRemoveRole}>
+                                Remove Role
+                            </Button>
+                        </div>
+                    ) : (
+                        <span className={styles.noRole}>No role assigned</span>
+                    )}
+                    <div className={styles.roleAssign}>
+                        <Select value={selectedRole} onChange={e => setSelectedRole(e.target.value)}>
+                            <option value="admin">Admin</option>
+                            <option value="moderator">Moderator</option>
+                        </Select>
+                        <Button variant="primary" onClick={handleSetRole}>
+                            {user.role ? "Change Role" : "Assign Role"}
+                        </Button>
+                    </div>
+                </div>
+            )}
+
+            {can(currentUser?.role, "ban_user") && user.role !== "super_admin" && (
+                <div className={styles.card}>
+                    <h2 className={styles.sectionTitle}>ban management</h2>
+                    {user.banned ? (
+                        <Button variant="primary" onClick={handleUnban}>
+                            Unban User
+                        </Button>
+                    ) : (
+                        <div className={styles.actionRow}>
+                            <div className={styles.actionField}>
+                                <span className={styles.fieldLabel}>Ban Reason</span>
+                                <Input
+                                    value={banReason}
+                                    onChange={e => setBanReason(e.target.value)}
+                                    placeholder="Reason for ban..."
+                                />
+                            </div>
+                            <Button variant="danger" onClick={handleBan} disabled={!banReason.trim()}>
+                                Ban User
+                            </Button>
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {can(currentUser?.role, "ban_user") && user.role !== "super_admin" && user.role !== "admin" && (
+                <div className={styles.card}>
+                    <h2 className={styles.sectionTitle}>lock management</h2>
+                    <p className={styles.fieldLabel}>
+                        A locked user can read the site but cannot post in channels or take other actions.
+                    </p>
+                    {user.locked ? (
+                        <Button variant="primary" onClick={handleUnlock}>
+                            Unlock User
+                        </Button>
+                    ) : (
+                        <div className={styles.actionRow}>
+                            <div className={styles.actionField}>
+                                <span className={styles.fieldLabel}>Lock Reason</span>
+                                <Input
+                                    value={lockReason}
+                                    onChange={e => setLockReason(e.target.value)}
+                                    placeholder="Reason for lock..."
+                                />
+                            </div>
+                            <Button variant="danger" onClick={handleLock} disabled={!lockReason.trim()}>
+                                Lock User
+                            </Button>
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {can(currentUser?.role, "reset_password") && user.role !== "super_admin" && (
+                <div className={styles.card}>
+                    <h2 className={styles.sectionTitle}>passkey</h2>
+                    <p className={styles.fieldLabel}>
+                        Generates a new random password and logs the user out everywhere. Use this for users who are
+                        locked out and have no email to self-reset.
+                    </p>
+                    <Button variant="danger" onClick={handleResetPassword} disabled={resetPasswordMutation.isPending}>
+                        Reset Password
+                    </Button>
+                </div>
+            )}
+
+            {can(currentUser?.role, "delete_any_user") && user.role !== "super_admin" && (
+                <div className={`${styles.card} ${styles.dangerZone}`}>
+                    <h2 className={styles.sectionTitle}>danger zone</h2>
+                    <Button variant="danger" onClick={() => setDeleteModalOpen(true)}>
+                        Delete User
+                    </Button>
+                </div>
+            )}
+
+            <Modal
+                isOpen={resetPasswordResult !== null}
+                onClose={() => setResetPasswordResult(null)}
+                title="New Passkey"
+            >
+                <div className={styles.modalBody}>
+                    Share this new passkey with <strong>{user.display_name}</strong> securely. It will not be shown
+                    again.
+                    <div className={styles.infoItem} style={{ marginTop: "1rem" }}>
+                        <span className={styles.infoLabel}>Passkey</span>
+                        <code className={styles.infoValue}>{resetPasswordResult}</code>
+                    </div>
+                </div>
+                <div className={styles.modalActions}>
+                    <Button
+                        variant="secondary"
+                        onClick={() => {
+                            if (resetPasswordResult) {
+                                navigator.clipboard.writeText(resetPasswordResult);
+                            }
+                        }}
+                    >
+                        Copy
+                    </Button>
+                    <Button variant="primary" onClick={() => setResetPasswordResult(null)}>
+                        Done
+                    </Button>
+                </div>
+            </Modal>
+
+            <Modal isOpen={deleteModalOpen} onClose={() => setDeleteModalOpen(false)} title="Confirm Delete">
+                <div className={styles.modalBody}>
+                    Are you sure you want to delete <strong>{user.display_name}</strong>? This action cannot be undone.
+                </div>
+                <div className={styles.modalActions}>
+                    <Button variant="secondary" onClick={() => setDeleteModalOpen(false)}>
+                        Cancel
+                    </Button>
+                    <Button variant="danger" onClick={handleDelete}>
+                        Delete
+                    </Button>
+                </div>
+            </Modal>
+        </div>
+    );
+}

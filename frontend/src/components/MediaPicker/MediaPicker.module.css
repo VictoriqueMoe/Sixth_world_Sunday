@@ -1,0 +1,101 @@
+.previews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.preview {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 2px;
+    overflow: hidden;
+    border: 1px solid var(--line-bright);
+}
+
+.previewSmall {
+    width: 60px;
+    height: 60px;
+    border-radius: 2px;
+}
+
+.previewMedia {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.previewRemove {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: rgba(3, 3, 6, 0.78);
+    border: 1px solid var(--line-bright);
+    color: var(--dim);
+    cursor: pointer;
+    font-size: 0.75rem;
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition:
+        color 0.12s,
+        border-color 0.12s,
+        background 0.12s;
+}
+
+.previewRemoveSmall {
+    font-size: 0.65rem;
+    width: 16px;
+    height: 16px;
+}
+
+.previewRemove:hover {
+    border-color: var(--magenta);
+    color: var(--magenta);
+    background: rgba(var(--magenta-rgb), 0.12);
+}
+
+.previewDraggable {
+    cursor: grab;
+}
+
+.previewDraggable:active {
+    cursor: grabbing;
+}
+
+.previewReorder {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(to top, rgba(3, 3, 6, 0.78), transparent);
+}
+
+.previewMove {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--dim);
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 3px 0;
+    touch-action: manipulation;
+    transition: color 0.12s;
+}
+
+.previewMove:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.previewMove:not(:disabled):hover {
+    color: var(--cyan);
+}

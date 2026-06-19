@@ -1,0 +1,48 @@
+package model
+
+import (
+	"time"
+	"Sixth_world_Suday/internal/dto"
+	"Sixth_world_Suday/internal/role"
+
+	"github.com/google/uuid"
+)
+
+type (
+	NotificationRow struct {
+		ID               int
+		UserID           uuid.UUID
+		Type             dto.NotificationType
+		ReferenceID      uuid.UUID
+		ReferenceType    string
+		ActorID          uuid.UUID
+		Message          string
+		Read             bool
+		CreatedAt        time.Time
+		Count            int
+		ActorUsername    string
+		ActorDisplayName string
+		ActorAvatarURL   string
+		ActorRole        string
+	}
+)
+
+func (n *NotificationRow) ToResponse() dto.NotificationResponse {
+	return dto.NotificationResponse{
+		ID:            n.ID,
+		Type:          n.Type,
+		ReferenceID:   n.ReferenceID,
+		ReferenceType: n.ReferenceType,
+		Actor: dto.UserResponse{
+			ID:          n.ActorID,
+			Username:    n.ActorUsername,
+			DisplayName: n.ActorDisplayName,
+			AvatarURL:   n.ActorAvatarURL,
+			Role:        role.Role(n.ActorRole),
+		},
+		Message:   n.Message,
+		Read:      n.Read,
+		CreatedAt: n.CreatedAt.UTC().Format(time.RFC3339Nano),
+		Count:     n.Count,
+	}
+}

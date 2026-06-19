@@ -1,0 +1,111 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.avatarRow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.avatarPreview {
+    width: 72px;
+    height: 72px;
+    border-radius: 4px;
+    object-fit: cover;
+    border: 1px solid var(--line-bright);
+}
+
+.avatarPlaceholder {
+    width: 72px;
+    height: 72px;
+    border-radius: 4px;
+    background: var(--panel-2);
+    color: var(--magenta);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 1.8rem;
+    font-weight: 700;
+    border: 1px solid var(--line-bright);
+}
+
+.avatarControls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.hiddenInput {
+    display: none;
+}
+
+.hint {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.3px;
+}
+
+.label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.input {
+    background: #07070d;
+    border: 1px solid var(--line-bright);
+    border-radius: 2px;
+    color: var(--text);
+    font-family: var(--mono);
+    padding: 0.55rem 0.7rem;
+    font-size: 0.95rem;
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--magenta);
+    box-shadow:
+        0 0 0 1px var(--magenta),
+        0 0 18px -4px var(--magenta);
+}
+
+.counter {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dimmer);
+    align-self: flex-end;
+}
+
+.lockedNote {
+    background: rgba(var(--magenta-rgb), 0.1);
+    border: 1px solid var(--magenta);
+    color: var(--text);
+    padding: 0.5rem 0.7rem;
+    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+}
+
+.error {
+    background: rgba(var(--magenta-rgb), 0.1);
+    border: 1px solid var(--magenta);
+    color: var(--magenta);
+    padding: 0.5rem 0.7rem;
+    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+}

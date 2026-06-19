@@ -1,0 +1,136 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.title {
+    font-family: var(--display);
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    font-size: 1.35rem;
+    margin: 0;
+}
+
+.title::before {
+    content: "▸ ";
+    color: var(--magenta);
+}
+
+.filterRow {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.filterLabel {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.tableWrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 0.6rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+}
+
+.table th {
+    font-family: var(--mono);
+    color: var(--dim);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    background: var(--panel-2);
+}
+
+.table td {
+    color: var(--text);
+    font-size: 0.85rem;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.details {
+    display: inline-block;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--dim);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    vertical-align: middle;
+}
+
+.targetId {
+    display: inline-block;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--mono);
+    color: var(--cyan);
+    font-size: 0.78rem;
+    vertical-align: middle;
+}
+
+.timestampCell {
+    white-space: nowrap;
+    font-family: var(--mono);
+    color: var(--dim);
+    font-size: 0.78rem;
+}
+
+.loading {
+    font-family: var(--mono);
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 2rem;
+}
+
+.error {
+    font-family: var(--mono);
+    color: var(--magenta);
+    padding: 1rem;
+}
+
+.empty {
+    font-family: var(--mono);
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 2rem;
+}
+
+@media (max-width: 768px) {
+    .filterRow {
+        flex-wrap: wrap;
+    }
+}

@@ -1,0 +1,77 @@
+import { useState } from "react";
+import { useAdminSettings } from "../../api/queries/admin";
+import { useUpdateAdminSettings } from "../../api/mutations/admin";
+import { usePageTitle } from "../../hooks/usePageTitle";
+import { Button } from "../../components/Button/Button";
+import { TextArea } from "../../components/TextArea/TextArea";
+import type { SiteSettings } from "../../types/api";
+import styles from "./AdminSettings.module.css";
+
+const pages = [
+    { key: "rules_landing", label: "Welcome (Landing)" },
+    { key: "rules_chat_rooms", label: "Chat Rooms" },
+];
+
+export function AdminContentRules() {
+    usePageTitle("Admin - Content Rules");
+    const { settings: loadedSettings, loading } = useAdminSettings();
+    const updateSettingsMutation = useUpdateAdminSettings();
+    const [draft, setDraft] = useState<SiteSettings>({});
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+
+    const settings: SiteSettings = { ...(loadedSettings ?? {}), ...draft };
+
+    async function handleSave() {
+        setError("");
+        setSuccess("");
+        try {
+            await updateSettingsMutation.mutateAsync(settings);
+            setSuccess("Rules saved successfully");
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Failed to save rules");
+        }
+    }
+
+    if (loading) {
+        return <div className={styles.loading}>Loading protocols...</div>;
+    }
+
+    const saving = updateSettingsMutation.isPending;
+
+    return (
+        <div className={styles.page}>
+            <h1 className={styles.title}>Content Rules</h1>
+
+            {pages.map(page => (
+                <div key={page.key} className={styles.card}>
+                    <h2 className={styles.sectionTitle}>{page.label}</h2>
+                    <div className={styles.fieldGroup}>
+                        <div className={styles.field}>
+                            <span className={styles.fieldLabel}>
+                                Rules displayed at the top of the page. Leave empty to hide.
+                            </span>
+                            <TextArea
+                                value={settings[page.key] ?? ""}
+                                onChange={e => {
+                                    setDraft(prev => ({ ...prev, [page.key]: e.target.value }));
+                                    setSuccess("");
+                                }}
+                                rows={5}
+                                placeholder="Enter rules for this section..."
+                            />
+                        </div>
+                    </div>
+                </div>
+            ))}
+
+            <div className={styles.saveRow}>
+                <Button variant="primary" onClick={handleSave} disabled={saving}>
+                    {saving ? "Saving..." : "Save Rules"}
+                </Button>
+                {error && <span className={styles.saveError}>{error}</span>}
+                {success && <span className={styles.success}>{success}</span>}
+            </div>
+        </div>
+    );
+}

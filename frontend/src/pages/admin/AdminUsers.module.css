@@ -1,0 +1,184 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.title {
+    font-family: var(--display);
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    font-size: 1.35rem;
+    margin: 0;
+}
+
+.title::before {
+    content: "▸ ";
+    color: var(--magenta);
+}
+
+.searchRow {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.table th,
+.table td {
+    padding: 0.6rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+}
+
+.table th {
+    font-family: var(--mono);
+    color: var(--dim);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    background: var(--panel-2);
+}
+
+.table td {
+    color: var(--text);
+    font-size: 0.9rem;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.row {
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition:
+        background 0.12s var(--ease-out),
+        border-color 0.12s var(--ease-out);
+}
+
+.row:hover {
+    background: linear-gradient(90deg, rgba(var(--magenta-rgb), 0.1), transparent);
+}
+
+.row:hover td:first-child {
+    box-shadow: inset 2px 0 0 var(--magenta);
+}
+
+.userCell {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--mono);
+    color: var(--text);
+}
+
+.avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 3px;
+    object-fit: cover;
+    border: 1px solid var(--line-bright);
+}
+
+.avatarPlaceholder {
+    width: 28px;
+    height: 28px;
+    border-radius: 3px;
+    background: var(--panel-2);
+    border: 1px solid var(--line-bright);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: var(--cyan);
+}
+
+.banned {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    color: var(--magenta);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.banned::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--magenta);
+    box-shadow: 0 0 8px var(--magenta);
+}
+
+.notBanned {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    color: var(--green);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.notBanned::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+}
+
+.loading {
+    font-family: var(--mono);
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 2rem;
+}
+
+.error {
+    font-family: var(--mono);
+    color: var(--magenta);
+    padding: 1rem;
+}
+
+.empty {
+    font-family: var(--mono);
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 2rem;
+}
+
+@media (max-width: 768px) {
+    .table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .searchRow {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,228 @@
+.page {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.title {
+    font-family: var(--display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.title::before {
+    content: "▸ ";
+    color: var(--magenta);
+}
+
+.intro {
+    color: var(--dim);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin-bottom: 1.25rem;
+}
+
+.intro code {
+    font-family: var(--mono);
+    background: #0c0c14;
+    border: 1px solid var(--line);
+    color: var(--amber);
+    padding: 0.1rem 0.4rem;
+    border-radius: 2px;
+    font-size: 0.85em;
+}
+
+.addCard {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: flex-end;
+}
+
+.fieldLabel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--cyan);
+    flex: 1;
+    min-width: 12rem;
+}
+
+.checkboxRow {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text);
+    padding-bottom: 0.55rem;
+}
+
+.checkboxRow input {
+    accent-color: var(--magenta);
+}
+
+.select {
+    background: #07070d;
+    border: 1px solid var(--line-bright);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 2px;
+    transition:
+        border-color 0.15s,
+        box-shadow 0.15s;
+}
+
+.select:focus {
+    outline: none;
+    border-color: var(--magenta);
+    box-shadow:
+        0 0 0 1px var(--magenta),
+        0 0 18px -4px var(--magenta);
+}
+
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.error {
+    font-family: var(--mono);
+    color: var(--magenta);
+    background: rgba(var(--magenta-rgb), 0.1);
+    border: 1px solid rgba(var(--magenta-rgb), 0.4);
+    padding: 0.55rem 0.75rem;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+    font-size: 0.82rem;
+}
+
+.regexError {
+    font-family: var(--mono);
+    color: var(--amber);
+    font-size: 0.8rem;
+}
+
+.empty {
+    font-family: var(--mono);
+    text-align: center;
+    padding: 2rem;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 0.8rem;
+    background: var(--panel);
+    border-radius: 2px;
+    border: 1px dashed var(--line-bright);
+}
+
+.loading {
+    font-family: var(--mono);
+    padding: 2rem;
+    text-align: center;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 0.8rem;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.table th,
+.table td {
+    padding: 0.6rem 0.9rem;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+}
+
+.table th {
+    background: var(--panel-2);
+    color: var(--dim);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.mono {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--amber);
+    word-break: break-all;
+}
+
+.badgeDelete,
+.badgeKick {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.badgeDelete {
+    background: rgba(var(--cyan-rgb), 0.1);
+    color: var(--cyan);
+    border: 1px solid var(--cyan);
+}
+
+.badgeKick {
+    background: rgba(var(--magenta-rgb), 0.12);
+    color: var(--magenta);
+    border: 1px solid var(--magenta);
+}
+
+.date {
+    font-family: var(--mono);
+    color: var(--dim);
+    font-size: 0.78rem;
+    white-space: nowrap;
+}
+
+.actions {
+    text-align: right;
+    display: flex;
+    gap: 0.35rem;
+    justify-content: flex-end;
+}

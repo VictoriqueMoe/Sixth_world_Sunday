@@ -1,0 +1,49 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: sixth-world-postgres
+    restart: unless-stopped
+    env_file:
+      - postgres.env
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    ports:
+      - "127.0.0.1:5017:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  sixth-world-sunday:
+    build: .
+    container_name: sixth-world-sunday
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "2313:4323"
+    env_file:
+      - .env
+      - postgres.env
+    volumes:
+      - ./data:/app/data
+
+  livekit:
+    image: livekit/livekit-server:latest
+    container_name: sixth-world-livekit
+    restart: unless-stopped
+    command: --config /etc/livekit.yaml
+    environment:
+      NODE_IP: 127.0.0.1
+    ports:
+      - "7890:7890"
+      - "7891:7891"
+      - "7892:7892/udp"
+    volumes:
+      - ./livekit.yaml:/etc/livekit.yaml:ro
+
+volumes:
+  postgres_data:

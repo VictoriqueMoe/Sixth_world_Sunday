@@ -1,0 +1,224 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.title {
+    font-family: var(--display);
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    font-size: 1.35rem;
+    margin: 0;
+}
+
+.title::before {
+    content: "▸ ";
+    color: var(--magenta);
+}
+
+.statCards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+}
+
+.statCard {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 1.1rem 1.25rem;
+    overflow: hidden;
+    transition: border-color 0.12s var(--ease-out);
+}
+
+.statCard::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 26px;
+    background: var(--magenta);
+}
+
+.statCard:nth-child(even)::before {
+    background: var(--cyan);
+}
+
+.statCard:hover {
+    border-color: var(--line-bright);
+}
+
+.statLabel {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.6rem;
+}
+
+.statValue {
+    font-family: var(--mono);
+    font-size: 1.9rem;
+    line-height: 1;
+    color: var(--magenta);
+    text-shadow: 0 0 18px rgba(var(--magenta-rgb), 0.4);
+}
+
+.statCard:nth-child(even) .statValue {
+    color: var(--cyan);
+    text-shadow: 0 0 18px rgba(var(--cyan-rgb), 0.4);
+}
+
+.sectionTitle {
+    font-family: var(--mono);
+    color: var(--dimmer);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.sectionTitle::before {
+    content: "// ";
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.table th,
+.table td {
+    padding: 0.7rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+}
+
+.table th {
+    font-family: var(--mono);
+    color: var(--dim);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    background: var(--panel-2);
+}
+
+.table td {
+    color: var(--text);
+    font-size: 0.9rem;
+}
+
+.table td:not(:first-child) {
+    font-family: var(--mono);
+    color: var(--cyan);
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.activeUsersCard {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 0.5rem 1.25rem;
+}
+
+.activeUserRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.activeUserRow:last-child {
+    border-bottom: none;
+}
+
+.activeUserInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text);
+    font-size: 0.9rem;
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    object-fit: cover;
+    border: 1px solid var(--line-bright);
+}
+
+.avatarPlaceholder {
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    background: var(--panel-2);
+    border: 1px solid var(--line-bright);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--cyan);
+}
+
+.actionCount {
+    font-family: var(--mono);
+    color: var(--dim);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.loading {
+    font-family: var(--mono);
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 2rem;
+}
+
+@media (max-width: 1024px) {
+    .statCards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .statCards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 480px) {
+    .statCards {
+        grid-template-columns: 1fr;
+    }
+
+    .statValue {
+        font-size: 1.5rem;
+    }
+}

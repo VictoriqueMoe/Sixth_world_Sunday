@@ -1,0 +1,257 @@
+.tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.tab {
+    background: transparent;
+    border: none;
+    color: var(--dim);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-bottom: 2px solid transparent;
+}
+
+.tab:hover {
+    color: var(--text);
+}
+
+.tabActive {
+    color: var(--magenta);
+    border-bottom-color: var(--magenta);
+}
+
+.error {
+    color: var(--magenta);
+    background: rgba(var(--magenta-rgb), 0.1);
+    border: 1px solid var(--magenta);
+    padding: 0.5rem 0.75rem;
+    border-radius: 2px;
+    margin-bottom: 0.75rem;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+}
+
+.muted {
+    color: var(--dim);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    padding: 0.75rem 0;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.intro {
+    color: var(--dim);
+    font-size: 0.85rem;
+    line-height: 1.45;
+}
+
+.form {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: flex-end;
+}
+
+.fieldLabel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    flex: 1;
+    min-width: 10rem;
+}
+
+.checkboxRow {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    color: var(--text);
+    padding-bottom: 0.3rem;
+}
+
+.select {
+    background: #07070d;
+    border: 1px solid var(--line-bright);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: 2px;
+}
+
+.regexError {
+    color: var(--amber);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+}
+
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.4rem;
+}
+
+.ruleActions {
+    display: flex;
+    gap: 0.35rem;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.banRow,
+.ruleRow {
+    padding: 0.5rem 0.75rem;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.banMain,
+.ruleMain {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.banDate {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dimmer);
+    margin-left: auto;
+}
+
+.banReason {
+    font-size: 0.82rem;
+    color: var(--text);
+}
+
+.banBy {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+}
+
+.banActions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ruleRow {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ruleGlobal {
+    opacity: 0.75;
+    border-style: dashed;
+}
+
+.mono {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: var(--amber);
+    background: #0c0c14;
+    border: 1px solid var(--line);
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    word-break: break-all;
+}
+
+.metaPill {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dim);
+    background: var(--panel-2);
+    border: 1px solid var(--line-bright);
+    padding: 0.1rem 0.4rem;
+    border-radius: 2px;
+    letter-spacing: 1px;
+}
+
+.badgeDelete,
+.badgeKick {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    padding: 0.1rem 0.45rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid;
+}
+
+.badgeDelete {
+    background: rgba(255, 176, 0, 0.12);
+    color: var(--amber);
+    border-color: var(--amber);
+}
+
+.badgeKick {
+    background: rgba(var(--magenta-rgb), 0.14);
+    color: var(--magenta);
+    border-color: var(--magenta);
+}
+
+.scopeGlobal,
+.scopeRoom {
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 0.08rem 0.35rem;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid;
+}
+
+.scopeGlobal {
+    background: rgba(157, 107, 255, 0.14);
+    color: var(--violet);
+    border-color: var(--violet);
+}
+
+.scopeRoom {
+    background: rgba(var(--cyan-rgb), 0.1);
+    color: var(--cyan);
+    border-color: var(--cyan);
+}

@@ -1,0 +1,54 @@
+.indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 22px;
+    color: var(--cyan);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    min-height: 1.4rem;
+    contain: layout paint;
+}
+
+.text {
+    line-height: 1;
+}
+
+.dots {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 0.7rem;
+}
+
+.dots span {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 5px var(--cyan);
+    animation: typingBounce 1.2s infinite ease-in-out;
+    will-change: transform;
+}
+
+.dots span:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.dots span:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes typingBounce {
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.4;
+    }
+    30% {
+        transform: translateY(-3px);
+        opacity: 1;
+    }
+}

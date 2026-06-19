@@ -1,0 +1,288 @@
+package profile
+
+import (
+	"Sixth_world_Suday/internal/repository/model"
+	"context"
+	"errors"
+	"fmt"
+	"io"
+	"strings"
+	"time"
+
+	"Sixth_world_Suday/internal/auth"
+	"Sixth_world_Suday/internal/authz"
+	"Sixth_world_Suday/internal/config"
+	"Sixth_world_Suday/internal/contentfilter"
+	"Sixth_world_Suday/internal/dto"
+	"Sixth_world_Suday/internal/repository"
+	"Sixth_world_Suday/internal/settings"
+	"Sixth_world_Suday/internal/upload"
+	userpkg "Sixth_world_Suday/internal/user"
+	"Sixth_world_Suday/internal/ws"
+
+	"github.com/google/uuid"
+)
+
+type (
+	Service interface {
+		GetProfile(ctx context.Context, username string, viewerID uuid.UUID) (*dto.UserProfileResponse, error)
+		UpdateProfile(ctx context.Context, userID uuid.UUID, req dto.UpdateProfileRequest) error
+		UploadAvatar(ctx context.Context, userID uuid.UUID, contentType string, fileSize int64, reader io.Reader) (string, error)
+		UploadBanner(ctx context.Context, userID uuid.UUID, contentType string, fileSize int64, reader io.Reader) (string, error)
+		ChangePassword(ctx context.Context, userID uuid.UUID, req dto.ChangePasswordRequest) error
+		DeleteAccount(ctx context.Context, userID uuid.UUID, req dto.DeleteAccountRequest) error
+		ListPublicUsers(ctx context.Context) ([]dto.UserResponse, error)
+		SearchUsers(ctx context.Context, query string, limit int) ([]dto.UserResponse, error)
+	}
+
+	service struct {
+		userRepo      repository.UserRepository
+		authz         authz.Service
+		uploadSvc     upload.Service
+		settingsSvc   settings.Service
+		contentFilter *contentfilter.Manager
+		hub           *ws.Hub
+		authService   auth.Service
+	}
+)
+
+const maxPronounLength = 10
+
+var (
+	validProfileTabs = map[string]bool{
+		"art":       true,
+		"galleries": true,
+		"activity":  true,
+	}
+)
+
+func NewService(
+	userRepo repository.UserRepository,
+	authzService authz.Service,
+	uploadSvc upload.Service,
+	settingsSvc settings.Service,
+	contentFilter *contentfilter.Manager,
+	hub *ws.Hub,
+	authService auth.Service,
+) Service {
+	return &service{
+		userRepo:      userRepo,
+		authz:         authzService,
+		uploadSvc:     uploadSvc,
+		settingsSvc:   settingsSvc,
+		contentFilter: contentFilter,
+		hub:           hub,
+		authService:   authService,
+	}
+}
+
+func (s *service) filterTexts(ctx context.Context, texts ...string) error {
+	if s.contentFilter == nil {
+		return nil
+	}
+	return s.contentFilter.Check(ctx, texts...)
+}
+
+func (s *service) GetProfile(ctx context.Context, username string, viewerID uuid.UUID) (*dto.UserProfileResponse, error) {
+	user, stats, err := s.userRepo.GetProfileByUsername(ctx, username)
+	if err != nil {
+		return nil, fmt.Errorf("get profile: %w", err)
+	}
+	if user == nil {
+		return nil, ErrUserNotFound
+	}
+
+	resp := user.ToProfileResponse(stats, user.ID == viewerID)
+	return resp, nil
+}
+
+func (s *service) UpdateProfile(ctx context.Context, userID uuid.UUID, req dto.UpdateProfileRequest) error {
+	if err := validateDOB(req.DOB); err != nil {
+		return err
+	}
+	req.DisplayName = userpkg.ClampDisplayName(req.DisplayName)
+	if req.DisplayName == "" {
+		return ErrEmptyDisplayName
+	}
+	if err := s.filterTexts(ctx, req.DisplayName, req.Bio, req.Website, req.FavouriteCharacter); err != nil {
+		return err
+	}
+	if req.DefaultProfileTab == "" {
+		req.DefaultProfileTab = "art"
+	}
+	if !validProfileTabs[req.DefaultProfileTab] {
+		return ErrInvalidDefaultProfileTab
+	}
+	req.PronounSubject = capLen(req.PronounSubject, maxPronounLength)
+	req.PronounPossessive = capLen(req.PronounPossessive, maxPronounLength)
+
+	current, err := s.userRepo.GetByID(ctx, userID)
+	if err != nil {
+		return fmt.Errorf("get user: %w", err)
+	}
+	if current == nil {
+		return ErrUserNotFound
+	}
+
+	req.Email = strings.ToLower(strings.TrimSpace(req.Email))
+	if req.Email != current.Email {
+		if err := s.authService.SetEmail(ctx, userID, req.Email); err != nil {
+			switch {
+			case errors.Is(err, auth.ErrInvalidEmail):
+				return ErrInvalidEmail
+			case errors.Is(err, auth.ErrEmailTaken):
+				return ErrEmailTaken
+			default:
+				return fmt.Errorf("set email: %w", err)
+			}
+		}
+	}
+
+	if err := s.userRepo.UpdateProfile(ctx, userID, req); err != nil {
+		return err
+	}
+
+	s.broadcastProfileChange(userID, map[string]any{
+		"display_name": req.DisplayName,
+	})
+	return nil
+}
+
+func (s *service) broadcastProfileChange(userID uuid.UUID, fields map[string]any) {
+	if s.hub == nil {
+		return
+	}
+	data := map[string]any{"user_id": userID}
+	for k, v := range fields {
+		data[k] = v
+	}
+	s.hub.Broadcast(ws.Message{
+		Type: "profile_changed",
+		Data: data,
+	})
+}
+
+func capLen(s string, max int) string {
+	if len(s) <= max {
+		return s
+	}
+	return s[:max]
+}
+
+func validateDOB(dob string) error {
+	if dob == "" {
+		return nil
+	}
+
+	parsed, err := time.Parse("2006-01-02", dob)
+	if err != nil {
+		return ErrInvalidDOB
+	}
+
+	now := time.Now().UTC()
+	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
+	dobDate := time.Date(parsed.Year(), parsed.Month(), parsed.Day(), 0, 0, 0, 0, time.UTC)
+
+	if dobDate.After(today) {
+		return ErrFutureDOB
+	}
+
+	return nil
+}
+
+func (s *service) UploadAvatar(ctx context.Context, userID uuid.UUID, contentType string, fileSize int64, reader io.Reader) (string, error) {
+	maxSize := int64(s.settingsSvc.GetInt(ctx, config.SettingMaxImageSize))
+	avatarURL, err := s.uploadSvc.SaveImage(ctx, "avatars", userID, fileSize, maxSize, reader)
+	if err != nil {
+		return "", err
+	}
+
+	if err := s.userRepo.UpdateAvatarURL(ctx, userID, avatarURL); err != nil {
+		return "", fmt.Errorf("update avatar url: %w", err)
+	}
+
+	s.broadcastProfileChange(userID, map[string]any{
+		"avatar_url": avatarURL,
+	})
+	return avatarURL, nil
+}
+
+func (s *service) UploadBanner(ctx context.Context, userID uuid.UUID, contentType string, fileSize int64, reader io.Reader) (string, error) {
+	maxSize := int64(s.settingsSvc.GetInt(ctx, config.SettingMaxImageSize))
+	bannerURL, err := s.uploadSvc.SaveImage(ctx, "banners", userID, fileSize, maxSize, reader)
+	if err != nil {
+		return "", err
+	}
+
+	if err := s.userRepo.UpdateBannerURL(ctx, userID, bannerURL); err != nil {
+		return "", fmt.Errorf("update banner url: %w", err)
+	}
+
+	return bannerURL, nil
+}
+
+func (s *service) ChangePassword(ctx context.Context, userID uuid.UUID, req dto.ChangePasswordRequest) error {
+	minLen := s.settingsSvc.GetInt(ctx, config.SettingMinPasswordLength)
+	if minLen > 0 && len(req.NewPassword) < minLen {
+		return ErrPasswordTooShort
+	}
+	return s.userRepo.ChangePassword(ctx, userID, req.OldPassword, req.NewPassword)
+}
+
+func (s *service) DeleteAccount(ctx context.Context, userID uuid.UUID, req dto.DeleteAccountRequest) error {
+	user, err := s.userRepo.GetByID(ctx, userID)
+	if err != nil {
+		return fmt.Errorf("get user for cleanup: %w", err)
+	}
+
+	if err := s.userRepo.DeleteAccount(ctx, userID, req.Password); err != nil {
+		return err
+	}
+
+	if user != nil {
+		_ = s.uploadSvc.Delete(user.AvatarURL)
+		_ = s.uploadSvc.Delete(user.BannerURL)
+	}
+
+	return nil
+}
+
+func (s *service) ListPublicUsers(ctx context.Context) ([]dto.UserResponse, error) {
+	users, err := s.userRepo.ListPublic(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.usersToResponses(ctx, users), nil
+}
+
+func (s *service) SearchUsers(ctx context.Context, query string, limit int) ([]dto.UserResponse, error) {
+	users, err := s.userRepo.SearchByName(ctx, query, limit)
+	if err != nil {
+		return nil, err
+	}
+	return s.usersToResponses(ctx, users), nil
+}
+
+func (s *service) usersToResponses(ctx context.Context, users []model.User) []dto.UserResponse {
+	result := make([]dto.UserResponse, len(users))
+	if len(users) == 0 {
+		return result
+	}
+	ids := make([]uuid.UUID, len(users))
+	for i := 0; i < len(users); i++ {
+		ids[i] = users[i].ID
+	}
+	roles, _ := s.authz.GetRoles(ctx, ids)
+	for i := 0; i < len(users); i++ {
+		u := users[i]
+		result[i] = dto.UserResponse{
+			ID:          u.ID,
+			Username:    u.Username,
+			DisplayName: u.DisplayName,
+			AvatarURL:   u.AvatarURL,
+			Role:        roles[u.ID],
+		}
+	}
+	return result
+}

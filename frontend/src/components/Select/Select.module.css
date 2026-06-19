@@ -1,0 +1,26 @@
+.select {
+    background: #07070d;
+    border: 1px solid var(--line-bright);
+    color: var(--text);
+    padding: 0.7rem 0.85rem;
+    border-radius: 2px;
+    font-size: 0.95rem;
+    font-family: var(--mono);
+    width: 100%;
+    transition:
+        border-color 0.15s var(--ease-out),
+        box-shadow 0.15s var(--ease-out);
+}
+
+.select:focus {
+    outline: none;
+    border-color: var(--magenta);
+    box-shadow:
+        0 0 0 1px var(--magenta),
+        0 0 18px -4px var(--magenta);
+}
+
+.select option {
+    background: var(--panel);
+    color: var(--text);
+}

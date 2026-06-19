@@ -1,0 +1,80 @@
+.page {
+    max-width: var(--page-max-width);
+    margin: 0 auto;
+}
+
+.title {
+    font-family: var(--display);
+    color: var(--text);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 2px;
+    font-size: 1.4rem;
+    margin: 0 0 1rem;
+}
+
+.title::before {
+    content: "\25B8 ";
+    color: var(--magenta);
+}
+
+.search {
+    margin-bottom: 1.5rem;
+    max-width: 320px;
+}
+
+.groupTitle {
+    font-family: var(--mono);
+    color: var(--dimmer);
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    margin: 1.5rem 0 0.75rem;
+}
+
+.groupTitle::before {
+    content: "// ";
+}
+
+.count {
+    color: var(--dim);
+    font-size: 0.7rem;
+}
+
+.userList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.5rem;
+}
+
+.userItem {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 0.75rem;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-left: 2px solid transparent;
+    transition:
+        background 0.12s var(--ease-out),
+        border-color 0.12s var(--ease-out);
+}
+
+.userItem:hover {
+    background: var(--panel-2);
+    border-left-color: var(--magenta);
+}
+
+.empty {
+    grid-column: 1 / -1;
+    color: var(--dimmer);
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.75rem;
+}
+
+.divider {
+    border: none;
+    border-top: 1px dashed var(--line-bright);
+    margin: 1.25rem 0 0;
+}
