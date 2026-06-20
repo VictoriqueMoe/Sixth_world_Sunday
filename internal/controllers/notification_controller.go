@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"Sixth_world_Sunday/internal/controllers/utils"
-	"Sixth_world_Sunday/internal/middleware"
 
 	"github.com/gofiber/fiber/v3"
 )
@@ -17,19 +16,19 @@ func (s *Service) getAllNotificationRoutes() []FSetupRoute {
 }
 
 func (s *Service) setupListNotificationsRoute(r fiber.Router) {
-	r.Get("/notifications", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.listNotifications)
+	r.Get("/notifications", s.listNotifications)
 }
 
 func (s *Service) setupMarkNotificationReadRoute(r fiber.Router) {
-	r.Post("/notifications/:id<int>/read", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.markNotificationRead)
+	r.Post("/notifications/:id<int>/read", s.markNotificationRead)
 }
 
 func (s *Service) setupMarkAllNotificationsReadRoute(r fiber.Router) {
-	r.Post("/notifications/read", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.markAllNotificationsRead)
+	r.Post("/notifications/read", s.markAllNotificationsRead)
 }
 
 func (s *Service) setupUnreadCountRoute(r fiber.Router) {
-	r.Get("/notifications/unread-count", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.unreadCount)
+	r.Get("/notifications/unread-count", s.unreadCount)
 }
 
 func (s *Service) listNotifications(ctx fiber.Ctx) error {

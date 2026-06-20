@@ -39,6 +39,9 @@ packages:
   Sixth_world_Sunday/internal/block:
     interfaces:
       Service:
+  Sixth_world_Sunday/internal/filehost:
+    interfaces:
+      Service:
   Sixth_world_Sunday/internal/upload:
     interfaces:
       Service:

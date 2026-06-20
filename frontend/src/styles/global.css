@@ -301,6 +301,56 @@ body[data-chat-page="true"] .main-content {
     overflow: hidden;
 }
 
+/* Global mobile navigation (hamburger + off-canvas channel rail) */
+
+.app-hamburger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    margin-right: 0.4rem;
+    background: none;
+    border: 1px solid var(--line-bright);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.mobile-nav-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.mobile-nav-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.mobile-nav-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100dvh;
+    width: 268px;
+    max-width: 85vw;
+    z-index: 50;
+    display: flex;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+}
+
+.mobile-nav-drawer.open {
+    transform: translateX(0);
+    box-shadow: 0 0 28px rgba(0, 0, 0, 0.65);
+}
+
 /* Loading & Empty states */
 
 .loading {

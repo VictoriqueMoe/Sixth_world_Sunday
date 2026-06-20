@@ -6,6 +6,7 @@ import {
     apiPost,
     apiPostFormData,
     apiPut,
+    apiUrl,
     buildQueryString,
 } from "./client";
 import type {
@@ -684,4 +685,87 @@ export async function searchSite(
 ): Promise<SearchResponse> {
     const qs = buildQueryString({ q, types: types ?? "", limit, offset, room });
     return apiFetch<SearchResponse>(`/search${qs}`);
+}
+
+export interface VaultFolder {
+    id: string;
+    parentId: string | null;
+    name: string;
+    locked: boolean;
+    createdBy: string;
+    createdAt: string;
+}
+
+export interface VaultFile {
+    id: string;
+    folderId: string | null;
+    name: string;
+    mime: string;
+    size: number;
+    locked: boolean;
+    uploadedBy: string;
+    createdAt: string;
+}
+
+export interface VaultBreadcrumb {
+    id: string;
+    name: string;
+}
+
+export interface VaultBrowse {
+    folder: VaultFolder | null;
+    breadcrumbs: VaultBreadcrumb[];
+    folders: VaultFolder[];
+    files: VaultFile[];
+    canManageLocks: boolean;
+}
+
+export async function browseVault(folderId: string | null): Promise<VaultBrowse> {
+    const qs = folderId ? `?folder=${folderId}` : "";
+    return apiFetch<VaultBrowse>(`/files/contents${qs}`);
+}
+
+export async function createVaultFolder(name: string, parentId: string | null): Promise<VaultFolder> {
+    return apiPost<VaultFolder, { name: string; parentId: string | null }>("/files/folders", { name, parentId });
+}
+
+export async function renameVaultFolder(id: string, name: string): Promise<void> {
+    await apiPatch<unknown, { name: string }>(`/files/folders/${id}`, { name });
+}
+
+export async function deleteVaultFolder(id: string): Promise<void> {
+    await apiDelete<unknown>(`/files/folders/${id}`);
+}
+
+export async function setVaultFolderLocked(id: string, locked: boolean): Promise<void> {
+    await apiPost<unknown, undefined>(`/files/folders/${id}/${locked ? "lock" : "unlock"}`, undefined);
+}
+
+export async function uploadVaultFile(folderId: string | null, file: File): Promise<VaultFile> {
+    const formData = new FormData();
+    formData.append("file", file);
+    if (folderId) {
+        formData.append("folderId", folderId);
+    }
+    return apiPostFormData<VaultFile>("/files/upload", formData);
+}
+
+export async function renameVaultFile(id: string, name: string): Promise<void> {
+    await apiPatch<unknown, { name: string }>(`/files/items/${id}`, { name });
+}
+
+export async function deleteVaultFile(id: string): Promise<void> {
+    await apiDelete<unknown>(`/files/items/${id}`);
+}
+
+export async function setVaultFileLocked(id: string, locked: boolean): Promise<void> {
+    await apiPost<unknown, undefined>(`/files/items/${id}/${locked ? "lock" : "unlock"}`, undefined);
+}
+
+export function vaultDownloadUrl(id: string): string {
+    return apiUrl(`/api/v1/files/items/${id}/download`);
+}
+
+export function vaultUploadUrl(): string {
+    return apiUrl("/api/v1/files/upload");
 }

@@ -66,11 +66,11 @@ func (s *Service) setupCreateGroupRoomRoute(r fiber.Router) {
 }
 
 func (s *Service) setupListRoomsRoute(r fiber.Router) {
-	r.Get("/chat/rooms", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.listRooms)
+	r.Get("/chat/rooms", s.listRooms)
 }
 
 func (s *Service) setupGetMessagesRoute(r fiber.Router) {
-	r.Get("/chat/rooms/:roomID/messages", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.getMessages)
+	r.Get("/chat/rooms/:roomID/messages", s.getMessages)
 }
 
 func (s *Service) createGroupRoom(ctx fiber.Ctx) error {
@@ -111,7 +111,7 @@ func (s *Service) listRooms(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupSendMessageRoute(r fiber.Router) {
-	r.Post("/chat/rooms/:roomID/messages", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.sendMessage)
+	r.Post("/chat/rooms/:roomID/messages", s.sendMessage)
 }
 
 func (s *Service) sendMessage(ctx fiber.Ctx) error {
@@ -284,7 +284,7 @@ func (s *Service) reorderChannels(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupListCategoriesRoute(r fiber.Router) {
-	r.Get("/chat/categories", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.listCategories)
+	r.Get("/chat/categories", s.listCategories)
 }
 
 func (s *Service) listCategories(ctx fiber.Ctx) error {
@@ -322,7 +322,7 @@ func (s *Service) truncateChat(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupMarkRoomReadRoute(r fiber.Router) {
-	r.Post("/chat/rooms/:roomID/read", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.markRoomRead)
+	r.Post("/chat/rooms/:roomID/read", s.markRoomRead)
 }
 
 func (s *Service) markRoomRead(ctx fiber.Ctx) error {
@@ -341,7 +341,7 @@ func (s *Service) markRoomRead(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupListMyGroupRoomsRoute(r fiber.Router) {
-	r.Get("/chat/rooms/mine", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.listMyGroupRooms)
+	r.Get("/chat/rooms/mine", s.listMyGroupRooms)
 }
 
 func (s *Service) listMyGroupRooms(ctx fiber.Ctx) error {
@@ -364,7 +364,7 @@ func (s *Service) listMyGroupRooms(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupSetRoomMuteRoute(r fiber.Router) {
-	r.Put("/chat/rooms/:roomID/mute", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.setRoomMute)
+	r.Put("/chat/rooms/:roomID/mute", s.setRoomMute)
 }
 
 func (s *Service) setRoomMute(ctx fiber.Ctx) error {
@@ -389,7 +389,7 @@ func (s *Service) setRoomMute(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupGetRoomMembersRoute(r fiber.Router) {
-	r.Get("/chat/rooms/:roomID/members", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.getRoomMembers)
+	r.Get("/chat/rooms/:roomID/members", s.getRoomMembers)
 }
 
 func (s *Service) getRoomMembers(ctx fiber.Ctx) error {
@@ -409,7 +409,7 @@ func (s *Service) getRoomMembers(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupInviteMembersRoute(r fiber.Router) {
-	r.Post("/chat/rooms/:roomID/members", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.inviteMembers)
+	r.Post("/chat/rooms/:roomID/members", s.inviteMembers)
 }
 
 func (s *Service) inviteMembers(ctx fiber.Ctx) error {
@@ -447,7 +447,7 @@ func (s *Service) inviteMembers(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupKickMemberRoute(r fiber.Router) {
-	r.Delete("/chat/rooms/:roomID/members/:userID", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.kickMember)
+	r.Delete("/chat/rooms/:roomID/members/:userID", s.kickMember)
 }
 
 func (s *Service) kickMember(ctx fiber.Ctx) error {
@@ -483,7 +483,7 @@ func (s *Service) kickMember(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupSetMemberTimeoutRoute(r fiber.Router) {
-	r.Put("/chat/rooms/:roomID/members/:userID/timeout", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.setMemberTimeout)
+	r.Put("/chat/rooms/:roomID/members/:userID/timeout", s.setMemberTimeout)
 }
 
 func (s *Service) setMemberTimeout(ctx fiber.Ctx) error {
@@ -530,7 +530,7 @@ func (s *Service) setMemberTimeout(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupClearMemberTimeoutRoute(r fiber.Router) {
-	r.Delete("/chat/rooms/:roomID/members/:userID/timeout", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.clearMemberTimeout)
+	r.Delete("/chat/rooms/:roomID/members/:userID/timeout", s.clearMemberTimeout)
 }
 
 func (s *Service) clearMemberTimeout(ctx fiber.Ctx) error {
@@ -564,7 +564,7 @@ func (s *Service) clearMemberTimeout(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupSetRoomNicknameRoute(r fiber.Router) {
-	r.Put("/chat/rooms/:roomID/me", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.setRoomNickname)
+	r.Put("/chat/rooms/:roomID/me", s.setRoomNickname)
 }
 
 func (s *Service) setRoomNickname(ctx fiber.Ctx) error {
@@ -595,7 +595,7 @@ func (s *Service) setRoomNickname(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupSetRoomAvatarRoute(r fiber.Router) {
-	r.Post("/chat/rooms/:roomID/me/avatar", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.setRoomAvatar)
+	r.Post("/chat/rooms/:roomID/me/avatar", s.setRoomAvatar)
 }
 
 func (s *Service) setRoomAvatar(ctx fiber.Ctx) error {
@@ -632,7 +632,7 @@ func (s *Service) setRoomAvatar(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupClearRoomAvatarRoute(r fiber.Router) {
-	r.Delete("/chat/rooms/:roomID/me/avatar", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.clearRoomAvatar)
+	r.Delete("/chat/rooms/:roomID/me/avatar", s.clearRoomAvatar)
 }
 
 func (s *Service) clearRoomAvatar(ctx fiber.Ctx) error {
@@ -656,7 +656,7 @@ func (s *Service) clearRoomAvatar(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupSetMemberNicknameAsModRoute(r fiber.Router) {
-	r.Put("/chat/rooms/:roomID/members/:userID/nickname", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.setMemberNicknameAsMod)
+	r.Put("/chat/rooms/:roomID/members/:userID/nickname", s.setMemberNicknameAsMod)
 }
 
 func (s *Service) setMemberNicknameAsMod(ctx fiber.Ctx) error {
@@ -691,7 +691,7 @@ func (s *Service) setMemberNicknameAsMod(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupUnlockMemberNicknameRoute(r fiber.Router) {
-	r.Delete("/chat/rooms/:roomID/members/:userID/nickname", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.unlockMemberNickname)
+	r.Delete("/chat/rooms/:roomID/members/:userID/nickname", s.unlockMemberNickname)
 }
 
 func (s *Service) unlockMemberNickname(ctx fiber.Ctx) error {
@@ -722,7 +722,7 @@ func (s *Service) unlockMemberNickname(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupPinMessageRoute(r fiber.Router) {
-	r.Post("/chat/messages/:messageID/pin", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.pinMessage)
+	r.Post("/chat/messages/:messageID/pin", s.pinMessage)
 }
 
 func (s *Service) pinMessage(ctx fiber.Ctx) error {
@@ -745,7 +745,7 @@ func (s *Service) pinMessage(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupUnpinMessageRoute(r fiber.Router) {
-	r.Delete("/chat/messages/:messageID/pin", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.unpinMessage)
+	r.Delete("/chat/messages/:messageID/pin", s.unpinMessage)
 }
 
 func (s *Service) unpinMessage(ctx fiber.Ctx) error {
@@ -771,7 +771,7 @@ func (s *Service) unpinMessage(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupListPinnedMessagesRoute(r fiber.Router) {
-	r.Get("/chat/rooms/:roomID/pins", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.listPinnedMessages)
+	r.Get("/chat/rooms/:roomID/pins", s.listPinnedMessages)
 }
 
 func (s *Service) listPinnedMessages(ctx fiber.Ctx) error {
@@ -792,7 +792,7 @@ func (s *Service) listPinnedMessages(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupAddReactionRoute(r fiber.Router) {
-	r.Post("/chat/messages/:messageID/reactions", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.addReaction)
+	r.Post("/chat/messages/:messageID/reactions", s.addReaction)
 }
 
 func (s *Service) addReaction(ctx fiber.Ctx) error {
@@ -825,7 +825,7 @@ func (s *Service) addReaction(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupDeleteMessageRoute(r fiber.Router) {
-	r.Delete("/chat/messages/:messageID", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.deleteMessage)
+	r.Delete("/chat/messages/:messageID", s.deleteMessage)
 }
 
 func (s *Service) deleteMessage(ctx fiber.Ctx) error {
@@ -848,7 +848,7 @@ func (s *Service) deleteMessage(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupEditMessageRoute(r fiber.Router) {
-	r.Patch("/chat/messages/:messageID", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.editMessage)
+	r.Patch("/chat/messages/:messageID", s.editMessage)
 }
 
 func (s *Service) editMessage(ctx fiber.Ctx) error {
@@ -889,7 +889,7 @@ func (s *Service) editMessage(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupRemoveReactionRoute(r fiber.Router) {
-	r.Delete("/chat/messages/:messageID/reactions/:emoji", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.removeReaction)
+	r.Delete("/chat/messages/:messageID/reactions/:emoji", s.removeReaction)
 }
 
 func (s *Service) removeReaction(ctx fiber.Ctx) error {

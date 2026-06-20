@@ -5,7 +5,6 @@ import (
 
 	"Sixth_world_Sunday/internal/authz"
 	"Sixth_world_Sunday/internal/controllers/utils"
-	"Sixth_world_Sunday/internal/middleware"
 	"Sixth_world_Sunday/internal/report"
 
 	"github.com/gofiber/fiber/v3"
@@ -20,7 +19,7 @@ func (s *Service) getAllReportRoutes() []FSetupRoute {
 }
 
 func (s *Service) setupCreateReport(r fiber.Router) {
-	r.Post("/report", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.createReport)
+	r.Post("/report", s.createReport)
 }
 
 func (s *Service) setupListReports(r fiber.Router) {

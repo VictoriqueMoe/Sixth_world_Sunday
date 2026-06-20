@@ -278,6 +278,7 @@ export function AdminUserDetail() {
                         <Select value={selectedRole} onChange={e => setSelectedRole(e.target.value)}>
                             <option value="admin">Admin</option>
                             <option value="moderator">Moderator</option>
+                            <option value="gm">GM</option>
                         </Select>
                         <Button variant="primary" onClick={handleSetRole}>
                             {user.role ? "Change Role" : "Assign Role"}

@@ -6,4 +6,5 @@ const (
 	RoleSuperAdmin = role.RoleSuperAdmin
 	RoleAdmin      = role.RoleAdmin
 	RoleModerator  = role.RoleModerator
+	RoleGM         = role.RoleGM
 )

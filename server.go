@@ -18,6 +18,7 @@ import (
 	"Sixth_world_Sunday/internal/contentfilter"
 	"Sixth_world_Sunday/internal/controllers"
 	"Sixth_world_Sunday/internal/email"
+	"Sixth_world_Sunday/internal/filehost"
 	"Sixth_world_Sunday/internal/logger"
 	"Sixth_world_Sunday/internal/media"
 	"Sixth_world_Sunday/internal/middleware"
@@ -64,6 +65,7 @@ type (
 		vanityRole    vanityrole.Service
 		search        searchsvc.Service
 		user          user.Service
+		fileVault     filehost.Service
 	}
 )
 
@@ -102,6 +104,7 @@ func initApp(svc *services, repos *repository.Repositories, settingsSvc settings
 		svc.auth, svc.profile, svc.notification, svc.admin,
 		svc.authz, settingsSvc, svc.chat, svc.report,
 		svc.block, svc.user, svc.upload, svc.mediaProc, svc.vanityRole, svc.session, svc.hub, svc.search,
+		svc.fileVault,
 	)
 	routes.PublicRoutes(ctrlService, app)
 
@@ -117,7 +120,7 @@ func initApp(svc *services, repos *repository.Repositories, settingsSvc settings
 	uploadsHandler := static.New(svc.upload.GetUploadDir(), static.Config{
 		Browse: false,
 	})
-	app.Get("/uploads/*", middleware.RequireAuth(svc.session, svc.authz), uploadsHandler)
+	app.Get("/uploads/*", middleware.RequireAuthGate(svc.session, svc.authz), uploadsHandler)
 
 	ogImageHandler := controllers.NewOGImageHandler(svc.upload.GetUploadDir())
 	ogImageHandler.Register(app)

@@ -6,6 +6,7 @@ const (
 	RoleSuperAdmin Role = "super_admin"
 	RoleAdmin      Role = "admin"
 	RoleModerator  Role = "moderator"
+	RoleGM         Role = "gm"
 )
 
 func (r Role) IsSiteStaff() bool {
@@ -20,6 +21,8 @@ func (r Role) Rank() int {
 		return 3
 	case RoleModerator:
 		return 2
+	case RoleGM:
+		return 1
 	default:
 		return 0
 	}

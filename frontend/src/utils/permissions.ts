@@ -1,9 +1,10 @@
-export type SiteRole = "super_admin" | "admin" | "moderator";
+export type SiteRole = "super_admin" | "admin" | "moderator" | "gm";
 
 export const ROLE_GROUPS: { role: SiteRole; label: string }[] = [
     { role: "super_admin", label: "Sysops" },
     { role: "admin", label: "Admins" },
     { role: "moderator", label: "Moderators" },
+    { role: "gm", label: "Game Masters" },
 ];
 
 export function isSiteStaff(role: SiteRole | undefined | null): boolean {
@@ -26,7 +27,8 @@ export type Permission =
     | "manage_vanity_roles"
     | "manage_banned_words"
     | "manage_channels"
-    | "reset_password";
+    | "reset_password"
+    | "lock_files";
 
 const rolePermissions: Record<string, Permission[]> = {
     super_admin: [
@@ -46,6 +48,7 @@ const rolePermissions: Record<string, Permission[]> = {
         "manage_banned_words",
         "manage_channels",
         "reset_password",
+        "lock_files",
     ],
     admin: [
         "ban_user",
@@ -64,6 +67,7 @@ const rolePermissions: Record<string, Permission[]> = {
         "manage_banned_words",
         "manage_channels",
         "reset_password",
+        "lock_files",
     ],
     moderator: [
         "delete_any_post",
@@ -75,7 +79,9 @@ const rolePermissions: Record<string, Permission[]> = {
         "view_users",
         "ban_user",
         "manage_channels",
+        "lock_files",
     ],
+    gm: ["lock_files"],
 };
 
 export function can(role: SiteRole | undefined, perm: Permission): boolean {

@@ -166,39 +166,6 @@ func TestUnblockUser_ServiceErrors(t *testing.T) {
 	}
 }
 
-func TestGetBlockStatus_Anonymous_ReturnsFalse(t *testing.T) {
-	// given
-	h, _ := newBlockHarness(t)
-	targetID := uuid.New()
-
-	// when
-	status, body := h.NewRequest("GET", "/users/"+targetID.String()+"/block-status").Do()
-
-	// then
-	require.Equal(t, http.StatusOK, status)
-	got := testutil.UnmarshalJSON[map[string]bool](t, body)
-	assert.False(t, got["blocking"])
-	assert.False(t, got["blocked_by"])
-}
-
-func TestGetBlockStatus_InvalidCookie_TreatedAsAnonymous(t *testing.T) {
-	// given
-	h, _ := newBlockHarness(t)
-	targetID := uuid.New()
-	h.ExpectInvalidSession("bogus")
-
-	// when
-	status, body := h.NewRequest("GET", "/users/"+targetID.String()+"/block-status").
-		WithCookie("bogus").
-		Do()
-
-	// then
-	require.Equal(t, http.StatusOK, status)
-	got := testutil.UnmarshalJSON[map[string]bool](t, body)
-	assert.False(t, got["blocking"])
-	assert.False(t, got["blocked_by"])
-}
-
 func TestGetBlockStatus_Authenticated_OK(t *testing.T) {
 	// given
 	h, bs := newBlockHarness(t)
@@ -223,9 +190,12 @@ func TestGetBlockStatus_Authenticated_OK(t *testing.T) {
 func TestGetBlockStatus_InvalidID(t *testing.T) {
 	// given
 	h, _ := newBlockHarness(t)
+	h.ExpectValidSession("valid-cookie", uuid.New())
 
 	// when
-	status, body := h.NewRequest("GET", "/users/not-a-uuid/block-status").Do()
+	status, body := h.NewRequest("GET", "/users/not-a-uuid/block-status").
+		WithCookie("valid-cookie").
+		Do()
 
 	// then
 	require.Equal(t, http.StatusBadRequest, status)

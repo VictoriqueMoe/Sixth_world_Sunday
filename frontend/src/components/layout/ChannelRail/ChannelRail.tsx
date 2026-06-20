@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useChannels, useChatCategories } from "../../../api/queries/chat";
 import { useDeleteChannel, useReorderChannels, useTruncateChannel } from "../../../api/mutations/chat";
@@ -88,10 +88,16 @@ function buildChannelGroups(rooms: ChatRoom[], categories: ChatCategory[]): Chan
     return groups;
 }
 
-export function ChannelRail() {
+export function ChannelRail({ onNavigate }: { onNavigate?: () => void } = {}) {
     const { user } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
     const { roomId: activeId } = useParams<{ roomId: string }>();
+
+    const go = (path: string) => {
+        navigate(path);
+        onNavigate?.();
+    };
     const qc = useQueryClient();
     const { addWSListener } = useNotifications();
     const { rooms } = useChannels();
@@ -247,7 +253,7 @@ export function ChannelRail() {
                 key={c.id}
                 type="button"
                 className={classes.join(" ")}
-                onClick={() => navigate(`/channels/${c.id}`)}
+                onClick={() => go(`/channels/${c.id}`)}
                 onContextMenu={canManage ? e => openChannelMenu(e, c) : undefined}
                 draggable={draggable}
                 onDragStart={
@@ -311,6 +317,16 @@ export function ChannelRail() {
             </div>
 
             <div className={styles.groups}>
+                <button
+                    type="button"
+                    className={`${styles.channel}${location.pathname === "/files" ? ` ${styles.active}` : ""}`}
+                    onClick={() => go("/files")}
+                    title="File Vault"
+                >
+                    <span className={styles.glyph}>{"⛁"}</span>
+                    <span className={styles.channelName}>Data Vault</span>
+                </button>
+
                 {groups.map(group => (
                     <div className={styles.group} key={group.id}>
                         <div className={styles.groupHeader}>
@@ -367,7 +383,7 @@ export function ChannelRail() {
                     <button
                         type="button"
                         className={styles.meInfo}
-                        onClick={() => navigate(`/user/${user.username}`)}
+                        onClick={() => go(`/user/${user.username}`)}
                         title="Your profile"
                     >
                         {user.avatar_url ? (
@@ -380,7 +396,7 @@ export function ChannelRail() {
                     <button
                         type="button"
                         className={styles.meAction}
-                        onClick={() => navigate("/settings")}
+                        onClick={() => go("/settings")}
                         aria-label="Settings"
                         title="Settings"
                     >
@@ -395,7 +411,7 @@ export function ChannelRail() {
                 onClose={() => setCreateOpen(false)}
                 onCreated={c => {
                     setCreateOpen(false);
-                    navigate(`/channels/${c.id}`);
+                    go(`/channels/${c.id}`);
                 }}
             />
 

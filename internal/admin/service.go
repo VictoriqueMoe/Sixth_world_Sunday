@@ -83,9 +83,10 @@ var (
 
 	roleRank = map[role.Role]int{
 		"":                   0,
-		authz.RoleModerator:  1,
-		authz.RoleAdmin:      2,
-		authz.RoleSuperAdmin: 3,
+		authz.RoleGM:         1,
+		authz.RoleModerator:  2,
+		authz.RoleAdmin:      3,
+		authz.RoleSuperAdmin: 4,
 	}
 )
 

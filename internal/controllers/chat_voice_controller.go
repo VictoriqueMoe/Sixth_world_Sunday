@@ -8,15 +8,14 @@ import (
 	"Sixth_world_Sunday/internal/chat"
 	"Sixth_world_Sunday/internal/controllers/utils"
 	"Sixth_world_Sunday/internal/dto"
-	"Sixth_world_Sunday/internal/middleware"
 )
 
 func (s *Service) setupVoiceTokenRoute(r fiber.Router) {
-	r.Post("/chat/rooms/:roomID/voice/token", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.voiceToken)
+	r.Post("/chat/rooms/:roomID/voice/token", s.voiceToken)
 }
 
 func (s *Service) setupVoiceMuteRoute(r fiber.Router) {
-	r.Post("/chat/rooms/:roomID/voice/participants/:userID/mute", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.voiceMute)
+	r.Post("/chat/rooms/:roomID/voice/participants/:userID/mute", s.voiceMute)
 }
 
 func (s *Service) setupLiveKitWebhookRoute(r fiber.Router) {

@@ -52,3 +52,6 @@ export const NotFoundPage = named(() => import("./notfound/NotFoundPage"), "NotF
 
 //  Search
 export const SearchPage = named(() => import("./search/SearchPage"), "SearchPage");
+
+//  File vault
+export const FileBrowserPage = named(() => import("./files/FileBrowserPage"), "FileBrowserPage");

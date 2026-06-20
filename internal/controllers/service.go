@@ -6,6 +6,7 @@ import (
 	"Sixth_world_Sunday/internal/authz"
 	"Sixth_world_Sunday/internal/block"
 	"Sixth_world_Sunday/internal/chat"
+	"Sixth_world_Sunday/internal/filehost"
 	"Sixth_world_Sunday/internal/media"
 	"Sixth_world_Sunday/internal/notification"
 	"Sixth_world_Sunday/internal/profile"
@@ -37,6 +38,7 @@ type (
 		AuthSession         *session.Manager
 		Hub                 *ws.Hub
 		SearchService       searchsvc.Service
+		FileVaultService    filehost.Service
 	}
 )
 
@@ -57,6 +59,7 @@ func NewService(
 	authSession *session.Manager,
 	hub *ws.Hub,
 	searchService searchsvc.Service,
+	fileVaultService filehost.Service,
 ) Service {
 	return Service{
 		AuthService:         authService,
@@ -75,6 +78,7 @@ func NewService(
 		AuthSession:         authSession,
 		Hub:                 hub,
 		SearchService:       searchService,
+		FileVaultService:    fileVaultService,
 	}
 }
 
@@ -89,6 +93,7 @@ func (s *Service) GetAPIRoutes() []FSetupRoute {
 	all = append(all, s.getAllBlockRoutes()...)
 	all = append(all, s.getAllUserPreferencesRoutes()...)
 	all = append(all, s.getAllSearchRoutes()...)
+	all = append(all, s.getAllVaultRoutes()...)
 	return all
 }
 

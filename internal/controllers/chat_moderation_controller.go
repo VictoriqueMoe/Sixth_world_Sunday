@@ -8,35 +8,34 @@ import (
 	"Sixth_world_Sunday/internal/chat"
 	"Sixth_world_Sunday/internal/controllers/utils"
 	"Sixth_world_Sunday/internal/dto"
-	"Sixth_world_Sunday/internal/middleware"
 )
 
 func (s *Service) setupListRoomBansRoute(r fiber.Router) {
-	r.Get("/chat/rooms/:roomID/bans", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.listRoomBans)
+	r.Get("/chat/rooms/:roomID/bans", s.listRoomBans)
 }
 
 func (s *Service) setupBanMemberRoute(r fiber.Router) {
-	r.Post("/chat/rooms/:roomID/bans/:userID", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.banMember)
+	r.Post("/chat/rooms/:roomID/bans/:userID", s.banMember)
 }
 
 func (s *Service) setupUnbanMemberRoute(r fiber.Router) {
-	r.Delete("/chat/rooms/:roomID/bans/:userID", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.unbanMember)
+	r.Delete("/chat/rooms/:roomID/bans/:userID", s.unbanMember)
 }
 
 func (s *Service) setupListRoomBannedWordsRoute(r fiber.Router) {
-	r.Get("/chat/rooms/:roomID/banned-words", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.listRoomBannedWords)
+	r.Get("/chat/rooms/:roomID/banned-words", s.listRoomBannedWords)
 }
 
 func (s *Service) setupCreateRoomBannedWordRoute(r fiber.Router) {
-	r.Post("/chat/rooms/:roomID/banned-words", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.createRoomBannedWord)
+	r.Post("/chat/rooms/:roomID/banned-words", s.createRoomBannedWord)
 }
 
 func (s *Service) setupUpdateRoomBannedWordRoute(r fiber.Router) {
-	r.Put("/chat/rooms/:roomID/banned-words/:ruleID", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.updateRoomBannedWord)
+	r.Put("/chat/rooms/:roomID/banned-words/:ruleID", s.updateRoomBannedWord)
 }
 
 func (s *Service) setupDeleteRoomBannedWordRoute(r fiber.Router) {
-	r.Delete("/chat/rooms/:roomID/banned-words/:ruleID", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.deleteRoomBannedWord)
+	r.Delete("/chat/rooms/:roomID/banned-words/:ruleID", s.deleteRoomBannedWord)
 }
 
 func mapBanError(ctx fiber.Ctx, err error) error {

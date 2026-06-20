@@ -37,16 +37,8 @@
     color: var(--dim);
 }
 
-@media (max-width: 768px) {
-    .shell[data-has-channel="true"] .main {
+@media (max-width: 960px) {
+    .main {
         display: flex;
-    }
-
-    .shell[data-has-channel="true"] > aside {
-        display: none;
-    }
-
-    .shell[data-has-channel="false"] .main {
-        display: none;
     }
 }

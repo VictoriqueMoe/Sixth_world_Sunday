@@ -13,6 +13,7 @@ const roleConfig: Record<string, { label: string; className: string; tooltip: st
     super_admin: { label: "Sysop", className: "superAdmin", tooltip: "Site owner - super administrator" },
     admin: { label: "Admin", className: "admin", tooltip: "Administrator" },
     moderator: { label: "Moderator", className: "moderator", tooltip: "Moderator" },
+    gm: { label: "GM", className: "gm", tooltip: "Game Master" },
 };
 
 function hexToRgba(hex: string, alpha: number): string {

@@ -10,6 +10,7 @@ import (
 	"time"
 
 	authzsvc "Sixth_world_Sunday/internal/authz"
+	"Sixth_world_Sunday/internal/middleware"
 	"Sixth_world_Sunday/internal/repository"
 	"Sixth_world_Sunday/internal/session"
 	settingssvc "Sixth_world_Sunday/internal/settings"
@@ -111,9 +112,12 @@ func NewHarness(t *testing.T) *Harness {
 
 	mgr := session.NewManager(sessionRepo, settingsService)
 
+	app := fiber.New()
+	app.Use(middleware.RequireAuthGate(mgr, authzService))
+
 	return &Harness{
 		T:               t,
-		App:             fiber.New(),
+		App:             app,
 		SessionManager:  mgr,
 		SessionRepo:     sessionRepo,
 		SettingsService: settingsService,

@@ -2,12 +2,12 @@ package controllers
 
 import (
 	"net/http"
+	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"testing"
 
-	"Sixth_world_Sunday/internal/controllers/utils/testutil"
-
+	"github.com/gofiber/fiber/v3"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -18,8 +18,8 @@ func TestOGImage_NotFound(t *testing.T) {
 	uploads := filepath.Join(dir, "uploads")
 	require.NoError(t, os.MkdirAll(uploads, 0755))
 	require.NoError(t, os.WriteFile(filepath.Join(dir, "outside.webp"), []byte("x"), 0644))
-	h := testutil.NewHarness(t)
-	NewOGImageHandler(uploads).Register(h.App)
+	app := fiber.New()
+	NewOGImageHandler(uploads).Register(app)
 
 	tests := []struct {
 		name string
@@ -33,10 +33,12 @@ func TestOGImage_NotFound(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			// when
-			status, _ := h.NewRequest("GET", tc.path).Do()
+			resp, err := app.Test(httptest.NewRequest("GET", tc.path, nil))
+			require.NoError(t, err)
+			defer resp.Body.Close()
 
 			// then
-			assert.Equal(t, http.StatusNotFound, status)
+			assert.Equal(t, http.StatusNotFound, resp.StatusCode)
 		})
 	}
 }

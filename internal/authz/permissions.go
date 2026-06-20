@@ -22,16 +22,15 @@ const (
 	PermManageBannedWords Permission = "manage_banned_words"
 	PermResetPassword     Permission = "reset_password"
 	PermManageChannels    Permission = "manage_channels"
+	PermLockFiles         Permission = "lock_files"
 )
 
-var rolePermissions = map[role.Role][]Permission{
-	RoleSuperAdmin: {
-		PermAll,
-	},
-	RoleAdmin: {
-		PermAll,
-	},
-	RoleModerator: {
+var (
+	gmPermissions = []Permission{
+		PermLockFiles,
+	}
+
+	moderatorPermissions = append([]Permission{
 		PermViewAdminPanel,
 		PermViewStats,
 		PermViewUsers,
@@ -41,5 +40,16 @@ var rolePermissions = map[role.Role][]Permission{
 		PermEditAnyComment,
 		PermBanUser,
 		PermManageChannels,
-	},
-}
+	}, gmPermissions...)
+
+	rolePermissions = map[role.Role][]Permission{
+		RoleSuperAdmin: {
+			PermAll,
+		},
+		RoleAdmin: {
+			PermAll,
+		},
+		RoleModerator: moderatorPermissions,
+		RoleGM:        gmPermissions,
+	}
+)

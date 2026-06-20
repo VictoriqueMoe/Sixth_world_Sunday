@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect } from "react";
 import { Navigate, useParams } from "react-router";
 import { ChannelRail } from "../../components/layout/ChannelRail/ChannelRail";
 import { useChannels } from "../../api/queries/chat";
+import { useIsMobile } from "../../hooks/useIsMobile";
 import styles from "./ChannelsLayout.module.css";
 
 const RoomPage = lazy(() => import("../rooms/RoomPage").then(m => ({ default: m.RoomPage })));
@@ -9,6 +10,7 @@ const RoomPage = lazy(() => import("../rooms/RoomPage").then(m => ({ default: m.
 export function ChannelsLayout() {
     const { roomId } = useParams<{ roomId: string }>();
     const { rooms, loading } = useChannels();
+    const isMobile = useIsMobile();
 
     const firstChannel = rooms.find(c => c.channel_kind !== "voice") ?? rooms[0] ?? null;
 
@@ -56,7 +58,7 @@ export function ChannelsLayout() {
 
     return (
         <div className={styles.shell} data-has-channel={roomId ? "true" : "false"}>
-            <ChannelRail />
+            {!isMobile && <ChannelRail />}
             <div className={styles.main}>{renderMain()}</div>
         </div>
     );
