@@ -1,9 +1,9 @@
 package model
 
 import (
+	"Sixth_world_Sunday/internal/dto"
+	"Sixth_world_Sunday/internal/role"
 	"time"
-	"Sixth_world_Suday/internal/dto"
-	"Sixth_world_Suday/internal/role"
 
 	"github.com/google/uuid"
 )

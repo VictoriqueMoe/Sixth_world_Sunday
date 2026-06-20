@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"Sixth_world_Suday/internal/logger"
-	"Sixth_world_Suday/internal/media"
+	"Sixth_world_Sunday/internal/logger"
+	"Sixth_world_Sunday/internal/media"
 
 	"github.com/gofiber/fiber/v3"
 )

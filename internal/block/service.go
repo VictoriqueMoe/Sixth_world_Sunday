@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"Sixth_world_Suday/internal/authz"
-	"Sixth_world_Suday/internal/repository"
+	"Sixth_world_Sunday/internal/authz"
+	"Sixth_world_Sunday/internal/repository"
 
 	"github.com/google/uuid"
 )

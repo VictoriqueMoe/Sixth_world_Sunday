@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"Sixth_world_Suday/internal/contentfilter"
+	"Sixth_world_Sunday/internal/contentfilter"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

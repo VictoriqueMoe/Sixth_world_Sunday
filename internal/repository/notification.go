@@ -1,13 +1,13 @@
 package repository
 
 import (
+	"Sixth_world_Sunday/internal/dto"
+	"Sixth_world_Sunday/internal/repository/model"
 	"context"
 	"database/sql"
 	"errors"
 	"fmt"
 	"strings"
-	"Sixth_world_Suday/internal/dto"
-	"Sixth_world_Suday/internal/repository/model"
 
 	"github.com/google/uuid"
 )

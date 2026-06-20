@@ -1,6 +1,6 @@
 package authz
 
-import "Sixth_world_Suday/internal/role"
+import "Sixth_world_Sunday/internal/role"
 
 type Permission string
 

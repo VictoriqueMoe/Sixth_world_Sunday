@@ -5,7 +5,7 @@
 package notification
 
 import (
-	"Sixth_world_Suday/internal/dto"
+	"Sixth_world_Sunday/internal/dto"
 	"context"
 
 	"github.com/google/uuid"

@@ -7,12 +7,12 @@ import (
 	"fmt"
 	"testing"
 
-	"Sixth_world_Suday/internal/config"
-	"Sixth_world_Suday/internal/livekit"
-	"Sixth_world_Suday/internal/repository"
-	"Sixth_world_Suday/internal/role"
-	"Sixth_world_Suday/internal/settings"
-	"Sixth_world_Suday/internal/ws"
+	"Sixth_world_Sunday/internal/config"
+	"Sixth_world_Sunday/internal/livekit"
+	"Sixth_world_Sunday/internal/repository"
+	"Sixth_world_Sunday/internal/role"
+	"Sixth_world_Sunday/internal/settings"
+	"Sixth_world_Sunday/internal/ws"
 
 	"github.com/google/uuid"
 	"github.com/livekit/protocol/auth"

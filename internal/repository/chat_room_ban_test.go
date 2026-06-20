@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"Sixth_world_Suday/internal/repository/repotest"
+	"Sixth_world_Sunday/internal/repository/repotest"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

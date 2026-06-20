@@ -6,8 +6,8 @@ import (
 	"sync"
 	"testing"
 
-	"Sixth_world_Suday/internal/config"
-	"Sixth_world_Suday/internal/repository"
+	"Sixth_world_Sunday/internal/config"
+	"Sixth_world_Sunday/internal/repository"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

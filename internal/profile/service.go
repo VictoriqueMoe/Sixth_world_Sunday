@@ -1,7 +1,7 @@
 package profile
 
 import (
-	"Sixth_world_Suday/internal/repository/model"
+	"Sixth_world_Sunday/internal/repository/model"
 	"context"
 	"errors"
 	"fmt"
@@ -9,16 +9,16 @@ import (
 	"strings"
 	"time"
 
-	"Sixth_world_Suday/internal/auth"
-	"Sixth_world_Suday/internal/authz"
-	"Sixth_world_Suday/internal/config"
-	"Sixth_world_Suday/internal/contentfilter"
-	"Sixth_world_Suday/internal/dto"
-	"Sixth_world_Suday/internal/repository"
-	"Sixth_world_Suday/internal/settings"
-	"Sixth_world_Suday/internal/upload"
-	userpkg "Sixth_world_Suday/internal/user"
-	"Sixth_world_Suday/internal/ws"
+	"Sixth_world_Sunday/internal/auth"
+	"Sixth_world_Sunday/internal/authz"
+	"Sixth_world_Sunday/internal/config"
+	"Sixth_world_Sunday/internal/contentfilter"
+	"Sixth_world_Sunday/internal/dto"
+	"Sixth_world_Sunday/internal/repository"
+	"Sixth_world_Sunday/internal/settings"
+	"Sixth_world_Sunday/internal/upload"
+	userpkg "Sixth_world_Sunday/internal/user"
+	"Sixth_world_Sunday/internal/ws"
 
 	"github.com/google/uuid"
 )

@@ -9,7 +9,7 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-const tracerName = "Sixth_world_Suday"
+const tracerName = "Sixth_world_Sunday"
 
 func Tracing() fiber.Handler {
 	return func(ctx fiber.Ctx) error {

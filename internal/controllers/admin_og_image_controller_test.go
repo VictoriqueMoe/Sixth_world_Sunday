@@ -9,11 +9,11 @@ import (
 	"net/http"
 	"testing"
 
-	"Sixth_world_Suday/internal/authz"
-	"Sixth_world_Suday/internal/config"
-	"Sixth_world_Suday/internal/controllers/utils/testutil"
-	"Sixth_world_Suday/internal/settings"
-	"Sixth_world_Suday/internal/upload"
+	"Sixth_world_Sunday/internal/authz"
+	"Sixth_world_Sunday/internal/config"
+	"Sixth_world_Sunday/internal/controllers/utils/testutil"
+	"Sixth_world_Sunday/internal/settings"
+	"Sixth_world_Sunday/internal/upload"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

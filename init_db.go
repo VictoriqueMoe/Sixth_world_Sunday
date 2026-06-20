@@ -4,12 +4,12 @@ import (
 	"context"
 	"os"
 
-	"Sixth_world_Suday/internal/config"
-	"Sixth_world_Suday/internal/db"
-	"Sixth_world_Suday/internal/logger"
-	"Sixth_world_Suday/internal/repository"
-	"Sixth_world_Suday/internal/settings"
-	"Sixth_world_Suday/internal/telemetry"
+	"Sixth_world_Sunday/internal/config"
+	"Sixth_world_Sunday/internal/db"
+	"Sixth_world_Sunday/internal/logger"
+	"Sixth_world_Sunday/internal/repository"
+	"Sixth_world_Sunday/internal/settings"
+	"Sixth_world_Sunday/internal/telemetry"
 )
 
 func initDatabase() (*repository.Repositories, settings.Service) {

@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"strings"
 
-	"Sixth_world_Suday/internal/auth"
-	"Sixth_world_Suday/internal/config"
-	"Sixth_world_Suday/internal/controllers/utils"
-	"Sixth_world_Suday/internal/dto"
-	"Sixth_world_Suday/internal/middleware"
-	"Sixth_world_Suday/internal/session"
-	usersvc "Sixth_world_Suday/internal/user"
+	"Sixth_world_Sunday/internal/auth"
+	"Sixth_world_Sunday/internal/config"
+	"Sixth_world_Sunday/internal/controllers/utils"
+	"Sixth_world_Sunday/internal/dto"
+	"Sixth_world_Sunday/internal/middleware"
+	"Sixth_world_Sunday/internal/session"
+	usersvc "Sixth_world_Sunday/internal/user"
 
 	"github.com/gofiber/fiber/v3"
 )

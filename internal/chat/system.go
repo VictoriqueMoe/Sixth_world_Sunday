@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"Sixth_world_Suday/internal/authz"
-	"Sixth_world_Suday/internal/logger"
-	"Sixth_world_Suday/internal/role"
-	"Sixth_world_Suday/internal/ws"
+	"Sixth_world_Sunday/internal/authz"
+	"Sixth_world_Sunday/internal/logger"
+	"Sixth_world_Sunday/internal/role"
+	"Sixth_world_Sunday/internal/ws"
 
 	"github.com/google/uuid"
 )

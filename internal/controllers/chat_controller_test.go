@@ -9,12 +9,12 @@ import (
 	"net/url"
 	"testing"
 
-	"Sixth_world_Suday/internal/authz"
-	chatsvc "Sixth_world_Suday/internal/chat"
-	"Sixth_world_Suday/internal/controllers/utils/testutil"
-	"Sixth_world_Suday/internal/dto"
-	"Sixth_world_Suday/internal/upload"
-	"Sixth_world_Suday/internal/ws"
+	"Sixth_world_Sunday/internal/authz"
+	chatsvc "Sixth_world_Sunday/internal/chat"
+	"Sixth_world_Sunday/internal/controllers/utils/testutil"
+	"Sixth_world_Sunday/internal/dto"
+	"Sixth_world_Sunday/internal/upload"
+	"Sixth_world_Sunday/internal/ws"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

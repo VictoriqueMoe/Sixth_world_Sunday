@@ -4,7 +4,7 @@ import (
 	"context"
 	"regexp"
 
-	"Sixth_world_Suday/internal/contentfilter"
+	"Sixth_world_Sunday/internal/contentfilter"
 )
 
 type Rule struct {

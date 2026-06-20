@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	"Sixth_world_Suday/internal/config"
-	"Sixth_world_Suday/internal/logger"
+	"Sixth_world_Sunday/internal/config"
+	"Sixth_world_Sunday/internal/logger"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"

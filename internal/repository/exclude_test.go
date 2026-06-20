@@ -3,7 +3,7 @@ package repository_test
 import (
 	"testing"
 
-	"Sixth_world_Suday/internal/repository"
+	"Sixth_world_Sunday/internal/repository"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

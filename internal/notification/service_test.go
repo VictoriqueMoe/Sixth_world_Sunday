@@ -5,11 +5,11 @@ import (
 	"errors"
 	"testing"
 
-	"Sixth_world_Suday/internal/dto"
-	"Sixth_world_Suday/internal/email"
-	"Sixth_world_Suday/internal/repository"
-	"Sixth_world_Suday/internal/repository/model"
-	"Sixth_world_Suday/internal/ws"
+	"Sixth_world_Sunday/internal/dto"
+	"Sixth_world_Sunday/internal/email"
+	"Sixth_world_Sunday/internal/repository"
+	"Sixth_world_Sunday/internal/repository/model"
+	"Sixth_world_Sunday/internal/ws"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

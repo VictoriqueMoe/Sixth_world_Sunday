@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"Sixth_world_Suday/internal/repository"
-	"Sixth_world_Suday/internal/vanityrole"
+	"Sixth_world_Sunday/internal/repository"
+	"Sixth_world_Sunday/internal/vanityrole"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"

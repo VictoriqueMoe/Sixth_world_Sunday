@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"Sixth_world_Suday/internal/config"
-	"Sixth_world_Suday/internal/repository"
-	"Sixth_world_Suday/internal/settings"
+	"Sixth_world_Sunday/internal/config"
+	"Sixth_world_Sunday/internal/repository"
+	"Sixth_world_Sunday/internal/settings"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

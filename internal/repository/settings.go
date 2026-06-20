@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"Sixth_world_Suday/internal/db"
+	"Sixth_world_Sunday/internal/db"
 
 	"github.com/google/uuid"
 )

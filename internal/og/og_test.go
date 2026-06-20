@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"Sixth_world_Suday/internal/config"
-	"Sixth_world_Suday/internal/settings"
+	"Sixth_world_Sunday/internal/config"
+	"Sixth_world_Sunday/internal/settings"
 
 	"github.com/stretchr/testify/mock"
 )

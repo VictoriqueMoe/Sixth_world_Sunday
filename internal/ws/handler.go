@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"Sixth_world_Suday/internal/config"
-	"Sixth_world_Suday/internal/logger"
-	"Sixth_world_Suday/internal/session"
+	"Sixth_world_Sunday/internal/config"
+	"Sixth_world_Sunday/internal/logger"
+	"Sixth_world_Sunday/internal/session"
 
 	"github.com/gofiber/contrib/v3/websocket"
 	"github.com/gofiber/fiber/v3"
@@ -22,7 +22,7 @@ import (
 
 const (
 	maxInboundMessageSize = 8 * 1024
-	wsTracerName          = "Sixth_world_Suday/ws"
+	wsTracerName          = "Sixth_world_Sunday/ws"
 	localsUserIDKey       = "ws.user_id"
 )
 

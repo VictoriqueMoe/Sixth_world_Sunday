@@ -5,7 +5,7 @@
 package settings
 
 import (
-	"Sixth_world_Suday/internal/config"
+	"Sixth_world_Sunday/internal/config"
 	"context"
 
 	"github.com/google/uuid"

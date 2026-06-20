@@ -4,8 +4,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"Sixth_world_Suday/internal/logger"
-	"Sixth_world_Suday/internal/repository"
+	"Sixth_world_Sunday/internal/logger"
+	"Sixth_world_Sunday/internal/repository"
 )
 
 func CleanOrphanedFiles(repo repository.UploadRepository, uploadDir string) int {

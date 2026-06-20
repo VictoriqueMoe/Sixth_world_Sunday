@@ -4,7 +4,7 @@ A private, invite-based, Shadowrun ("Sixth World") themed, Discord-style communi
 
 ## Features
 
-- **Channels** — group chat rooms with:
+- **Channels** - group chat rooms with:
   - Text chat with markdown and syntax-highlighted code blocks
   - Image / video / file uploads
   - Message replies, `@mentions`, emoji reactions, pinned messages
@@ -15,11 +15,11 @@ A private, invite-based, Shadowrun ("Sixth World") themed, Discord-style communi
   - "Ghost" (silent) join
   - Per-channel nickname and avatar overrides
 - **Voice and screen-sharing** in channels via a self-hosted [LiveKit](https://livekit.io/) server. Optional, off by default, gated by an admin "Enable Voice Chat" setting.
-- **Users and auth** — invite-based registration, login, email verification, password reset, rich profiles (bio, avatar, banner, social links), online presence, and user blocking.
-- **Roles** — Sysop / Admin / Moderator, plus admin-defined vanity role pills.
-- **Moderation** — kick / ban / timeout, banned-word rules (global and per-channel), user and message reports, and an audit log.
-- **Notifications** — in-app notification bell, browser desktop notifications (Notification API; fires for replies, mentions, reactions, etc. while a tab is open or backgrounded), and optional email notifications.
-- **Admin console** — stats, user management, invites, reports, banned words, vanity roles, content rules, and site settings.
+- **Users and auth** - invite-based registration, login, email verification, password reset, rich profiles (bio, avatar, banner, social links), online presence, and user blocking.
+- **Roles** - Sysop / Admin / Moderator, plus admin-defined vanity role pills.
+- **Moderation** - kick / ban / timeout, banned-word rules (global and per-channel), user and message reports, and an audit log.
+- **Notifications** - in-app notification bell, browser desktop notifications (Notification API; fires for replies, mentions, reactions, etc. while a tab is open or backgrounded), and optional email notifications.
+- **Admin console** - stats, user management, invites, reports, banned words, vanity roles, content rules, and site settings.
 - **Full-text search** over users and chat messages, backed by Postgres `pg_trgm` and generated `tsvector` columns.
 
 ## Not included
@@ -32,7 +32,7 @@ To keep contributors from re-adding them, the following are deliberately **not**
 
 - Go 1.26 with [Fiber v3](https://gofiber.io/)
 - PostgreSQL via [`jackc/pgx/v5`](https://github.com/jackc/pgx), with `pg_trgm` and generated `tsvector` search columns
-- [`pressly/goose`](https://github.com/pressly/goose) for migrations — a single embedded SQL migration, applied automatically on startup
+- [`pressly/goose`](https://github.com/pressly/goose) for migrations - a single embedded SQL migration, applied automatically on startup
 - [LiveKit](https://livekit.io/) (self-hosted) for voice and screen-share
 - testcontainers-go for repository-layer tests against a real Postgres
 
@@ -50,13 +50,13 @@ The frontend builds into `../static/` and is embedded into the Go binary via `go
 - Go 1.26 or newer (see `go.mod`)
 - Node.js LTS
 - Docker, or a local PostgreSQL instance
-- A LiveKit server (optional — only needed for voice / screen-share)
+- A LiveKit server (optional - only needed for voice / screen-share)
 
 ## Configuration
 
 Two env files sit next to each other.
 
-**`postgres.env`** — Postgres bootstrap credentials, read by both the postgres container and the app. Copy from `postgres.env.example`:
+**`postgres.env`** - Postgres bootstrap credentials, read by both the postgres container and the app. Copy from `postgres.env.example`:
 
 | Variable            | Default                | Description            |
 |---------------------|------------------------|------------------------|
@@ -64,7 +64,7 @@ Two env files sit next to each other.
 | `POSTGRES_PASSWORD` | `changeme`             | DB password            |
 | `POSTGRES_DB`       | `sixth_world_sunday`   | Database name          |
 
-**`.env`** — everything else. Copy from `.env.example`:
+**`.env`** - everything else. Copy from `.env.example`:
 
 | Variable            | Default                 | Description                                                                                  |
 |---------------------|-------------------------|----------------------------------------------------------------------------------------------|
@@ -77,7 +77,7 @@ Two env files sit next to each other.
 | `POSTGRES_SSL_MODE` | `disable`               | Postgres SSL mode (`disable`, `require`, `verify-ca`, `verify-full`)                         |
 | `DATABASE_URL`      | (empty)                 | Full connection string. If set, overrides the discrete `POSTGRES_*` vars                     |
 
-Most runtime behaviour lives in the database in the `site_settings` table and is editable from the admin panel with hot reload — including the LiveKit URL / API key / secret, SMTP / email-provider settings, Cloudflare email, Turnstile keys, upload and body size limits, registration mode, maintenance mode, default theme, channel limits, and the Sentry / OTLP / Pyroscope endpoints. Any of these can be **seeded** from the env file by setting an uppercased version of the setting key (e.g. `SMTP_HOST`, `LIVEKIT_URL`, `TURNSTILE_SITE_KEY`, `SENTRY_DSN`); the env value becomes the initial default. The `.env` file is otherwise only for what must exist before the DB is reachable.
+Most runtime behaviour lives in the database in the `site_settings` table and is editable from the admin panel with hot reload - including the LiveKit URL / API key / secret, SMTP / email-provider settings, Cloudflare email, Turnstile keys, upload and body size limits, registration mode, maintenance mode, default theme, channel limits, and the Sentry / OTLP / Pyroscope endpoints. Any of these can be **seeded** from the env file by setting an uppercased version of the setting key (e.g. `SMTP_HOST`, `LIVEKIT_URL`, `TURNSTILE_SITE_KEY`, `SENTRY_DSN`); the env value becomes the initial default. The `.env` file is otherwise only for what must exist before the DB is reachable.
 
 ## Local development
 
@@ -137,8 +137,8 @@ This pulls `ghcr.io/victoriquemoe/sixth_world_sunday:latest`.
 
 Persistent data:
 
-- **Postgres** — the named volume `postgres_data`.
-- **Uploaded media** — the app service bind-mounts `./data:/app/data`; set `UPLOAD_DIR=data/uploads` so uploads land on the host mount.
+- **Postgres** - the named volume `postgres_data`.
+- **Uploaded media** - the app service bind-mounts `./data:/app/data`; set `UPLOAD_DIR=data/uploads` so uploads land on the host mount.
 
 Run behind a reverse proxy (Caddy, Nginx, ...) for TLS. The server sets its own cache headers (`/static/assets/*` immutable, HTML `no-store`, API `no-cache`); the proxy just forwards requests and upgrades WebSocket connections. If you enable voice, copy `livekit.yaml.example` to `livekit.yaml`, set a real key/secret in its `keys:` block, enter the matching values under Admin -> Settings -> Voice Chat, and route a public `wss://` host to the LiveKit container.
 

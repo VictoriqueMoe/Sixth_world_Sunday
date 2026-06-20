@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	"Sixth_world_Suday/internal/role"
+	"Sixth_world_Sunday/internal/role"
 
 	"github.com/google/uuid"
 )

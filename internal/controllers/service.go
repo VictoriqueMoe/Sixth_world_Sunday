@@ -1,22 +1,22 @@
 package controllers
 
 import (
-	"Sixth_world_Suday/internal/admin"
-	"Sixth_world_Suday/internal/auth"
-	"Sixth_world_Suday/internal/authz"
-	"Sixth_world_Suday/internal/block"
-	"Sixth_world_Suday/internal/chat"
-	"Sixth_world_Suday/internal/media"
-	"Sixth_world_Suday/internal/notification"
-	"Sixth_world_Suday/internal/profile"
-	"Sixth_world_Suday/internal/report"
-	searchsvc "Sixth_world_Suday/internal/search"
-	"Sixth_world_Suday/internal/session"
-	"Sixth_world_Suday/internal/settings"
-	"Sixth_world_Suday/internal/upload"
-	usersvc "Sixth_world_Suday/internal/user"
-	"Sixth_world_Suday/internal/vanityrole"
-	"Sixth_world_Suday/internal/ws"
+	"Sixth_world_Sunday/internal/admin"
+	"Sixth_world_Sunday/internal/auth"
+	"Sixth_world_Sunday/internal/authz"
+	"Sixth_world_Sunday/internal/block"
+	"Sixth_world_Sunday/internal/chat"
+	"Sixth_world_Sunday/internal/media"
+	"Sixth_world_Sunday/internal/notification"
+	"Sixth_world_Sunday/internal/profile"
+	"Sixth_world_Sunday/internal/report"
+	searchsvc "Sixth_world_Sunday/internal/search"
+	"Sixth_world_Sunday/internal/session"
+	"Sixth_world_Sunday/internal/settings"
+	"Sixth_world_Sunday/internal/upload"
+	usersvc "Sixth_world_Sunday/internal/user"
+	"Sixth_world_Sunday/internal/vanityrole"
+	"Sixth_world_Sunday/internal/ws"
 )
 
 type (

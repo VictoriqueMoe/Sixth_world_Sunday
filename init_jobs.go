@@ -4,13 +4,13 @@ import (
 	"context"
 	"time"
 
-	"Sixth_world_Suday/internal/email"
-	"Sixth_world_Suday/internal/logger"
-	"Sixth_world_Suday/internal/middleware"
-	"Sixth_world_Suday/internal/repository"
-	"Sixth_world_Suday/internal/settings"
-	"Sixth_world_Suday/internal/telemetry"
-	"Sixth_world_Suday/internal/upload"
+	"Sixth_world_Sunday/internal/email"
+	"Sixth_world_Sunday/internal/logger"
+	"Sixth_world_Sunday/internal/middleware"
+	"Sixth_world_Sunday/internal/repository"
+	"Sixth_world_Sunday/internal/settings"
+	"Sixth_world_Sunday/internal/telemetry"
+	"Sixth_world_Sunday/internal/upload"
 
 	"github.com/gofiber/fiber/v3"
 )

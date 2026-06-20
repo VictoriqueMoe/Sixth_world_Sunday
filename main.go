@@ -3,10 +3,10 @@ package main
 import (
 	"os"
 
-	"Sixth_world_Suday/internal/config"
-	"Sixth_world_Suday/internal/logger"
-	"Sixth_world_Suday/internal/telemetry"
-	"Sixth_world_Suday/internal/utils"
+	"Sixth_world_Sunday/internal/config"
+	"Sixth_world_Sunday/internal/logger"
+	"Sixth_world_Sunday/internal/telemetry"
+	"Sixth_world_Sunday/internal/utils"
 )
 
 func main() {

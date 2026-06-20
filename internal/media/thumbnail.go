@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"Sixth_world_Suday/internal/logger"
+	"Sixth_world_Sunday/internal/logger"
 )
 
 func getVideoDuration(ctx context.Context, videoPath string) (float64, error) {

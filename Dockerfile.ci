@@ -23,7 +23,7 @@ RUN go mod download
 COPY . .
 COPY --from=frontend-builder /app/static/ ./static/
 
-RUN CGO_ENABLED=0 GOOS=linux go build -tags ci -ldflags="-X Sixth_world_Suday/internal/config.Version=${APP_VERSION}" -o main .
+RUN CGO_ENABLED=0 GOOS=linux go build -tags ci -ldflags="-X Sixth_world_Sunday/internal/config.Version=${APP_VERSION}" -o main .
 
 FROM alpine:latest
 

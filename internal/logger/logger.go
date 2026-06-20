@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"Sixth_world_Suday/internal/config"
+	"Sixth_world_Sunday/internal/config"
 
 	"github.com/getsentry/sentry-go"
 	sentryzerolog "github.com/getsentry/sentry-go/zerolog"
