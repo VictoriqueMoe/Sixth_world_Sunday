@@ -218,6 +218,10 @@
     --dot-color: var(--cyan);
 }
 
+.pill.alwaysCompact.gm {
+    --dot-color: #ffb000;
+}
+
 .pill.alwaysCompact.superAdmin::after {
     display: none;
 }
@@ -232,6 +236,12 @@
     background: rgba(var(--cyan-rgb), 0.12);
     color: var(--cyan);
     border: 1px solid var(--cyan);
+}
+
+.gm {
+    background: rgba(255, 176, 0, 0.12);
+    color: #ffb000;
+    border: 1px solid #ffb000;
 }
 
 @media (max-width: 768px) {
@@ -264,6 +274,10 @@
 
     .pill.compactMobile.moderator {
         --dot-color: var(--cyan);
+    }
+
+    .pill.compactMobile.gm {
+        --dot-color: #ffb000;
     }
 
     .pill.compactMobile.superAdmin::after {

@@ -590,13 +590,14 @@ func TestSiteInfo_ServiceErrors(t *testing.T) {
 func TestStaff_OK(t *testing.T) {
 	// given
 	h, deps := newAuthHarness(t)
+	h.ExpectValidSession("valid-cookie", uuid.New())
 	deps.userSvc.EXPECT().ListStaff(mock.Anything).Return([]*dto.UserResponse{
 		{ID: uuid.New(), Username: "cipher", DisplayName: "Cipher", Role: role.RoleSuperAdmin},
 		{ID: uuid.New(), Username: "nightjar", DisplayName: "Nightjar", Role: role.RoleAdmin},
 	}, nil)
 
 	// when
-	status, body := h.NewRequest("GET", "/staff").Do()
+	status, body := h.NewRequest("GET", "/staff").WithCookie("valid-cookie").Do()
 
 	// then
 	require.Equal(t, http.StatusOK, status)
@@ -609,10 +610,11 @@ func TestStaff_OK(t *testing.T) {
 func TestStaff_ServiceError(t *testing.T) {
 	// given
 	h, deps := newAuthHarness(t)
+	h.ExpectValidSession("valid-cookie", uuid.New())
 	deps.userSvc.EXPECT().ListStaff(mock.Anything).Return(nil, errors.New("boom"))
 
 	// when
-	status, _ := h.NewRequest("GET", "/staff").Do()
+	status, _ := h.NewRequest("GET", "/staff").WithCookie("valid-cookie").Do()
 
 	// then
 	require.Equal(t, http.StatusInternalServerError, status)
@@ -621,9 +623,10 @@ func TestStaff_ServiceError(t *testing.T) {
 func TestGetRules_OK(t *testing.T) {
 	// given
 	h, _ := newAuthHarness(t)
+	h.ExpectValidSession("valid-cookie", uuid.New())
 
 	// when
-	status, body := h.NewRequest("GET", "/rules/chat_rooms").Do()
+	status, body := h.NewRequest("GET", "/rules/chat_rooms").WithCookie("valid-cookie").Do()
 
 	// then
 	require.Equal(t, http.StatusOK, status)
@@ -634,9 +637,10 @@ func TestGetRules_OK(t *testing.T) {
 func TestGetRules_UnknownPage(t *testing.T) {
 	// given
 	h, _ := newAuthHarness(t)
+	h.ExpectValidSession("valid-cookie", uuid.New())
 
 	// when
-	status, body := h.NewRequest("GET", "/rules/nonexistent").Do()
+	status, body := h.NewRequest("GET", "/rules/nonexistent").WithCookie("valid-cookie").Do()
 
 	// then
 	require.Equal(t, http.StatusNotFound, status)

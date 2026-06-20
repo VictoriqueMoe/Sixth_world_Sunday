@@ -14,6 +14,7 @@ import (
 	"Sixth_world_Sunday/internal/contentfilter"
 	slursrule "Sixth_world_Sunday/internal/contentfilter/rules/slurs"
 	"Sixth_world_Sunday/internal/email"
+	"Sixth_world_Sunday/internal/filehost"
 	"Sixth_world_Sunday/internal/livekit"
 	"Sixth_world_Sunday/internal/logger"
 	"Sixth_world_Sunday/internal/media"
@@ -38,6 +39,11 @@ func initServices(repos *repository.Repositories, settingsSvc settings.Service) 
 		}
 	}
 
+	vaultDir := filepath.Join(filepath.Dir(uploadDir), "filevault")
+	if err := os.MkdirAll(vaultDir, 0755); err != nil {
+		logger.Log.Fatal().Err(err).Msg("failed to create file vault directory")
+	}
+
 	sessionMgr := session.NewManager(repos.Session, settingsSvc)
 	mediaProc := media.NewProcessor(4)
 	uploadSvc := upload.NewService(settingsSvc, mediaProc)
@@ -57,6 +63,7 @@ func initServices(repos *repository.Repositories, settingsSvc settings.Service) 
 	chatSvc := chat.NewService(repos.Chat, repos.User, repos.Role, repos.VanityRole, repos.ChatRoomBan, repos.ChatBannedWord, repos.AuditLog, authzSvc, notifSvc, blockSvc, uploadSvc, settingsSvc, mediaProc, hub, livekitSvc, contentFilter)
 	vanityRoleSvc := vanityrole.NewService(repos.VanityRole)
 	searchSvc := searchsvc.NewService(repos.Search, repos.Chat)
+	fileVaultSvc := filehost.NewService(repos.Vault, authzSvc, settingsSvc, hub, vaultDir)
 
 	authSvc := auth.NewService(userSvc, sessionMgr, settingsSvc, repos.Invite, repos.User, repos.AuditLog, repos.PasswordReset, repos.EmailVerification, emailSvc, contentFilter)
 
@@ -79,5 +86,6 @@ func initServices(repos *repository.Repositories, settingsSvc settings.Service) 
 		vanityRole:    vanityRoleSvc,
 		search:        searchSvc,
 		user:          userSvc,
+		fileVault:     fileVaultSvc,
 	}
 }

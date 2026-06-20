@@ -27,20 +27,26 @@ func isWriteMethod(method string) bool {
 	}
 }
 
+func apiPath(path string) string {
+	return strings.TrimPrefix(path, "/api/v1")
+}
+
 func isVerifyExemptPath(method, path string) bool {
 	if method != fiber.MethodPost {
 		return false
 	}
+
+	path = apiPath(path)
 	switch path {
-	case "/api/v1/auth/set-email", "/api/v1/auth/verify-email", "/api/v1/auth/resend-verification":
+	case "/auth/set-email", "/auth/verify-email", "/auth/resend-verification":
 		return true
-	case "/api/v1/notifications/read":
-		return true
-	}
-	if strings.HasPrefix(path, "/api/v1/notifications/") && strings.HasSuffix(path, "/read") {
+	case "/notifications/read":
 		return true
 	}
-	if strings.HasPrefix(path, "/api/v1/chat/rooms/") && strings.HasSuffix(path, "/read") {
+	if strings.HasPrefix(path, "/notifications/") && strings.HasSuffix(path, "/read") {
+		return true
+	}
+	if strings.HasPrefix(path, "/chat/rooms/") && strings.HasSuffix(path, "/read") {
 		return true
 	}
 	return false
@@ -50,16 +56,18 @@ func isLockExemptPath(method, path string) bool {
 	if method != fiber.MethodPost {
 		return false
 	}
-	if strings.HasPrefix(path, "/api/v1/notifications/") && strings.HasSuffix(path, "/read") {
+
+	path = apiPath(path)
+	if strings.HasPrefix(path, "/notifications/") && strings.HasSuffix(path, "/read") {
 		return true
 	}
-	if path == "/api/v1/notifications/read" {
+	if path == "/notifications/read" {
 		return true
 	}
-	if strings.HasPrefix(path, "/api/v1/chat/rooms/") && strings.HasSuffix(path, "/read") {
+	if strings.HasPrefix(path, "/chat/rooms/") && strings.HasSuffix(path, "/read") {
 		return true
 	}
-	if strings.HasPrefix(path, "/api/v1/chat/rooms/") && strings.HasSuffix(path, "/messages") {
+	if strings.HasPrefix(path, "/chat/rooms/") && strings.HasSuffix(path, "/messages") {
 		return true
 	}
 	return false
@@ -83,55 +91,18 @@ func RequirePermission(mgr *session.Manager, authzSvc authz.Service, perm authz.
 	}
 }
 
-func OptionalAuth(mgr *session.Manager, authzSvc authz.Service) fiber.Handler {
-	return func(ctx fiber.Ctx) error {
-		token := sessionToken(ctx)
-		if token == "" {
-			ctx.Locals("userID", uuid.Nil)
-			return ctx.Next()
-		}
-
-		userID, err := mgr.Validate(ctx.Context(), token)
-		if err != nil {
-			ctx.Locals("userID", uuid.Nil)
-			return ctx.Next()
-		}
-
-		if authzSvc.IsBanned(ctx.Context(), userID) {
-			mgr.Delete(ctx.Context(), token)
-			ctx.Locals("userID", uuid.Nil)
-			return ctx.Next()
-		}
-
-		ctx.Locals("userID", userID)
-		return ctx.Next()
-	}
-}
-
-func RequireAuth(mgr *session.Manager, authzSvc authz.Service) fiber.Handler {
-	return func(ctx fiber.Ctx) error {
-		userID, _, ok := authenticateAndCheckBan(ctx, mgr, authzSvc)
-		if !ok {
-			return nil
-		}
-
-		ctx.Locals("userID", userID)
-		return ctx.Next()
-	}
-}
-
 func isPublicAPIPath(method, path string) bool {
-	switch path {
-	case "/api/v1/site-info":
+	switch apiPath(path) {
+	case "/site-info":
 		return method == fiber.MethodGet
-	case "/api/v1/livekit/webhook":
+	case "/livekit/webhook":
 		return method == fiber.MethodPost
-	case "/api/v1/auth/register",
-		"/api/v1/auth/login",
-		"/api/v1/auth/logout",
-		"/api/v1/auth/forgot-password",
-		"/api/v1/auth/reset-password",
-		"/api/v1/auth/verify-email":
+	case "/auth/register",
+		"/auth/login",
+		"/auth/logout",
+		"/auth/forgot-password",
+		"/auth/reset-password",
+		"/auth/verify-email":
 		return method == fiber.MethodPost
 	}
 

@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { isSiteStaff } from "../../../utils/permissions";
 import { effectiveMemberUser, memberModPermissions } from "../../../utils/chatMembers";
 import { useVoice } from "../../../context/voiceContextValue";
+import { useMobileNav } from "../../../context/MobileNavContext";
 import { useChatViewport } from "../../../hooks/useChatViewport";
 import type { RoomController } from "../../../hooks/useRoomController";
 import { TypingIndicator } from "../TypingIndicator/TypingIndicator";
@@ -22,7 +23,6 @@ const VoiceDock = lazy(() => import("../Voice/VoiceDock").then(m => ({ default: 
 export function MobileRoomView({ controller }: { controller: RoomController }) {
     const {
         user,
-        navigate,
         room,
         members,
         memberGroups,
@@ -87,6 +87,7 @@ export function MobileRoomView({ controller }: { controller: RoomController }) {
     useChatViewport({ scrollToBottom });
 
     const globalVoice = useVoice();
+    const { openNav } = useMobileNav();
 
     if (!user || !room) {
         return null;
@@ -378,13 +379,8 @@ export function MobileRoomView({ controller }: { controller: RoomController }) {
     return (
         <div className={styles.shell}>
             <div className={styles.topBar}>
-                <button
-                    type="button"
-                    className={styles.iconBtn}
-                    onClick={() => navigate("/channels")}
-                    aria-label="Back to rooms"
-                >
-                    {"←"}
+                <button type="button" className={styles.iconBtn} onClick={openNav} aria-label="Open navigation">
+                    {"☰"}
                 </button>
                 <div className={styles.topInfo}>
                     <div className={styles.topTitleRow}>

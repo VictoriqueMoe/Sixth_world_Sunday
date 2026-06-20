@@ -59,7 +59,7 @@ func (s *Service) setupResetPasswordRoute(r fiber.Router) {
 }
 
 func (s *Service) setupSetEmailRoute(r fiber.Router) {
-	r.Post("/auth/set-email", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.setEmail)
+	r.Post("/auth/set-email", s.setEmail)
 }
 
 func (s *Service) setupVerifyEmailRoute(r fiber.Router) {
@@ -67,11 +67,11 @@ func (s *Service) setupVerifyEmailRoute(r fiber.Router) {
 }
 
 func (s *Service) setupResendVerificationRoute(r fiber.Router) {
-	r.Post("/auth/resend-verification", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.resendVerification)
+	r.Post("/auth/resend-verification", s.resendVerification)
 }
 
 func (s *Service) setupSessionRoute(r fiber.Router) {
-	r.Get("/auth/session", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.getSession)
+	r.Get("/auth/session", s.getSession)
 }
 
 func (s *Service) getSession(ctx fiber.Ctx) error {

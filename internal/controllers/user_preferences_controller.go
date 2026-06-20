@@ -4,7 +4,6 @@ import (
 	"github.com/gofiber/fiber/v3"
 
 	"Sixth_world_Sunday/internal/controllers/utils"
-	"Sixth_world_Sunday/internal/middleware"
 )
 
 func (s *Service) getAllUserPreferencesRoutes() []FSetupRoute {
@@ -14,7 +13,7 @@ func (s *Service) getAllUserPreferencesRoutes() []FSetupRoute {
 }
 
 func (s *Service) setupUpdateAppearance(r fiber.Router) {
-	r.Put("/preferences/appearance", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.updateAppearance)
+	r.Put("/preferences/appearance", s.updateAppearance)
 }
 
 func (s *Service) updateAppearance(ctx fiber.Ctx) error {

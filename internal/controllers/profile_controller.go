@@ -8,7 +8,6 @@ import (
 	"Sixth_world_Sunday/internal/config"
 	"Sixth_world_Sunday/internal/controllers/utils"
 	"Sixth_world_Sunday/internal/dto"
-	"Sixth_world_Sunday/internal/middleware"
 	"Sixth_world_Sunday/internal/profile"
 	"Sixth_world_Sunday/internal/upload"
 
@@ -31,27 +30,27 @@ func (s *Service) getAllProfileRoutes() []FSetupRoute {
 }
 
 func (s *Service) setupGetProfileRoute(r fiber.Router) {
-	r.Get("/users/:username", middleware.OptionalAuth(s.AuthSession, s.AuthzService), s.getProfile)
+	r.Get("/users/:username", s.getProfile)
 }
 
 func (s *Service) setupUpdateProfileRoute(r fiber.Router) {
-	r.Put("/auth/profile", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.updateProfile)
+	r.Put("/auth/profile", s.updateProfile)
 }
 
 func (s *Service) setupUploadAvatarRoute(r fiber.Router) {
-	r.Post("/auth/avatar", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.uploadAvatar)
+	r.Post("/auth/avatar", s.uploadAvatar)
 }
 
 func (s *Service) setupUploadBannerRoute(r fiber.Router) {
-	r.Post("/auth/banner", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.uploadBanner)
+	r.Post("/auth/banner", s.uploadBanner)
 }
 
 func (s *Service) setupChangePasswordRoute(r fiber.Router) {
-	r.Put("/auth/password", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.changePassword)
+	r.Put("/auth/password", s.changePassword)
 }
 
 func (s *Service) setupDeleteAccountRoute(r fiber.Router) {
-	r.Delete("/auth/account", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.deleteAccount)
+	r.Delete("/auth/account", s.deleteAccount)
 }
 
 func (s *Service) setupGetOnlineStatusRoute(r fiber.Router) {
@@ -222,7 +221,7 @@ func (s *Service) getOnlineStatus(ctx fiber.Ctx) error {
 }
 
 func (s *Service) setupSearchUsersRoute(r fiber.Router) {
-	r.Get("/users/search", middleware.OptionalAuth(s.AuthSession, s.AuthzService), s.searchUsers)
+	r.Get("/users/search", s.searchUsers)
 }
 
 func (s *Service) searchUsers(ctx fiber.Ctx) error {

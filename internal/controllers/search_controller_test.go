@@ -38,9 +38,10 @@ func newSearchHarness(t *testing.T) (*testutil.Harness, searchDeps) {
 func TestSearchController_EmptyQuery_ReturnsEmpty(t *testing.T) {
 	// given
 	h, _ := newSearchHarness(t)
+	h.ExpectValidSession("valid-cookie", uuid.New())
 
 	// when
-	status, body := h.NewRequest(http.MethodGet, "/search?q=").Do()
+	status, body := h.NewRequest(http.MethodGet, "/search?q=").WithCookie("valid-cookie").Do()
 
 	// then
 	assert.Equal(t, http.StatusOK, status)
@@ -53,10 +54,12 @@ func TestSearchController_EmptyQuery_ReturnsEmpty(t *testing.T) {
 func TestSearchController_FullSearch_PassesParamsAndShapesResponse(t *testing.T) {
 	// given
 	h, deps := newSearchHarness(t)
+	userID := uuid.New()
+	h.ExpectValidSession("valid-cookie", userID)
 	deps.svc.EXPECT().ParseTypes("user").
 		Return([]repository.SearchEntityType{repository.SearchEntityUser})
 	deps.svc.EXPECT().
-		Search(mock.Anything, "wraith", []repository.SearchEntityType{repository.SearchEntityUser}, 10, 5, uuid.Nil, uuid.Nil).
+		Search(mock.Anything, "wraith", []repository.SearchEntityType{repository.SearchEntityUser}, 10, 5, userID, uuid.Nil).
 		Return([]search.Result{
 			{
 				SearchResult: repository.SearchResult{
@@ -73,7 +76,7 @@ func TestSearchController_FullSearch_PassesParamsAndShapesResponse(t *testing.T)
 		}, 1, nil)
 
 	// when
-	status, body := h.NewRequest(http.MethodGet, "/search?q=wraith&types=user&limit=10&offset=5").Do()
+	status, body := h.NewRequest(http.MethodGet, "/search?q=wraith&types=user&limit=10&offset=5").WithCookie("valid-cookie").Do()
 
 	// then
 	assert.Equal(t, http.StatusOK, status)
@@ -91,7 +94,9 @@ func TestSearchController_FullSearch_PassesParamsAndShapesResponse(t *testing.T)
 func TestSearchController_QuickSearch_DelegatesToService(t *testing.T) {
 	// given
 	h, deps := newSearchHarness(t)
-	deps.svc.EXPECT().QuickSearch(mock.Anything, "wraith", 5, uuid.Nil).
+	userID := uuid.New()
+	h.ExpectValidSession("valid-cookie", userID)
+	deps.svc.EXPECT().QuickSearch(mock.Anything, "wraith", 5, userID).
 		Return([]search.Result{
 			{
 				SearchResult: repository.SearchResult{EntityType: repository.SearchEntityUser, ID: "user-id", Title: "Wraith", AuthorUsername: "wraith"},
@@ -100,7 +105,7 @@ func TestSearchController_QuickSearch_DelegatesToService(t *testing.T) {
 		}, nil)
 
 	// when
-	status, body := h.NewRequest(http.MethodGet, "/search/quick?q=wraith&perType=5").Do()
+	status, body := h.NewRequest(http.MethodGet, "/search/quick?q=wraith&perType=5").WithCookie("valid-cookie").Do()
 
 	// then
 	assert.Equal(t, http.StatusOK, status)
@@ -114,9 +119,10 @@ func TestSearchController_QuickSearch_DelegatesToService(t *testing.T) {
 func TestSearchController_QuickSearch_EmptyQ_NoCall(t *testing.T) {
 	// given
 	h, _ := newSearchHarness(t)
+	h.ExpectValidSession("valid-cookie", uuid.New())
 
 	// when
-	status, body := h.NewRequest(http.MethodGet, "/search/quick?q=").Do()
+	status, body := h.NewRequest(http.MethodGet, "/search/quick?q=").WithCookie("valid-cookie").Do()
 
 	// then
 	assert.Equal(t, http.StatusOK, status)

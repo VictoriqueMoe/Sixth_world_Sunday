@@ -1,5 +1,7 @@
 import { NavLink } from "react-router";
 import { useAuth } from "../../../hooks/useAuth";
+import { useIsMobile } from "../../../hooks/useIsMobile";
+import { useMobileNav } from "../../../context/MobileNavContext";
 import { ThemeSelector } from "../ThemeSelector/ThemeSelector";
 import { NotificationBell } from "../NotificationBell/NotificationBell";
 import { LoginButton } from "../../auth/LoginButton/LoginButton";
@@ -9,9 +11,16 @@ import styles from "./Header.module.css";
 
 export function Header() {
     const { user, loading } = useAuth();
+    const isMobile = useIsMobile();
+    const { openNav } = useMobileNav();
 
     return (
         <header className={styles.header}>
+            {!loading && user && isMobile && (
+                <button type="button" className="app-hamburger" onClick={openNav} aria-label="Open navigation">
+                    {"☰"}
+                </button>
+            )}
             <NavLink to="/" className={styles.brand} aria-label="Sixth World Sunday home">
                 SIXTH WORLD <b>SUNDAY</b>
             </NavLink>

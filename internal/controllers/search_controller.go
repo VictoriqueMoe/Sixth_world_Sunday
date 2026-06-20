@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	ctrlutils "Sixth_world_Sunday/internal/controllers/utils"
-	"Sixth_world_Sunday/internal/middleware"
 	"Sixth_world_Sunday/internal/search"
 
 	"github.com/gofiber/fiber/v3"
@@ -19,11 +18,11 @@ func (s *Service) getAllSearchRoutes() []FSetupRoute {
 }
 
 func (s *Service) setupSearch(r fiber.Router) {
-	r.Get("/search", middleware.OptionalAuth(s.AuthSession, s.AuthzService), s.search)
+	r.Get("/search", s.search)
 }
 
 func (s *Service) setupQuickSearch(r fiber.Router) {
-	r.Get("/search/quick", middleware.OptionalAuth(s.AuthSession, s.AuthzService), s.quickSearch)
+	r.Get("/search/quick", s.quickSearch)
 }
 
 func (s *Service) search(ctx fiber.Ctx) error {

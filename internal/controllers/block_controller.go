@@ -5,7 +5,6 @@ import (
 
 	"Sixth_world_Sunday/internal/block"
 	"Sixth_world_Sunday/internal/controllers/utils"
-	"Sixth_world_Sunday/internal/middleware"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"
@@ -21,19 +20,19 @@ func (s *Service) getAllBlockRoutes() []FSetupRoute {
 }
 
 func (s *Service) setupBlockUser(r fiber.Router) {
-	r.Post("/users/:id/block", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.blockUser)
+	r.Post("/users/:id/block", s.blockUser)
 }
 
 func (s *Service) setupUnblockUser(r fiber.Router) {
-	r.Delete("/users/:id/block", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.unblockUser)
+	r.Delete("/users/:id/block", s.unblockUser)
 }
 
 func (s *Service) setupGetBlockStatus(r fiber.Router) {
-	r.Get("/users/:id/block-status", middleware.OptionalAuth(s.AuthSession, s.AuthzService), s.getBlockStatus)
+	r.Get("/users/:id/block-status", s.getBlockStatus)
 }
 
 func (s *Service) setupListBlockedUsers(r fiber.Router) {
-	r.Get("/blocked-users", middleware.RequireAuth(s.AuthSession, s.AuthzService), s.listBlockedUsers)
+	r.Get("/blocked-users", s.listBlockedUsers)
 }
 
 func (s *Service) listBlockedUsers(ctx fiber.Ctx) error {

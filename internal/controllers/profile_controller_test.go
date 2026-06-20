@@ -39,23 +39,6 @@ func newProfileHarness(t *testing.T) (*testutil.Harness, profileDeps) {
 	return h, deps
 }
 
-func TestGetProfile_Anonymous_OK(t *testing.T) {
-	// given
-	h, deps := newProfileHarness(t)
-	userID := uuid.New()
-	expected := &dto.UserProfileResponse{UserResponse: dto.UserResponse{ID: userID, Username: "nightjar"}}
-	deps.profileSvc.EXPECT().GetProfile(mock.Anything, "nightjar", uuid.Nil).Return(expected, nil)
-
-	// when
-	status, body := h.NewRequest("GET", "/users/nightjar").Do()
-
-	// then
-	require.Equal(t, http.StatusOK, status)
-	got := testutil.UnmarshalJSON[dto.UserProfileResponse](t, body)
-	assert.Equal(t, "nightjar", got.Username)
-	assert.False(t, got.Online)
-}
-
 func TestGetProfile_Authenticated_OK(t *testing.T) {
 	// given
 	h, deps := newProfileHarness(t)
@@ -75,10 +58,12 @@ func TestGetProfile_Authenticated_OK(t *testing.T) {
 func TestGetProfile_NotFound(t *testing.T) {
 	// given
 	h, deps := newProfileHarness(t)
-	deps.profileSvc.EXPECT().GetProfile(mock.Anything, "ghost", uuid.Nil).Return(nil, profile.ErrUserNotFound)
+	viewerID := uuid.New()
+	h.ExpectValidSession("valid-cookie", viewerID)
+	deps.profileSvc.EXPECT().GetProfile(mock.Anything, "ghost", viewerID).Return(nil, profile.ErrUserNotFound)
 
 	// when
-	status, body := h.NewRequest("GET", "/users/ghost").Do()
+	status, body := h.NewRequest("GET", "/users/ghost").WithCookie("valid-cookie").Do()
 
 	// then
 	require.Equal(t, http.StatusNotFound, status)
@@ -88,10 +73,12 @@ func TestGetProfile_NotFound(t *testing.T) {
 func TestGetProfile_InternalError(t *testing.T) {
 	// given
 	h, deps := newProfileHarness(t)
-	deps.profileSvc.EXPECT().GetProfile(mock.Anything, "nightjar", uuid.Nil).Return(nil, errors.New("boom"))
+	viewerID := uuid.New()
+	h.ExpectValidSession("valid-cookie", viewerID)
+	deps.profileSvc.EXPECT().GetProfile(mock.Anything, "nightjar", viewerID).Return(nil, errors.New("boom"))
 
 	// when
-	status, body := h.NewRequest("GET", "/users/nightjar").Do()
+	status, body := h.NewRequest("GET", "/users/nightjar").WithCookie("valid-cookie").Do()
 
 	// then
 	require.Equal(t, http.StatusInternalServerError, status)
@@ -376,9 +363,10 @@ func TestDeleteAccount_ServiceError(t *testing.T) {
 func TestGetOnlineStatus_EmptyIDs(t *testing.T) {
 	// given
 	h, _ := newProfileHarness(t)
+	h.ExpectValidSession("valid-cookie", uuid.New())
 
 	// when
-	status, body := h.NewRequest("GET", "/users/online").Do()
+	status, body := h.NewRequest("GET", "/users/online").WithCookie("valid-cookie").Do()
 
 	// then
 	require.Equal(t, http.StatusOK, status)
@@ -389,9 +377,10 @@ func TestGetOnlineStatus_WithIDs(t *testing.T) {
 	// given
 	h, _ := newProfileHarness(t)
 	id1 := uuid.New()
+	h.ExpectValidSession("valid-cookie", uuid.New())
 
 	// when
-	status, body := h.NewRequest("GET", "/users/online?ids="+id1.String()+",not-a-uuid,").Do()
+	status, body := h.NewRequest("GET", "/users/online?ids="+id1.String()+",not-a-uuid,").WithCookie("valid-cookie").Do()
 
 	// then
 	require.Equal(t, http.StatusOK, status)
@@ -404,23 +393,25 @@ func TestGetOnlineStatus_WithIDs(t *testing.T) {
 func TestSearchUsers_EmptyQuery(t *testing.T) {
 	// given
 	h, _ := newProfileHarness(t)
+	h.ExpectValidSession("valid-cookie", uuid.New())
 
 	// when
-	status, body := h.NewRequest("GET", "/users/search").Do()
+	status, body := h.NewRequest("GET", "/users/search").WithCookie("valid-cookie").Do()
 
 	// then
 	require.Equal(t, http.StatusOK, status)
 	assert.JSONEq(t, `[]`, string(body))
 }
 
-func TestSearchUsers_Anonymous_OK(t *testing.T) {
+func TestSearchUsers_OK(t *testing.T) {
 	// given
 	h, deps := newProfileHarness(t)
+	h.ExpectValidSession("valid-cookie", uuid.New())
 	u := dto.UserResponse{ID: uuid.New(), Username: "nightjar"}
 	deps.profileSvc.EXPECT().SearchUsers(mock.Anything, "be", 10).Return([]dto.UserResponse{u}, nil)
 
 	// when
-	status, body := h.NewRequest("GET", "/users/search?q=be").Do()
+	status, body := h.NewRequest("GET", "/users/search?q=be").WithCookie("valid-cookie").Do()
 
 	// then
 	require.Equal(t, http.StatusOK, status)
@@ -432,10 +423,11 @@ func TestSearchUsers_Anonymous_OK(t *testing.T) {
 func TestSearchUsers_InternalError(t *testing.T) {
 	// given
 	h, deps := newProfileHarness(t)
+	h.ExpectValidSession("valid-cookie", uuid.New())
 	deps.profileSvc.EXPECT().SearchUsers(mock.Anything, "be", 10).Return(nil, errors.New("boom"))
 
 	// when
-	status, body := h.NewRequest("GET", "/users/search?q=be").Do()
+	status, body := h.NewRequest("GET", "/users/search?q=be").WithCookie("valid-cookie").Do()
 
 	// then
 	require.Equal(t, http.StatusInternalServerError, status)
@@ -445,11 +437,12 @@ func TestSearchUsers_InternalError(t *testing.T) {
 func TestListUsersPublic_OK(t *testing.T) {
 	// given
 	h, deps := newProfileHarness(t)
+	h.ExpectValidSession("valid-cookie", uuid.New())
 	users := []dto.UserResponse{{ID: uuid.New(), Username: "nightjar"}}
 	deps.profileSvc.EXPECT().ListPublicUsers(mock.Anything).Return(users, nil)
 
 	// when
-	status, body := h.NewRequest("GET", "/users").Do()
+	status, body := h.NewRequest("GET", "/users").WithCookie("valid-cookie").Do()
 
 	// then
 	require.Equal(t, http.StatusOK, status)
@@ -462,10 +455,11 @@ func TestListUsersPublic_OK(t *testing.T) {
 func TestListUsersPublic_InternalError(t *testing.T) {
 	// given
 	h, deps := newProfileHarness(t)
+	h.ExpectValidSession("valid-cookie", uuid.New())
 	deps.profileSvc.EXPECT().ListPublicUsers(mock.Anything).Return(nil, errors.New("boom"))
 
 	// when
-	status, body := h.NewRequest("GET", "/users").Do()
+	status, body := h.NewRequest("GET", "/users").WithCookie("valid-cookie").Do()
 
 	// then
 	require.Equal(t, http.StatusInternalServerError, status)
