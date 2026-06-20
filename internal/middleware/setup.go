@@ -6,11 +6,11 @@ import (
 	"strings"
 	"time"
 
-	"Sixth_world_Suday/internal/authz"
-	"Sixth_world_Suday/internal/config"
-	appLogger "Sixth_world_Suday/internal/logger"
-	"Sixth_world_Suday/internal/session"
-	"Sixth_world_Suday/internal/settings"
+	"Sixth_world_Sunday/internal/authz"
+	"Sixth_world_Sunday/internal/config"
+	appLogger "Sixth_world_Sunday/internal/logger"
+	"Sixth_world_Sunday/internal/session"
+	"Sixth_world_Sunday/internal/settings"
 
 	"github.com/getsentry/sentry-go"
 	"github.com/gofiber/fiber/v3"

@@ -5,9 +5,9 @@ import (
 	"errors"
 	"testing"
 
-	"Sixth_world_Suday/internal/authz"
-	"Sixth_world_Suday/internal/repository"
-	"Sixth_world_Suday/internal/role"
+	"Sixth_world_Sunday/internal/authz"
+	"Sixth_world_Sunday/internal/repository"
+	"Sixth_world_Sunday/internal/role"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

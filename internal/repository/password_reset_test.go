@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"Sixth_world_Suday/internal/repository/repotest"
+	"Sixth_world_Sunday/internal/repository/repotest"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

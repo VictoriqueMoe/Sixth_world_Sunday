@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"net/http/pprof"
 
-	"Sixth_world_Suday/internal/authz"
-	"Sixth_world_Suday/internal/middleware"
-	"Sixth_world_Suday/internal/session"
+	"Sixth_world_Sunday/internal/authz"
+	"Sixth_world_Sunday/internal/middleware"
+	"Sixth_world_Sunday/internal/session"
 
 	"github.com/gofiber/fiber/v3"
 )

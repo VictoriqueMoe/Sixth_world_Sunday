@@ -5,7 +5,7 @@
 package block
 
 import (
-	"Sixth_world_Suday/internal/repository"
+	"Sixth_world_Sunday/internal/repository"
 	"context"
 
 	"github.com/google/uuid"

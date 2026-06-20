@@ -5,8 +5,8 @@
 package repository
 
 import (
-	"Sixth_world_Suday/internal/dto"
-	"Sixth_world_Suday/internal/repository/model"
+	"Sixth_world_Sunday/internal/dto"
+	"Sixth_world_Sunday/internal/repository/model"
 	"context"
 
 	"github.com/google/uuid"

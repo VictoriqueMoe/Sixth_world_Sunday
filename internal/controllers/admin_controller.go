@@ -6,14 +6,14 @@ import (
 	"fmt"
 	"time"
 
-	"Sixth_world_Suday/internal/admin"
-	"Sixth_world_Suday/internal/authz"
-	"Sixth_world_Suday/internal/config"
-	"Sixth_world_Suday/internal/controllers/utils"
-	"Sixth_world_Suday/internal/dto"
-	"Sixth_world_Suday/internal/middleware"
-	"Sixth_world_Suday/internal/role"
-	"Sixth_world_Suday/internal/upload"
+	"Sixth_world_Sunday/internal/admin"
+	"Sixth_world_Sunday/internal/authz"
+	"Sixth_world_Sunday/internal/config"
+	"Sixth_world_Sunday/internal/controllers/utils"
+	"Sixth_world_Sunday/internal/dto"
+	"Sixth_world_Sunday/internal/middleware"
+	"Sixth_world_Sunday/internal/role"
+	"Sixth_world_Sunday/internal/upload"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"
@@ -518,4 +518,3 @@ func (s *Service) adminUnassignVanityRole(ctx fiber.Ctx) error {
 	}
 	return utils.OK(ctx)
 }
-

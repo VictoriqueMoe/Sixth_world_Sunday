@@ -3,8 +3,8 @@ package controllers
 import (
 	"github.com/gofiber/fiber/v3"
 
-	"Sixth_world_Suday/internal/controllers/utils"
-	"Sixth_world_Suday/internal/middleware"
+	"Sixth_world_Sunday/internal/controllers/utils"
+	"Sixth_world_Sunday/internal/middleware"
 )
 
 func (s *Service) getAllUserPreferencesRoutes() []FSetupRoute {

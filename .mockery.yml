@@ -12,51 +12,51 @@ require-template-schema-exists: true
 template: testify
 template-schema: "{{.Template}}.schema.json"
 packages:
-  Sixth_world_Suday/internal/auth:
+  Sixth_world_Sunday/internal/auth:
     interfaces:
       Service:
-  Sixth_world_Suday/internal/profile:
+  Sixth_world_Sunday/internal/profile:
     interfaces:
       Service:
-  Sixth_world_Suday/internal/notification:
+  Sixth_world_Sunday/internal/notification:
     interfaces:
       Service:
-  Sixth_world_Suday/internal/admin:
+  Sixth_world_Sunday/internal/admin:
     interfaces:
       Service:
-  Sixth_world_Suday/internal/authz:
+  Sixth_world_Sunday/internal/authz:
     interfaces:
       Service:
-  Sixth_world_Suday/internal/settings:
+  Sixth_world_Sunday/internal/settings:
     interfaces:
       Service:
-  Sixth_world_Suday/internal/chat:
+  Sixth_world_Sunday/internal/chat:
     interfaces:
       Service:
-  Sixth_world_Suday/internal/report:
+  Sixth_world_Sunday/internal/report:
     interfaces:
       Service:
-  Sixth_world_Suday/internal/block:
+  Sixth_world_Sunday/internal/block:
     interfaces:
       Service:
-  Sixth_world_Suday/internal/upload:
+  Sixth_world_Sunday/internal/upload:
     interfaces:
       Service:
-  Sixth_world_Suday/internal/user:
+  Sixth_world_Sunday/internal/user:
     interfaces:
       Service:
-  Sixth_world_Suday/internal/email:
+  Sixth_world_Sunday/internal/email:
     interfaces:
       Service:
-  Sixth_world_Suday/internal/livekit:
+  Sixth_world_Sunday/internal/livekit:
     interfaces:
       Service:
-  Sixth_world_Suday/internal/search:
+  Sixth_world_Sunday/internal/search:
     interfaces:
       Service:
-  Sixth_world_Suday/internal/vanityrole:
+  Sixth_world_Sunday/internal/vanityrole:
     interfaces:
       Service:
-  Sixth_world_Suday/internal/repository:
+  Sixth_world_Sunday/internal/repository:
     config:
       all: true

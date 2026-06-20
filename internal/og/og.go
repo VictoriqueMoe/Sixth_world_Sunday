@@ -4,8 +4,8 @@ import (
 	"context"
 	"strings"
 
-	"Sixth_world_Suday/internal/config"
-	"Sixth_world_Suday/internal/settings"
+	"Sixth_world_Sunday/internal/config"
+	"Sixth_world_Sunday/internal/settings"
 )
 
 const (

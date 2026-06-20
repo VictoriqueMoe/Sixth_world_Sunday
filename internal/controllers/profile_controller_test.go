@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"testing"
 
-	"Sixth_world_Suday/internal/controllers/utils/testutil"
-	"Sixth_world_Suday/internal/dto"
-	"Sixth_world_Suday/internal/profile"
-	"Sixth_world_Suday/internal/ws"
+	"Sixth_world_Sunday/internal/controllers/utils/testutil"
+	"Sixth_world_Sunday/internal/dto"
+	"Sixth_world_Sunday/internal/profile"
+	"Sixth_world_Sunday/internal/ws"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

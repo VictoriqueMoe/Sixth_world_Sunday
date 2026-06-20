@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"testing"
 
-	"Sixth_world_Suday/internal/controllers/utils/testutil"
-	"Sixth_world_Suday/internal/repository"
-	"Sixth_world_Suday/internal/search"
+	"Sixth_world_Sunday/internal/controllers/utils/testutil"
+	"Sixth_world_Sunday/internal/repository"
+	"Sixth_world_Sunday/internal/search"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"testing"
 
-	"Sixth_world_Suday/internal/controllers/utils/testutil"
-	usersvc "Sixth_world_Suday/internal/user"
+	"Sixth_world_Sunday/internal/controllers/utils/testutil"
+	usersvc "Sixth_world_Sunday/internal/user"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

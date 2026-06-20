@@ -1,14 +1,14 @@
 package repository
 
 import (
-	"Sixth_world_Suday/internal/repository/model"
+	"Sixth_world_Sunday/internal/repository/model"
 	"context"
 	"database/sql"
 	"errors"
 	"fmt"
 	"strings"
 
-	"Sixth_world_Suday/internal/dto"
+	"Sixth_world_Sunday/internal/dto"
 
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"

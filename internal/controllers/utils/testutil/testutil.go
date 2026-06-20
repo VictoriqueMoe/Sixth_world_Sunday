@@ -9,10 +9,10 @@ import (
 	"testing"
 	"time"
 
-	authzsvc "Sixth_world_Suday/internal/authz"
-	"Sixth_world_Suday/internal/repository"
-	"Sixth_world_Suday/internal/session"
-	settingssvc "Sixth_world_Suday/internal/settings"
+	authzsvc "Sixth_world_Sunday/internal/authz"
+	"Sixth_world_Sunday/internal/repository"
+	"Sixth_world_Sunday/internal/session"
+	settingssvc "Sixth_world_Sunday/internal/settings"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"

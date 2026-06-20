@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"Sixth_world_Suday/internal/logger"
+	"Sixth_world_Sunday/internal/logger"
 
 	"github.com/disintegration/imaging"
 	"github.com/rwcarlsen/goexif/exif"

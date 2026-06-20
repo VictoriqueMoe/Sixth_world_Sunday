@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"Sixth_world_Suday/internal/logger"
+	"Sixth_world_Sunday/internal/logger"
 
 	"github.com/gofiber/fiber/v3"
 )

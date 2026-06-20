@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"Sixth_world_Suday/internal/role"
+	"Sixth_world_Sunday/internal/role"
 
 	"github.com/google/uuid"
 )
@@ -27,13 +27,13 @@ type (
 
 	AdminUserDetailResponse struct {
 		AdminUserItem
-		Email                  string        `json:"email,omitempty"`
-		IP                     string        `json:"ip,omitempty"`
-		BanReason              string        `json:"ban_reason,omitempty"`
-		BannedAt               string        `json:"banned_at,omitempty"`
-		BannedBy               *UserResponse `json:"banned_by,omitempty"`
-		LockReason             string        `json:"lock_reason,omitempty"`
-		LockedAt               string        `json:"locked_at,omitempty"`
+		Email      string        `json:"email,omitempty"`
+		IP         string        `json:"ip,omitempty"`
+		BanReason  string        `json:"ban_reason,omitempty"`
+		BannedAt   string        `json:"banned_at,omitempty"`
+		BannedBy   *UserResponse `json:"banned_by,omitempty"`
+		LockReason string        `json:"lock_reason,omitempty"`
+		LockedAt   string        `json:"locked_at,omitempty"`
 	}
 
 	AdminStatsResponse struct {

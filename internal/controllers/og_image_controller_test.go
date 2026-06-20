@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"Sixth_world_Suday/internal/controllers/utils/testutil"
+	"Sixth_world_Sunday/internal/controllers/utils/testutil"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

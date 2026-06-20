@@ -3,9 +3,9 @@ package controllers
 import (
 	"errors"
 
-	"Sixth_world_Suday/internal/block"
-	"Sixth_world_Suday/internal/controllers/utils"
-	"Sixth_world_Suday/internal/middleware"
+	"Sixth_world_Sunday/internal/block"
+	"Sixth_world_Sunday/internal/controllers/utils"
+	"Sixth_world_Sunday/internal/middleware"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"

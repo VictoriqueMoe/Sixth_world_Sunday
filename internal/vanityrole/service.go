@@ -3,7 +3,7 @@ package vanityrole
 import (
 	"context"
 
-	"Sixth_world_Suday/internal/repository"
+	"Sixth_world_Sunday/internal/repository"
 )
 
 type (

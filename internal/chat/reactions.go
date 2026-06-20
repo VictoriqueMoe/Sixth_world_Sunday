@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"Sixth_world_Suday/internal/dto"
-	"Sixth_world_Suday/internal/ws"
+	"Sixth_world_Sunday/internal/dto"
+	"Sixth_world_Sunday/internal/ws"
 
 	"github.com/google/uuid"
 )

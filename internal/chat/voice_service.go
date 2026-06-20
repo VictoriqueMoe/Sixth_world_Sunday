@@ -7,11 +7,11 @@ import (
 	"strings"
 	"sync"
 
-	"Sixth_world_Suday/internal/config"
-	"Sixth_world_Suday/internal/dto"
-	"Sixth_world_Suday/internal/livekit"
-	"Sixth_world_Suday/internal/logger"
-	"Sixth_world_Suday/internal/ws"
+	"Sixth_world_Sunday/internal/config"
+	"Sixth_world_Sunday/internal/dto"
+	"Sixth_world_Sunday/internal/livekit"
+	"Sixth_world_Sunday/internal/logger"
+	"Sixth_world_Sunday/internal/ws"
 
 	"github.com/google/uuid"
 )

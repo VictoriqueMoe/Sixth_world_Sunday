@@ -3,8 +3,8 @@ package middleware
 import (
 	"strings"
 
-	"Sixth_world_Suday/internal/authz"
-	"Sixth_world_Suday/internal/session"
+	"Sixth_world_Sunday/internal/authz"
+	"Sixth_world_Sunday/internal/session"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"

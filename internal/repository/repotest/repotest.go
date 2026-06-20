@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
-	appdb "Sixth_world_Suday/internal/db"
-	"Sixth_world_Suday/internal/db/dbtest"
-	"Sixth_world_Suday/internal/repository"
-	"Sixth_world_Suday/internal/repository/model"
+	appdb "Sixth_world_Sunday/internal/db"
+	"Sixth_world_Sunday/internal/db/dbtest"
+	"Sixth_world_Sunday/internal/repository"
+	"Sixth_world_Sunday/internal/repository/model"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"

@@ -5,12 +5,12 @@ import (
 	"net/http"
 	"testing"
 
-	adminsvc "Sixth_world_Suday/internal/admin"
-	"Sixth_world_Suday/internal/authz"
-	"Sixth_world_Suday/internal/controllers/utils/testutil"
-	"Sixth_world_Suday/internal/dto"
-	"Sixth_world_Suday/internal/role"
-	usersvc "Sixth_world_Suday/internal/user"
+	adminsvc "Sixth_world_Sunday/internal/admin"
+	"Sixth_world_Sunday/internal/authz"
+	"Sixth_world_Sunday/internal/controllers/utils/testutil"
+	"Sixth_world_Sunday/internal/dto"
+	"Sixth_world_Sunday/internal/role"
+	usersvc "Sixth_world_Sunday/internal/user"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

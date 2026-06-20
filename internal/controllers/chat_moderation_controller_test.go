@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"testing"
 
-	chatsvc "Sixth_world_Suday/internal/chat"
-	"Sixth_world_Suday/internal/controllers/utils/testutil"
-	"Sixth_world_Suday/internal/dto"
+	chatsvc "Sixth_world_Sunday/internal/chat"
+	"Sixth_world_Sunday/internal/controllers/utils/testutil"
+	"Sixth_world_Sunday/internal/dto"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

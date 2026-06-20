@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"testing"
 
-	blocksvc "Sixth_world_Suday/internal/block"
-	"Sixth_world_Suday/internal/controllers/utils/testutil"
-	"Sixth_world_Suday/internal/repository"
+	blocksvc "Sixth_world_Sunday/internal/block"
+	"Sixth_world_Sunday/internal/controllers/utils/testutil"
+	"Sixth_world_Sunday/internal/repository"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

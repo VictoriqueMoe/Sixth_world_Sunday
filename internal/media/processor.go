@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"Sixth_world_Suday/internal/logger"
+	"Sixth_world_Sunday/internal/logger"
 )
 
 const (

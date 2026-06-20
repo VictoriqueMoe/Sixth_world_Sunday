@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"Sixth_world_Suday/internal/repository/repotest"
+	"Sixth_world_Sunday/internal/repository/repotest"
 )
 
 func TestMain(m *testing.M) {

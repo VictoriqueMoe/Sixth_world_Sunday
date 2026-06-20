@@ -5,8 +5,8 @@
 package admin
 
 import (
-	"Sixth_world_Suday/internal/dto"
-	"Sixth_world_Suday/internal/role"
+	"Sixth_world_Sunday/internal/dto"
+	"Sixth_world_Sunday/internal/role"
 	"context"
 
 	"github.com/google/uuid"

@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"Sixth_world_Suday/internal/repository"
+	"Sixth_world_Sunday/internal/repository"
 
 	"github.com/google/uuid"
 )

@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"testing"
 
-	"Sixth_world_Suday/internal/authz"
-	"Sixth_world_Suday/internal/controllers/utils/testutil"
-	"Sixth_world_Suday/internal/report"
+	"Sixth_world_Sunday/internal/authz"
+	"Sixth_world_Sunday/internal/controllers/utils/testutil"
+	"Sixth_world_Sunday/internal/report"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"

@@ -3,7 +3,7 @@ package utils
 import (
 	"errors"
 
-	"Sixth_world_Suday/internal/contentfilter"
+	"Sixth_world_Sunday/internal/contentfilter"
 
 	"github.com/gofiber/fiber/v3"
 )

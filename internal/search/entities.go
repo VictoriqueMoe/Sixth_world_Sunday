@@ -1,6 +1,6 @@
 package search
 
-import "Sixth_world_Suday/internal/repository"
+import "Sixth_world_Sunday/internal/repository"
 
 func AllEntityTypes() []repository.SearchEntityType {
 	srcs := repository.SearchSources()
