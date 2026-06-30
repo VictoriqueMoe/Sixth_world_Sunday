@@ -14,6 +14,7 @@ import { RoomMessageList } from "../MessageList/RoomMessageList";
 import { PinnedMessagesPanel } from "../PinnedMessagesPanel/PinnedMessagesPanel";
 import { MessageSearchPanel } from "../MessageSearchPanel/MessageSearchPanel";
 import { VoiceButton } from "../Voice/VoiceButton";
+import { NotificationBell } from "../../layout/NotificationBell/NotificationBell";
 import { Lightbox } from "../../Lightbox/Lightbox";
 import { ProfileLink } from "../../ProfileLink/ProfileLink";
 import styles from "./mobileChat.module.css";
@@ -393,6 +394,7 @@ export function MobileRoomView({ controller }: { controller: RoomController }) {
                         {room.is_public ? " · public" : " · private"}
                     </span>
                 </div>
+                <NotificationBell />
                 <button
                     type="button"
                     className={styles.iconBtn}

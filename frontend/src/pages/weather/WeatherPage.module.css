@@ -1,0 +1,166 @@
+.shell {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.main {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 2rem;
+}
+
+.page {
+    max-width: var(--page-max-width);
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    margin-right: auto;
+    font-family: var(--display);
+    color: var(--text);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 2px;
+    font-size: 1.4rem;
+}
+
+.headGlyph {
+    color: var(--magenta);
+}
+
+.savedChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--panel);
+    overflow: hidden;
+}
+
+.chipActive {
+    border-color: var(--magenta);
+    box-shadow:
+        0 0 0 1px var(--magenta),
+        0 0 10px rgba(var(--magenta-rgb), 0.3);
+}
+
+.chipSelect {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    background: none;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.chipStar {
+    color: var(--magenta);
+}
+
+.chipAction {
+    padding: 0.35rem 0.5rem;
+    background: none;
+    border: none;
+    border-left: 1px solid var(--line);
+    color: var(--text);
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.chipAction:hover {
+    opacity: 1;
+}
+
+.activeHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.activeName {
+    font-family: var(--display);
+    font-size: 1.5rem;
+    color: var(--text);
+}
+
+.activeMeta {
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+.attribution {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.75rem;
+    opacity: 0.65;
+}
+
+.attribution a {
+    color: var(--cyan);
+    text-decoration: none;
+}
+
+.attribution a:hover {
+    text-decoration: underline;
+}
+
+.toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1100;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    background: var(--panel);
+    border: 1px solid var(--magenta);
+    color: var(--text);
+    box-shadow: 0 0 16px rgba(var(--magenta-rgb), 0.4);
+}
+
+@media (max-width: 768px) {
+    .main {
+        padding: 1rem;
+    }
+
+    .activeHeader {
+        flex-wrap: wrap;
+    }
+
+    .activeName {
+        font-size: 1.25rem;
+    }
+}

@@ -1,0 +1,199 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: min(440px, 80vw);
+}
+
+.stepper {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    opacity: 0.55;
+}
+
+.stepActive,
+.stepDone {
+    opacity: 1;
+}
+
+.stepBar {
+    height: 3px;
+    border-radius: 2px;
+    background: var(--line-bright);
+}
+
+.stepActive .stepBar {
+    background: var(--magenta);
+    box-shadow: 0 0 8px rgba(var(--magenta-rgb), 0.6);
+}
+
+.stepDone .stepBar {
+    background: var(--cyan);
+}
+
+.stepLabel {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text);
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.heading {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 1.15rem;
+    color: var(--text);
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.row {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.row .field {
+    flex: 1;
+}
+
+.label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim, var(--text));
+}
+
+.req {
+    color: var(--magenta);
+}
+
+.note {
+    font-size: 0.85rem;
+    color: var(--text-dim, var(--text));
+    opacity: 0.8;
+}
+
+.typePicker {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.typeOption {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    padding: 0.85rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--panel);
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.typeOption:hover {
+    border-color: var(--line-bright);
+}
+
+.typeActive {
+    border-color: var(--magenta);
+    box-shadow:
+        0 0 0 1px var(--magenta),
+        0 0 12px rgba(var(--magenta-rgb), 0.35);
+}
+
+.typeGlyph {
+    font-size: 1.4rem;
+}
+
+.typeLabel {
+    font-weight: 600;
+}
+
+.typeDesc {
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.coverPreview {
+    width: 100%;
+    max-height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+}
+
+.review {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.4rem 1rem;
+    margin: 0;
+}
+
+.review dt {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.7;
+    align-self: center;
+}
+
+.review dd {
+    margin: 0;
+    color: var(--text);
+}
+
+.reviewFreq {
+    opacity: 0.75;
+}
+
+.reviewDesc {
+    white-space: pre-wrap;
+}
+
+.error {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    background: rgba(var(--magenta-rgb), 0.12);
+    border: 1px solid var(--magenta);
+    color: var(--text);
+    font-size: 0.85rem;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.actionsRight {
+    display: flex;
+    gap: 0.5rem;
+}

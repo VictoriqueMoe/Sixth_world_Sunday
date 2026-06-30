@@ -244,6 +244,94 @@ export interface ChatRoom {
     voice_participants?: string[];
 }
 
+export type EventLocationType = "voice" | "external";
+
+export type EventFrequency = "none" | "weekly" | "biweekly" | "monthly" | "annually";
+
+export interface EventItem {
+    id: string;
+    title: string;
+    description: string;
+    cover_url: string;
+    location_type: EventLocationType;
+    voice_room_id?: string | null;
+    voice_room_name: string;
+    external_url: string;
+    start_at: string;
+    frequency: EventFrequency;
+    next_start_at: string;
+    next_occurrences: string[];
+    rsvp_count: number;
+    viewer_interested: boolean;
+    rsvp_avatars: string[];
+    can_manage: boolean;
+    created_by: string;
+    created_at: string;
+}
+
+export interface EventListResponse {
+    events: EventItem[];
+}
+
+export interface EventFormPayload {
+    title: string;
+    description: string;
+    cover_url: string;
+    location_type: EventLocationType;
+    voice_room_id?: string | null;
+    external_url: string;
+    start_at: string;
+    frequency: EventFrequency;
+}
+
+export interface WeatherLocation {
+    id: string;
+    label: string;
+    place_name: string;
+    country: string;
+    admin1: string;
+    latitude: number;
+    longitude: number;
+    timezone: string;
+    is_default: boolean;
+    created_at: string;
+}
+
+export interface WeatherLocationListResponse {
+    locations: WeatherLocation[];
+}
+
+export interface SaveWeatherLocationPayload {
+    label: string;
+    place_name: string;
+    country: string;
+    admin1: string;
+    latitude: number;
+    longitude: number;
+    timezone: string;
+}
+
+export interface MapItem {
+    id: string;
+    title: string;
+    description: string;
+    embed_url: string;
+    source_url: string;
+    can_manage: boolean;
+    created_by: string;
+    created_at: string;
+}
+
+export interface MapListResponse {
+    maps: MapItem[];
+}
+
+export interface SaveMapPayload {
+    title: string;
+    description: string;
+    source_url: string;
+}
+
 export interface ChatRoomMember {
     user: User;
     role: string;

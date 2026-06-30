@@ -1,0 +1,365 @@
+.empty {
+    padding: 2.5rem 1rem;
+    text-align: center;
+    color: var(--text);
+    opacity: 0.6;
+    font-family: var(--mono);
+}
+
+/* Unit toggles */
+
+.unitToggles {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.toggle {
+    display: inline-flex;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.toggleBtn {
+    padding: 0.3rem 0.6rem;
+    background: var(--panel);
+    border: none;
+    color: var(--text);
+    opacity: 0.7;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+}
+
+.toggleBtn:not(:last-child) {
+    border-right: 1px solid var(--line);
+}
+
+.toggleActive {
+    background: var(--magenta);
+    color: #0b0b12;
+    opacity: 1;
+}
+
+/* Search */
+
+.search {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
+.searchInputWrap {
+    position: relative;
+    flex: 1;
+}
+
+.searchResults {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0.25rem;
+    list-style: none;
+    background: var(--panel);
+    border: 1px solid var(--line-bright);
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.searchResult {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: left;
+    padding: 0.45rem 0.6rem;
+    background: none;
+    border: none;
+    border-radius: 4px;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.searchResult:hover {
+    background: rgba(var(--magenta-rgb), 0.12);
+}
+
+.resultName {
+    font-weight: 600;
+}
+
+.resultMeta {
+    font-size: 0.75rem;
+    opacity: 0.65;
+}
+
+/* Current conditions */
+
+.currentCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+}
+
+.currentMain {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.currentGlyph {
+    font-size: 3rem;
+    color: var(--magenta);
+    line-height: 1;
+}
+
+.currentTemp {
+    font-family: var(--display);
+    font-size: 2.6rem;
+    color: var(--text);
+    line-height: 1;
+}
+
+.currentLabel {
+    opacity: 0.8;
+}
+
+.currentMeta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem 1.5rem;
+    font-size: 0.88rem;
+}
+
+.metaKey {
+    opacity: 0.6;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-right: 0.35rem;
+}
+
+/* Forecast */
+
+.forecast {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+}
+
+.forecastDay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.75rem 0.25rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--panel);
+}
+
+.forecastName {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.75;
+}
+
+.forecastGlyph {
+    font-size: 1.6rem;
+    color: var(--magenta);
+    line-height: 1;
+}
+
+.forecastTemps {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.tHi {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.tLo {
+    opacity: 0.6;
+}
+
+.forecastPrecip {
+    font-size: 0.72rem;
+    color: var(--cyan);
+}
+
+/* History */
+
+.history {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-top: 0.5rem;
+}
+
+.historyHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.sectionTitle {
+    margin: 0;
+    font-family: var(--display);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.1rem;
+    color: var(--text);
+}
+
+.historyRange {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rangeSep {
+    opacity: 0.6;
+}
+
+.historyNote {
+    margin: 0;
+    font-size: 0.75rem;
+    opacity: 0.55;
+}
+
+.chart {
+    width: 100%;
+    height: 220px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--panel);
+}
+
+.chartHi {
+    fill: none;
+    stroke: var(--magenta);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+}
+
+.chartLo {
+    fill: none;
+    stroke: var(--cyan);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+}
+
+.chartTick {
+    fill: var(--text);
+    opacity: 0.5;
+    font-size: 12px;
+    font-family: var(--mono);
+}
+
+.chartEmpty {
+    padding: 2rem 1rem;
+    text-align: center;
+    opacity: 0.6;
+    font-family: var(--mono);
+}
+
+.legend {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.78rem;
+}
+
+.legendHi {
+    color: var(--magenta);
+}
+
+.legendLo {
+    color: var(--cyan);
+}
+
+.tableWrap {
+    max-height: 320px;
+    overflow-y: auto;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+}
+
+.histTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.histTable th,
+.histTable td {
+    padding: 0.4rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--line);
+}
+
+.histTable th {
+    position: sticky;
+    top: 0;
+    background: var(--panel);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .search {
+        flex-wrap: wrap;
+    }
+
+    .searchInputWrap {
+        flex: 1 1 100%;
+    }
+
+    .currentCard {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .currentMeta {
+        grid-template-columns: 1fr;
+    }
+
+    .forecast {
+        display: flex;
+        grid-template-columns: none;
+        overflow-x: auto;
+        padding-bottom: 0.35rem;
+    }
+
+    .forecastDay {
+        flex: 0 0 auto;
+        min-width: 66px;
+    }
+
+    .historyHead {
+        align-items: flex-start;
+    }
+
+    .historyRange {
+        flex-wrap: wrap;
+    }
+}

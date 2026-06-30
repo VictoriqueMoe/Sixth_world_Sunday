@@ -18,8 +18,10 @@ import (
 	"Sixth_world_Sunday/internal/contentfilter"
 	"Sixth_world_Sunday/internal/controllers"
 	"Sixth_world_Sunday/internal/email"
+	"Sixth_world_Sunday/internal/event"
 	"Sixth_world_Sunday/internal/filehost"
 	"Sixth_world_Sunday/internal/logger"
+	"Sixth_world_Sunday/internal/maps"
 	"Sixth_world_Sunday/internal/media"
 	"Sixth_world_Sunday/internal/middleware"
 	"Sixth_world_Sunday/internal/notification"
@@ -34,6 +36,7 @@ import (
 	"Sixth_world_Sunday/internal/upload"
 	"Sixth_world_Sunday/internal/user"
 	"Sixth_world_Sunday/internal/vanityrole"
+	"Sixth_world_Sunday/internal/weather"
 	"Sixth_world_Sunday/internal/ws"
 
 	"github.com/gofiber/fiber/v3"
@@ -66,6 +69,9 @@ type (
 		search        searchsvc.Service
 		user          user.Service
 		fileVault     filehost.Service
+		event         event.Service
+		weather       weather.Service
+		maps          maps.Service
 	}
 )
 
@@ -104,7 +110,7 @@ func initApp(svc *services, repos *repository.Repositories, settingsSvc settings
 		svc.auth, svc.profile, svc.notification, svc.admin,
 		svc.authz, settingsSvc, svc.chat, svc.report,
 		svc.block, svc.user, svc.upload, svc.mediaProc, svc.vanityRole, svc.session, svc.hub, svc.search,
-		svc.fileVault,
+		svc.fileVault, svc.event, svc.weather, svc.maps,
 	)
 	routes.PublicRoutes(ctrlService, app)
 

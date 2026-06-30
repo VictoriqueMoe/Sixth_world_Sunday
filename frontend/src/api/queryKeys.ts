@@ -28,6 +28,16 @@ export const queryKeys = {
         bannedWords: (scope: string) => ["admin", "banned-words", scope] as const,
         vanityRoles: () => ["admin", "vanity-roles"] as const,
     },
+    events: {
+        all: ["events"] as const,
+    },
+    weather: {
+        all: ["weather"] as const,
+        locations: ["weather", "locations"] as const,
+    },
+    maps: {
+        all: ["maps"] as const,
+    },
     siteInfo: () => ["site-info"] as const,
     settings: () => ["settings"] as const,
     theme: () => ["theme"] as const,

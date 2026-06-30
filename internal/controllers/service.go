@@ -6,7 +6,9 @@ import (
 	"Sixth_world_Sunday/internal/authz"
 	"Sixth_world_Sunday/internal/block"
 	"Sixth_world_Sunday/internal/chat"
+	"Sixth_world_Sunday/internal/event"
 	"Sixth_world_Sunday/internal/filehost"
+	"Sixth_world_Sunday/internal/maps"
 	"Sixth_world_Sunday/internal/media"
 	"Sixth_world_Sunday/internal/notification"
 	"Sixth_world_Sunday/internal/profile"
@@ -17,6 +19,7 @@ import (
 	"Sixth_world_Sunday/internal/upload"
 	usersvc "Sixth_world_Sunday/internal/user"
 	"Sixth_world_Sunday/internal/vanityrole"
+	"Sixth_world_Sunday/internal/weather"
 	"Sixth_world_Sunday/internal/ws"
 )
 
@@ -39,6 +42,9 @@ type (
 		Hub                 *ws.Hub
 		SearchService       searchsvc.Service
 		FileVaultService    filehost.Service
+		EventService        event.Service
+		WeatherService      weather.Service
+		MapService          maps.Service
 	}
 )
 
@@ -60,6 +66,9 @@ func NewService(
 	hub *ws.Hub,
 	searchService searchsvc.Service,
 	fileVaultService filehost.Service,
+	eventService event.Service,
+	weatherService weather.Service,
+	mapService maps.Service,
 ) Service {
 	return Service{
 		AuthService:         authService,
@@ -79,6 +88,9 @@ func NewService(
 		Hub:                 hub,
 		SearchService:       searchService,
 		FileVaultService:    fileVaultService,
+		EventService:        eventService,
+		WeatherService:      weatherService,
+		MapService:          mapService,
 	}
 }
 
@@ -94,6 +106,9 @@ func (s *Service) GetAPIRoutes() []FSetupRoute {
 	all = append(all, s.getAllUserPreferencesRoutes()...)
 	all = append(all, s.getAllSearchRoutes()...)
 	all = append(all, s.getAllVaultRoutes()...)
+	all = append(all, s.getAllEventRoutes()...)
+	all = append(all, s.getAllWeatherRoutes()...)
+	all = append(all, s.getAllMapRoutes()...)
 	return all
 }
 

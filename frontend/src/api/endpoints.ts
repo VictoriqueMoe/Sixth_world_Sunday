@@ -24,6 +24,15 @@ import type {
     ChatRoomMember,
     CreateBannedWordRequest,
     DeleteAccountPayload,
+    EventFormPayload,
+    EventItem,
+    EventListResponse,
+    MapItem,
+    MapListResponse,
+    SaveMapPayload,
+    SaveWeatherLocationPayload,
+    WeatherLocation,
+    WeatherLocationListResponse,
     NotificationListResponse,
     QuickSearchResponse,
     SearchResponse,
@@ -768,4 +777,74 @@ export function vaultDownloadUrl(id: string): string {
 
 export function vaultUploadUrl(): string {
     return apiUrl("/api/v1/files/upload");
+}
+
+export async function getEvents(): Promise<EventListResponse> {
+    return apiFetch<EventListResponse>("/events");
+}
+
+export async function createEvent(payload: EventFormPayload): Promise<EventItem> {
+    return apiPost<EventItem, EventFormPayload>("/events", payload);
+}
+
+export async function updateEvent(id: string, payload: EventFormPayload): Promise<EventItem> {
+    return apiPut<EventItem, EventFormPayload>(`/events/${id}`, payload);
+}
+
+export async function deleteEvent(id: string): Promise<void> {
+    await apiDelete<unknown>(`/events/${id}`);
+}
+
+export async function cancelEvent(id: string): Promise<void> {
+    await apiPost<unknown, undefined>(`/events/${id}/cancel`, undefined);
+}
+
+export async function rsvpEvent(id: string, interested: boolean): Promise<void> {
+    if (interested) {
+        await apiPost<unknown, undefined>(`/events/${id}/rsvp`, undefined);
+        return;
+    }
+    await apiDelete<unknown>(`/events/${id}/rsvp`);
+}
+
+export async function uploadEventCover(file: File): Promise<{ cover_url: string }> {
+    const formData = new FormData();
+    formData.append("cover", file);
+    return apiPostFormData<{ cover_url: string }>("/events/cover", formData);
+}
+
+export async function getWeatherLocations(): Promise<WeatherLocationListResponse> {
+    return apiFetch<WeatherLocationListResponse>("/weather/locations");
+}
+
+export async function saveWeatherLocation(payload: SaveWeatherLocationPayload): Promise<WeatherLocation> {
+    return apiPost<WeatherLocation, SaveWeatherLocationPayload>("/weather/locations", payload);
+}
+
+export async function renameWeatherLocation(id: string, label: string): Promise<WeatherLocation> {
+    return apiPut<WeatherLocation, { label: string }>(`/weather/locations/${id}`, { label });
+}
+
+export async function deleteWeatherLocation(id: string): Promise<void> {
+    await apiDelete<unknown>(`/weather/locations/${id}`);
+}
+
+export async function setDefaultWeatherLocation(id: string): Promise<void> {
+    await apiPost<unknown, undefined>(`/weather/locations/${id}/default`, undefined);
+}
+
+export async function getMaps(): Promise<MapListResponse> {
+    return apiFetch<MapListResponse>("/maps");
+}
+
+export async function createMap(payload: SaveMapPayload): Promise<MapItem> {
+    return apiPost<MapItem, SaveMapPayload>("/maps", payload);
+}
+
+export async function updateMap(id: string, payload: SaveMapPayload): Promise<MapItem> {
+    return apiPut<MapItem, SaveMapPayload>(`/maps/${id}`, payload);
+}
+
+export async function deleteMap(id: string): Promise<void> {
+    await apiDelete<unknown>(`/maps/${id}`);
 }

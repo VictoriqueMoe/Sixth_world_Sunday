@@ -44,7 +44,7 @@ export function useRoomController() {
 
     usePageTitle(room?.name ?? "Chat Room");
 
-    const { voice, voiceIdSet } = useRoomVoice({ roomId, room, voiceEnabled });
+    const { voice, voiceIdSet } = useRoomVoice({ roomId, room });
 
     const { setPresenceMap, setOnline, presenceMapMerged, memberOnlineWeight } = useRoomPresence({
         roomId,

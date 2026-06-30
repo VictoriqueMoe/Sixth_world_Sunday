@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
+import { useLocation, useMatch, useNavigate } from "react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useChannels, useChatCategories } from "../../../api/queries/chat";
 import { useDeleteChannel, useReorderChannels, useTruncateChannel } from "../../../api/mutations/chat";
@@ -92,7 +92,7 @@ export function ChannelRail({ onNavigate }: { onNavigate?: () => void } = {}) {
     const { user } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const { roomId: activeId } = useParams<{ roomId: string }>();
+    const activeId = useMatch("/channels/:roomId")?.params.roomId;
 
     const go = (path: string) => {
         navigate(path);
@@ -317,6 +317,36 @@ export function ChannelRail({ onNavigate }: { onNavigate?: () => void } = {}) {
             </div>
 
             <div className={styles.groups}>
+                <button
+                    type="button"
+                    className={`${styles.channel}${location.pathname === "/weather" ? ` ${styles.active}` : ""}`}
+                    onClick={() => go("/weather")}
+                    title="Weather"
+                >
+                    <span className={styles.glyph}>{"☀"}</span>
+                    <span className={styles.channelName}>Weather</span>
+                </button>
+
+                <button
+                    type="button"
+                    className={`${styles.channel}${location.pathname === "/events" ? ` ${styles.active}` : ""}`}
+                    onClick={() => go("/events")}
+                    title="Events"
+                >
+                    <span className={styles.glyph}>{"▦"}</span>
+                    <span className={styles.channelName}>Events</span>
+                </button>
+
+                <button
+                    type="button"
+                    className={`${styles.channel}${location.pathname === "/maps" ? ` ${styles.active}` : ""}`}
+                    onClick={() => go("/maps")}
+                    title="Maps"
+                >
+                    <span className={styles.glyph}>{"❖"}</span>
+                    <span className={styles.channelName}>Maps</span>
+                </button>
+
                 <button
                     type="button"
                     className={`${styles.channel}${location.pathname === "/files" ? ` ${styles.active}` : ""}`}

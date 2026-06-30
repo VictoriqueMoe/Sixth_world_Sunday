@@ -55,3 +55,12 @@ export const SearchPage = named(() => import("./search/SearchPage"), "SearchPage
 
 //  File vault
 export const FileBrowserPage = named(() => import("./files/FileBrowserPage"), "FileBrowserPage");
+
+//  Events
+export const EventsPage = named(() => import("./events/EventsPage"), "EventsPage");
+
+//  Weather
+export const WeatherPage = named(() => import("./weather/WeatherPage"), "WeatherPage");
+
+//  Maps
+export const MapsPage = named(() => import("./maps/MapsPage"), "MapsPage");
