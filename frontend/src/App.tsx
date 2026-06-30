@@ -31,7 +31,9 @@ import {
     AdminUserDetail,
     AdminUsers,
     AdminVanityRoles,
+    EventsPage,
     FileBrowserPage,
+    MapsPage,
     ForgotPasswordPage,
     LoginPage,
     NotFoundPage,
@@ -45,6 +47,7 @@ import {
     SettingsPage,
     UsersPage,
     VerifyEmailPage,
+    WeatherPage,
 } from "./pages/lazyPages";
 
 function HomePage() {
@@ -116,6 +119,9 @@ function AppLayout() {
                                                 <Route path=":roomId" element={null} />
                                             </Route>
                                             <Route path="/rules" element={<RulesPage />} />
+                                            <Route path="/events" element={<EventsPage />} />
+                                            <Route path="/weather" element={<WeatherPage />} />
+                                            <Route path="/maps" element={<MapsPage />} />
                                             <Route path="/files" element={<FileBrowserPage />} />
                                             <Route path="/search" element={<SearchPage />} />
                                             <Route path="/users" element={<UsersPage />} />

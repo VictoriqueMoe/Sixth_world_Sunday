@@ -14,9 +14,11 @@ import (
 	"Sixth_world_Sunday/internal/contentfilter"
 	slursrule "Sixth_world_Sunday/internal/contentfilter/rules/slurs"
 	"Sixth_world_Sunday/internal/email"
+	"Sixth_world_Sunday/internal/event"
 	"Sixth_world_Sunday/internal/filehost"
 	"Sixth_world_Sunday/internal/livekit"
 	"Sixth_world_Sunday/internal/logger"
+	"Sixth_world_Sunday/internal/maps"
 	"Sixth_world_Sunday/internal/media"
 	"Sixth_world_Sunday/internal/notification"
 	"Sixth_world_Sunday/internal/profile"
@@ -28,6 +30,7 @@ import (
 	"Sixth_world_Sunday/internal/upload"
 	"Sixth_world_Sunday/internal/user"
 	"Sixth_world_Sunday/internal/vanityrole"
+	"Sixth_world_Sunday/internal/weather"
 	"Sixth_world_Sunday/internal/ws"
 )
 
@@ -64,6 +67,9 @@ func initServices(repos *repository.Repositories, settingsSvc settings.Service) 
 	vanityRoleSvc := vanityrole.NewService(repos.VanityRole)
 	searchSvc := searchsvc.NewService(repos.Search, repos.Chat)
 	fileVaultSvc := filehost.NewService(repos.Vault, authzSvc, settingsSvc, hub, vaultDir)
+	eventSvc := event.NewService(repos.Event, authzSvc, uploadSvc, settingsSvc, hub)
+	weatherSvc := weather.NewService(repos.Weather)
+	mapSvc := maps.NewService(repos.Map, authzSvc)
 
 	authSvc := auth.NewService(userSvc, sessionMgr, settingsSvc, repos.Invite, repos.User, repos.AuditLog, repos.PasswordReset, repos.EmailVerification, emailSvc, contentFilter)
 
@@ -87,5 +93,8 @@ func initServices(repos *repository.Repositories, settingsSvc settings.Service) 
 		search:        searchSvc,
 		user:          userSvc,
 		fileVault:     fileVaultSvc,
+		event:         eventSvc,
+		weather:       weatherSvc,
+		maps:          mapSvc,
 	}
 }

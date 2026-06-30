@@ -28,7 +28,9 @@ export type Permission =
     | "manage_banned_words"
     | "manage_channels"
     | "reset_password"
-    | "lock_files";
+    | "lock_files"
+    | "manage_events"
+    | "manage_maps";
 
 const rolePermissions: Record<string, Permission[]> = {
     super_admin: [
@@ -49,6 +51,8 @@ const rolePermissions: Record<string, Permission[]> = {
         "manage_channels",
         "reset_password",
         "lock_files",
+        "manage_events",
+        "manage_maps",
     ],
     admin: [
         "ban_user",
@@ -68,6 +72,8 @@ const rolePermissions: Record<string, Permission[]> = {
         "manage_channels",
         "reset_password",
         "lock_files",
+        "manage_events",
+        "manage_maps",
     ],
     moderator: [
         "delete_any_post",
@@ -80,8 +86,10 @@ const rolePermissions: Record<string, Permission[]> = {
         "ban_user",
         "manage_channels",
         "lock_files",
+        "manage_events",
+        "manage_maps",
     ],
-    gm: ["lock_files"],
+    gm: ["lock_files", "manage_events", "manage_maps"],
 };
 
 export function can(role: SiteRole | undefined, perm: Permission): boolean {
@@ -93,4 +101,12 @@ export function can(role: SiteRole | undefined, perm: Permission): boolean {
 
 export function canAccessAdmin(role: SiteRole | undefined): boolean {
     return can(role, "view_admin_panel");
+}
+
+export function canManageEvents(role: SiteRole | undefined): boolean {
+    return can(role, "manage_events");
+}
+
+export function canManageMaps(role: SiteRole | undefined): boolean {
+    return can(role, "manage_maps");
 }

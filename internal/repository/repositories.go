@@ -24,6 +24,9 @@ type (
 		ChatBannedWord    ChatBannedWordRepository
 		Search            SearchRepository
 		Vault             VaultRepository
+		Event             EventRepository
+		Weather           WeatherRepository
+		Map               MapRepository
 	}
 )
 
@@ -53,5 +56,8 @@ func New(db *sql.DB) *Repositories {
 		ChatBannedWord:    &chatBannedWordRepository{db: db},
 		Search:            &searchRepository{db: db},
 		Vault:             &vaultRepository{db: db},
+		Event:             &eventRepository{db: db},
+		Weather:           &weatherRepository{db: db},
+		Map:               &mapRepository{db: db},
 	}
 }

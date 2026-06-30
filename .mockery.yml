@@ -60,6 +60,15 @@ packages:
   Sixth_world_Sunday/internal/vanityrole:
     interfaces:
       Service:
+  Sixth_world_Sunday/internal/event:
+    interfaces:
+      Service:
+  Sixth_world_Sunday/internal/weather:
+    interfaces:
+      Service:
+  Sixth_world_Sunday/internal/maps:
+    interfaces:
+      Service:
   Sixth_world_Sunday/internal/repository:
     config:
       all: true

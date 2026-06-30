@@ -23,11 +23,15 @@ const (
 	PermResetPassword     Permission = "reset_password"
 	PermManageChannels    Permission = "manage_channels"
 	PermLockFiles         Permission = "lock_files"
+	PermManageEvents      Permission = "manage_events"
+	PermManageMaps        Permission = "manage_maps"
 )
 
 var (
 	gmPermissions = []Permission{
 		PermLockFiles,
+		PermManageEvents,
+		PermManageMaps,
 	}
 
 	moderatorPermissions = append([]Permission{
